@@ -1,11 +1,14 @@
-package commandLine;
+package commandLineMenus;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.TreeMap;
 
-import commandLine.util.InOut;
+import commandLineMenus.cycleDetection.CycleDetector;
+import commandLineMenus.util.InOut;
 
 /**
  * Menu affiché en ligne de commande. En haut du menu est affiché le {@link titre}, 
@@ -69,16 +72,17 @@ public class Menu extends Option
 	{
 		String raccourci = option.getRaccourci();
 		if (raccourci == null)
-			throw new RuntimeException("Impossible d'ajouter l'option " + option.getTitre() + 
-					" dans le menu " + getTitre() + " si le raccourci n'a pas été spécifié.");
+			throw new ShortcutMissingException(option);
 		Option autre = optionsMap.get(raccourci);
 		if (autre != null)
-			throw new RuntimeException("Collision entre " + autre.getTitre()
-					+ " et " + option.getTitre() + " pour le raccourci" +
-					option.getRaccourci() + " dans le menu " + 
-					getTitre() + ".");
+			throw new CollisionException(autre, option);
 		optionsMap.put(option.getRaccourci(), option);
 		optionsList.add(option);
+	}
+	
+	public Set<Option> getOptions()
+	{
+		return new HashSet<>(optionsMap.values());
 	}
 	
 	protected void clearOptions()
@@ -131,8 +135,9 @@ public class Menu extends Option
 	
 	public void start()
 	{
+		CycleDetector.findCycle(this);
 		if (running)
-			throw new RuntimeException("Un menu est déjà en cours d'exécution, menu.start() ne peut être lancé que depuis le menu racine.");
+			throw new ConcurrentMenusException();
 		running = true;
 		Option option = null;
 		do
@@ -171,5 +176,87 @@ public class Menu extends Option
 		for (Option option : optionsList)
 			res += option.stringOfOption() + "\n";
 		return res;
+	}
+
+	public class CollisionException extends RuntimeException
+	{
+		private Option oldOption, newOption;
+		
+		public Option getOldOption()
+		{
+			return oldOption;
+		}
+		
+		public Option getNewOption()
+		{
+			return newOption;
+		}
+		
+		CollisionException(Option oldOption, Option newOption)
+		{
+			this.oldOption = oldOption;
+			this.newOption = newOption;
+		}
+		
+		@Override
+		public String toString()
+		{
+			return "Collision entre " + oldOption.getTitre()
+			+ " et " + newOption.getTitre() + " pour le raccourci" +
+			newOption.getRaccourci() + " dans le menu " + 
+			getTitre() + ".";
+		}
+	}
+
+	public class ShortcutMissingException extends RuntimeException
+	{
+		private Option option;
+		
+		public Option getOption()
+		{
+			return option;
+		}
+		
+		ShortcutMissingException(Option option)
+		{
+			this.option = option;
+		}
+		
+		@Override
+		public String toString()
+		{
+			return "Impossible d'ajouter l'option " + option.getTitre() + 
+				" dans le menu " + getTitre() + " si le raccourci n'a pas été spécifié.";
+		}
+	}
+	
+	public class ConcurrentMenusException extends RuntimeException
+	{
+		@Override
+		public String toString()
+		{
+			return "Impossible de lancer " + getTitre() + ", menu.start() ne peut être lancé que depuis le menu racine.";
+		}
+	}
+	
+	public class OptionNonAvailableException extends Exception
+	{
+		private String shortcut;
+		
+		public String getShortcut()
+		{
+			return shortcut;
+		}
+		
+		OptionNonAvailableException(String shortcut)
+		{
+			this.shortcut = shortcut;
+		}
+		
+		@Override
+		public String toString()
+		{
+			return "Impossible de lancer " + getTitre() + ", menu.start() ne peut être lancé que depuis le menu racine.";
+		}
 	}
 }

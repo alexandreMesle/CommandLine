@@ -1,8 +1,6 @@
 /*
 @TODO traduire en anglais
 @TODO permettre de personaliser l'affichage
-@TODO détecter les cycles
-@TODO séparer le projet
 */
 
 
@@ -296,4 +294,4 @@ private static ActionListe<String> getActionListePersonnes(final List<String> pe
  * <A HREF="https://github.com/alexandreMesle/personnel">Exemple d'implémentation</A>.
  */
 
-package commandLine;
+package commandLineMenus;

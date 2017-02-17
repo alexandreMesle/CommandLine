@@ -1,9 +1,9 @@
-package commandLine.examples;
+package commandLineMenus.examples;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import commandLine.*;
+import commandLineMenus.*;
 
 public class ExempleActionListe
 {
@@ -20,21 +20,29 @@ public class ExempleActionListe
 	// Retourne La liste à afficher
 	private static Liste<String> getListePersonne(final List<String> personnes)
 	{
-		Liste<String> liste = new Liste<>("Choisissez une personne pour l'afficher", 
-				getActionListePersonnes(personnes));
+		Liste<String> liste = new Liste<>("Choisissez une personne pour l'afficher",
+				getListModelPersonnes(personnes),
+				getActionListePersonnes());
 		return liste;
 	}
 	
-	private static ActionListe<String> getActionListePersonnes(final List<String> personnes)
+	private static ListModel<String> getListModelPersonnes(final List<String> personnes)
 	{
-		return new ActionListe<String>()
+		return new ListModel<String>()
 		{
-			// Retourne les éléments affichés dans le menu.
-			public List<String> getListe()
+			@Override
+			public List<String> getList()
 			{
+				// Retourne les éléments affichés dans le menu.
 				return personnes;
 			}
-
+		};
+	}
+	
+	private static ListAction<String> getActionListePersonnes()
+	{
+		return new ListAction<String>()
+		{
 			// Vide, car on souhaite créer manuellement chaque option.
 			public void elementSelectionne(int indice, String element){}
 

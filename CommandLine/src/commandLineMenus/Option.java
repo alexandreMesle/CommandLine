@@ -1,4 +1,4 @@
-package commandLine;
+package commandLineMenus;
 
 /**
  * Option figurant dans un menu.

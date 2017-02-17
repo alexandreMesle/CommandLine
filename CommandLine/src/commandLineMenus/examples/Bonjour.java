@@ -1,8 +1,8 @@
-package commandLine.examples;
+package commandLineMenus.examples;
 
-import commandLine.Action;
-import commandLine.Menu;
-import commandLine.Option;
+import commandLineMenus.Action;
+import commandLineMenus.Menu;
+import commandLineMenus.Option;
 
 class Bonjour
 {

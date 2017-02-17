@@ -1,8 +1,8 @@
-package commandLine.examples;
+package commandLineMenus.examples;
 
-import commandLine.Action;
-import commandLine.Menu;
-import commandLine.Option;
+import commandLineMenus.Action;
+import commandLineMenus.Menu;
+import commandLineMenus.Option;
 
 class ExempleMenus
 {
@@ -24,8 +24,8 @@ class ExempleMenus
 			// Méthode exécutée lorsque l'option calculatrice est sélectionnée.
 			public void optionSelectionnee()
 			{
-				int a = commandLine.util.InOut.getInt("Saisissez la première opérande : "),
-						b = commandLine.util.InOut.getInt("Saisissez la deuxième opérande : ");
+				int a = commandLineMenus.util.InOut.getInt("Saisissez la première opérande : "),
+						b = commandLineMenus.util.InOut.getInt("Saisissez la deuxième opérande : ");
 				System.out.println("" + a + " + " + b + " = " + (a+b));
 			}
 		});

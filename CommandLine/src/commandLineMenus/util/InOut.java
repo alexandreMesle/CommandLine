@@ -1,4 +1,4 @@
-package commandLine.util;
+package commandLineMenus.util;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -12,6 +12,7 @@ import java.io.StringWriter;
 
 public class InOut
 {
+	
 	/**
 	 * Saisit une chaîne de caractères.
 	 * @return la chaîne saisie.

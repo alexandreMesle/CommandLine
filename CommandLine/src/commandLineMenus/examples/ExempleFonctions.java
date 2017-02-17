@@ -1,6 +1,6 @@
-package commandLine.examples;
+package commandLineMenus.examples;
 
-import commandLine.*;
+import commandLineMenus.*;
 
 public class ExempleFonctions
 {
@@ -24,8 +24,8 @@ public class ExempleFonctions
 		{
 			public void optionSelectionnee()
 			{
-				int a = commandLine.util.InOut.getInt("Saisissez la première opérande : "),
-						b = commandLine.util.InOut.getInt("Saisissez la deuxième opérande : ");
+				int a = commandLineMenus.util.InOut.getInt("Saisissez la première opérande : "),
+						b = commandLineMenus.util.InOut.getInt("Saisissez la deuxième opérande : ");
 				System.out.println("" + a + " + " + b + " = " + (a+b));
 			}
 		};

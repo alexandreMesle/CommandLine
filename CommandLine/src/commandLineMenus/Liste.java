@@ -1,6 +1,8 @@
-package commandLine;
+package commandLineMenus;
 
 import java.util.List;
+
+import commandLineMenus.rendering.*;
 
 /**
  * Liste de valeurs (de type T) dans laquelle l'utilisateur
@@ -14,8 +16,9 @@ import java.util.List;
 
 public class Liste<T> extends Menu
 {
-	private ActionListe<T> action;
-	private ToString<T> convertisseur = null;
+	private ListAction<T> action;
+	private ListItemRenderer<T> listItemRenderer = null;
+	private ListModel<T> listModel = null;
 	private Option optionQuitter = null, optionRevenir = null;
 	
 	/**
@@ -24,11 +27,26 @@ public class Liste<T> extends Menu
 	 * @param action l'objet permettant de gérer la liste.
 	 */
 	
-	public Liste(String titre, ActionListe<T> action)
+	public Liste(String titre, ListModel<T> listModel, ListAction<T> action)
 	{
 		super(titre);
+		this.listModel = listModel;
 		this.action = action;
 		setRetourAuto(true);
+		setListItemRenderer(new ListItemDefaultRenderer<>());
+	}
+	
+	/**
+	 * Créée une liste.
+	 * @param titre intitulé affiché au dessus-de la liste.
+	 * @param action l'objet permettant de gérer la liste.
+	 * @param raccourci raccourci utilisé dans le cas où cette liste est utilisé comme option dans un menu.
+	 */
+	
+	public Liste(String titre, String raccourci, ListModel<T> listModel, ListAction<T> action)
+	{
+		this(titre, listModel, action);
+		this.raccourci = raccourci;
 	}
 	
 	private Action getAction(final int indice, final T element)
@@ -44,24 +62,11 @@ public class Liste<T> extends Menu
 	}
 
 	/**
-	 * Créée une liste.
-	 * @param titre intitulé affiché au dessus-de la liste.
-	 * @param action l'objet permettant de gérer la liste.
-	 * @param raccourci raccourci utilisé dans le cas où cette liste est utilisé comme option dans un menu.
-	 */
-	
-	public Liste(String titre, String raccourci, ActionListe<T> action)
-	{
-		this(titre, action);
-		this.raccourci = raccourci;
-	}
-	
-	/**
 	 * Détermine la fonction à appeler quand un élément est sélectionné.
 	 * @param action L'objet dont la fonction elementSelectionne() va être appelé.
 	 */
 	
-	public void setAction(ActionListe<T> action)
+	public void setAction(ListAction<T> action)
 	{
 		this.action = action;
 	}
@@ -74,7 +79,7 @@ public class Liste<T> extends Menu
 	
 	private void actualise()
 	{
-		List<T> liste = action.getListe();
+		List<T> liste = listModel.getList();
 		clearOptions();
 		for (int i = 0 ; i < liste.size() ; i++)
 		{
@@ -82,7 +87,7 @@ public class Liste<T> extends Menu
 			Option option = action.getOption(element);
 			if (option == null)
 			{
-				String string = (convertisseur == null) ? element.toString() : convertisseur.toString(element);
+				String string = listItemRenderer.toString(element);
 				super.ajoute(new Option(string, "" + (i + 1), getAction(i, element))) ;
 			}
 			else
@@ -112,16 +117,11 @@ public class Liste<T> extends Menu
 	 * Définit de quelle façon vont s'afficher les éléments de menu.
 	 */
 	
-	public void setToString(ToString<T> convertisseur)
+	public void setListItemRenderer(ListItemRenderer<T> convertisseur)
 	{
-		this.convertisseur = convertisseur;
+		this.listItemRenderer = convertisseur;
 	}
-	
-	public interface ToString<T>
-	{
-		public String toString(T item);
-	}
-	
+		
 	/**
 	 * Déclenche une erreur, il est interdit de modifier les options d'une Liste.
 	 */
@@ -129,7 +129,7 @@ public class Liste<T> extends Menu
 	@Override
 	public void ajoute(Option option)
 	{
-		throw new RuntimeException("Il est interdit d'ajouter manuellement une option dans une liste.");
+		throw new ManualOptionAddForbiddenException(this, option);
 	}
 	
 	@Override
@@ -142,6 +142,25 @@ public class Liste<T> extends Menu
 	public void ajouteRevenir(String raccourci)
 	{
 		optionRevenir = new Option("Revenir", raccourci, Action.REVENIR);
+	}
+	
+	public static class ManualOptionAddForbiddenException extends RuntimeException
+	{
+		private Option option;
+		private Liste<?> liste;
+
+		ManualOptionAddForbiddenException(Liste liste, Option option)
+		{
+			this.liste = liste;
+			this.option = option;
+		}
+		
+		@Override
+		public String toString()
+		{
+			return "Il est interdit d'ajouter manuellement une option (" + option.getTitre() +
+					") dans une liste (" + liste.getTitre() + ").";
+		}
 	}
 }
 	
