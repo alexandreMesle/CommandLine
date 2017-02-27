@@ -1,7 +1,8 @@
 /*
-@TODO traduire en anglais
-@TODO permettre de personaliser l'affichage
-@TODO noms de menus dynamiques
+TODO traduire en anglais
+TODO permettre de personaliser l'affichage
+TODO noms de menus dynamiques
+TODO tests unitaires
 */
 
 

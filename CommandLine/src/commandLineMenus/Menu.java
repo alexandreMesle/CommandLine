@@ -3,16 +3,15 @@ package commandLineMenus;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.TreeMap;
 
-import javax.swing.Renderer;
-
-import commandLineMenus.cycleDetection.CycleDetector;
-import commandLineMenus.rendering.MenuRenderer;
-import commandLineMenus.rendering.examples.MenuDefaultRenderer;
+import commandLineMenus.depthFirstSearch.*;
+import commandLineMenus.rendering.examples.*;
+import commandLineMenus.rendering.*;
 import commandLineMenus.util.InOut;
 
 /**
@@ -29,7 +28,6 @@ public class Menu extends Option
 	private List<Option> optionsList = new ArrayList<>();
 	private boolean autoBack = false;
 	private String shortTitle;
-	private static boolean running = false;
 	
 	/**
 	 * Créée un menu.
@@ -75,7 +73,9 @@ public class Menu extends Option
 	
 	public void add(Option option)
 	{
-		//TODO verrouiller l'ajout une fois l'appli lancée
+		if (isLocked())
+			throw new ConcurrentModificationException("Impossible to add option \""
+					+ option.getTitle() + "\" while running.");
 		String raccourci = option.getShorcut();
 		if (raccourci == null)
 			throw new ShortcutMissingException(option);
@@ -89,6 +89,11 @@ public class Menu extends Option
 	public Set<Option> getOptions()
 	{
 		return new HashSet<>(optionsMap.values());
+	}
+	
+	public int size()
+	{
+		return optionsList.size();
 	}
 	
 	protected void clearOptions()
@@ -132,6 +137,8 @@ public class Menu extends Option
 	
 	public void setAutoBack(boolean autoBack)
 	{
+		if (isLocked())
+			throw new ConcurrentModificationException("Impossible to change autoBack while running.");
 		this.autoBack = autoBack;
 	}
 	
@@ -158,14 +165,13 @@ public class Menu extends Option
 	
 	public void start()
 	{
-		CycleDetector.findCycle(this);
-		if (running)
-			throw new ConcurrentMenusException();
-		// TODO Vérifier qu'aucun menu n'est vide
+		DepthFirstSearch.findCycle(this);
+		if (isLocked())
+			throw new ConcurrentExecutionException();
 		setRenderers(new MenuDefaultRenderer());
-		running = true;
+		lock();
 		run();
-		running = false;
+		unlock();
 	}
 
 	protected void run()
@@ -230,7 +236,7 @@ public class Menu extends Option
 		return res;
 	}
 
-	public class CollisionException extends RuntimeException
+	class CollisionException extends RuntimeException
 	{
 		private static final long serialVersionUID = 1142845287292812411L;
 		private Option oldOption, newOption;
@@ -247,17 +253,12 @@ public class Menu extends Option
 		
 		CollisionException(Option oldOption, Option newOption)
 		{
+			super("Collision between " + oldOption.getTitle()
+				+ " and " + newOption.getTitle() + " for the shorcut "
+				+ newOption.getShorcut() + " in the menu " + 
+			getTitle() + ".");
 			this.oldOption = oldOption;
 			this.newOption = newOption;
-		}
-		
-		@Override
-		public String toString()
-		{
-			return "Collision between " + oldOption.getTitle()
-			+ " and " + newOption.getTitle() + " for the shorcut " +
-			newOption.getShorcut() + " in the menu " + 
-			getTitle() + ".";
 		}
 	}
 
@@ -273,14 +274,9 @@ public class Menu extends Option
 		
 		ShortcutMissingException(Option option)
 		{
+			super("Impossible to add option \"" + option.getTitle() 
+				+ "\" in the menu \"" + getTitle() + "\" if the shorcut hasn't been specified.");
 			this.option = option;
-		}
-		
-		@Override
-		public String toString()
-		{
-			return "Impossible to add option " + option.getTitle() + 
-				" in the menu " + getTitle() + " if the shorcut hasn't been specified.";
 		}
 	}
 	
@@ -288,22 +284,46 @@ public class Menu extends Option
 	{
 		private static final long serialVersionUID = 3617589300605854823L;
 
-		@Override
-		public String toString()
+		public EmptyMenuException() 
 		{
-			return "Impossible to launch an empty menu " + getTitle() + ".";
+			super("Impossible to launch the empty menu \"" + getTitle() + "\".");
 		}
 	}
 
-	public class ConcurrentMenusException extends RuntimeException
+	public class ConcurrentExecutionException extends RuntimeException
 	{
 		private static final long serialVersionUID = 770804726891062420L;
 
-		@Override
-		public String toString()
+		public ConcurrentExecutionException() 
 		{
-			return "Impossible to launch " + getTitle() + ", menu.start() can only be ran from the root menu.";
+			super("Impossible to launch \"" + getTitle() 
+				+ "\", a menu application is already running.");
 		}
 	}
 	
+	public static class CycleDetectedException extends RuntimeException
+	{
+		private static final long serialVersionUID = -2884917321791851520L;
+
+		public CycleDetectedException(LinkedList<Menu> cycleDetected)
+		{
+			super("A directed cycle has been detected in the menu tree :\n" 
+					+ stringOfCycle(cycleDetected));
+		}
+		
+		static private String stringOfCycle(List<Menu> list)
+		{
+			String res = "";
+			boolean first = true;
+			for (Menu menu : list)
+			{
+				if (!first)
+					res += " -> ";
+				else
+					first = false;
+				res += menu.getTitle();
+			}
+			return res;
+		}
+	}
 }

@@ -1,8 +1,9 @@
 package commandLineMenus;
 
+import java.nio.file.WatchService;
 import java.util.Set;
 
-import commandLineMenus.cycleDetection.CycleDetector;
+import commandLineMenus.depthFirstSearch.DepthFirstSearch;
 import commandLineMenus.rendering.*;
 import commandLineMenus.rendering.examples.ListItemDefaultRenderer;
 import commandLineMenus.rendering.examples.MenuDefaultRenderer;
@@ -76,6 +77,9 @@ public class List<T> extends Menu
 	
 	public void setModel(ListModel<T> model)
 	{
+		if (isLocked())
+			throw new ConcurrentModificationException("Impossible to change model of list "
+					+ getTitle() + " while running.");
 		this.model = model;
 	}	
 	
@@ -95,49 +99,21 @@ public class List<T> extends Menu
 		actualise();
 		return super.getOptions();
 	}
-	
-	private void actualise()
+
+	private void add(int index, T element)
 	{
-		java.util.List<T> liste = model.getList();
-		clearOptions();
-		for (int i = 0 ; i < liste.size() ; i++)
+		Option option = action.getOption(element);
+		if (option == null)
+			super.add(new Option(renderer.title(index, element), 
+					renderer.shortcut(index, element),
+					getAction(index, element))) ;
+		else
 		{
-			T element = liste.get(i);
-			Option option = action.getOption(element);
-			if (option == null)
-				super.add(new Option(renderer.title(i, element), 
-						renderer.shortcut(i, element),
-						getAction(i, element))) ;
-			else
-			{
-				option.setShortcut(renderer.shortcut(i, element));
-				super.add(option);				
-			}
+			option.setShortcut(renderer.shortcut(index, element));
+			super.add(option);
 		}
-		if (optionQuit != null)
-			super.add(optionQuit);
-		if (optionBack!= null)
-			super.add(optionBack);
 	}
 	
-	@Override
-	protected void run()
-	{
-		actualise();
-		CycleDetector.findCycle(this);
-		setRenderers(new MenuDefaultRenderer());
-		super.run();
-	}
-	
-	/**
-	 * Définit de quelle façon vont s'afficher les éléments de menu.
-	 */
-	
-	public void setListItemRenderer(ListItemRenderer<T> convertisseur)
-	{
-		this.renderer = convertisseur;
-	}
-		
 	/**
 	 * Déclenche une erreur, il est interdit de modifier les options d'une Liste.
 	 */
@@ -151,15 +127,69 @@ public class List<T> extends Menu
 	@Override
 	public void addQuit(String raccourci)
 	{
-		optionQuit = new Option("Quitter", raccourci, Action.QUIT);
+		if (isLocked())
+			throw new ConcurrentModificationException("Impossible to add \"quit\" option in list \"" 
+					+ getTitle() + "\" while running.");
+		this.optionQuit = new Option("Exit", raccourci, Action.QUIT);
 	}
 
 	@Override
 	public void addBack(String raccourci)
 	{
-		optionBack = new Option("Revenir", raccourci, Action.BACK);
+		if (isLocked())
+			throw new ConcurrentModificationException("Impossible to add backoption in list " 
+					+ getTitle() + " while running.");
+		optionBack = new Option("Back", raccourci, Action.BACK);
 	}
 	
+	private int actualise()
+	{
+		java.util.List<T> liste = model.getList();
+		if (liste == null)
+			throw new NoListModelDefinedException(this);
+		clearOptions();
+		boolean wasLocked = isLocked();
+		if (wasLocked) unlock();
+		for (int i = 0 ; i < liste.size() ; i++)
+			add(i, liste.get(i));
+		if (optionQuit != null)
+			super.add(optionQuit);
+		if (optionBack!= null)
+			super.add(optionBack);
+		if (wasLocked) lock();
+		return liste.size();
+	}
+	
+	@Override
+	protected void run()
+	{
+		if (action == null)
+			throw new NoListActionDefinedException(this);
+		int nbOptions = actualise();
+		if (nbOptions == 0)
+			System.out.println(renderer.empty());
+		else
+		{
+			DepthFirstSearch.findCycle(this);
+			unlock();
+			setRenderers(new MenuDefaultRenderer());
+			lock();
+			super.run();
+		}
+	}
+	
+	/**
+	 * Définit de quelle façon vont s'afficher les éléments de menu.
+	 */
+	
+	public void setListItemRenderer(ListItemRenderer<T> convertisseur)
+	{
+		if (isLocked())
+			throw new ConcurrentModificationException("Impossible to change renderer of list " 
+					+ getTitle() + " while running.");
+		this.renderer = convertisseur;
+	}
+
 	public static class ManualOptionAddForbiddenException extends RuntimeException
 	{
 		private static final long serialVersionUID = -5126287607702961669L;

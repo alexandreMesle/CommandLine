@@ -1,7 +1,5 @@
 package commandLineMenus;
 
-import java.util.List;
-
 import commandLineMenus.rendering.MenuRenderer;
 
 /**
@@ -10,6 +8,7 @@ import commandLineMenus.rendering.MenuRenderer;
 
 public class Option
 {
+	private static boolean locked = false;
 	protected String shortcut;
 	private String title;
 	protected Action action;
@@ -46,7 +45,7 @@ public class Option
 	 * Modifie le raccourci permettant de sélectioner cette option.
 	 */
 	
-	public void setShortcut(String shortcut)
+	void setShortcut(String shortcut)
 	{
 		this.shortcut = shortcut;
 	}
@@ -81,6 +80,21 @@ public class Option
 	{
 		return action;
 	}
+
+	protected void lock()
+	{
+		locked = true;
+	}
+	
+	protected void unlock()
+	{
+		locked = false;
+	}
+	
+	protected boolean isLocked()
+	{
+		return locked;
+	}
 	
 	void optionSelected()
 	{
@@ -101,6 +115,9 @@ public class Option
 	
 	public void setRenderer(MenuRenderer menuRenderer)
 	{
+		if (isLocked())
+			throw new ConcurrentModificationException("Impossible to set rendering of "
+					+ getTitle() + " while running.");
 		this.menuRenderer = menuRenderer;
 	}	
 
@@ -110,14 +127,13 @@ public class Option
 			setRenderer(menuRenderer);
 	}
 
-	public class RootHasParentException extends RuntimeException
+	public class ConcurrentModificationException extends RuntimeException
 	{
-		private static final long serialVersionUID = 1L;
+		private static final long serialVersionUID = 6139684008297267150L;
 
-		@Override
-		public String toString()
+		public ConcurrentModificationException(String message) 
 		{
-			return "You have started a menu that has parents " + this + ".";
+			super(message);
 		}
 	}
 }
