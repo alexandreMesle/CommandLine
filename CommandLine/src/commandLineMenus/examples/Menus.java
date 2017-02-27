@@ -4,7 +4,7 @@ import commandLineMenus.Action;
 import commandLineMenus.Menu;
 import commandLineMenus.Option;
 
-class ExempleMenus
+class Menus
 {
 	public static void main(String[] args)
 	{
@@ -14,10 +14,10 @@ class ExempleMenus
 		Option calculatrice = new Option("Calculatrice", "c");
 		Menu direBonjour = new Menu("Menu bonjour", "Bonjour", "b");
 		// Imbrication des deux options dans le menu
-		menuPrincipal.ajoute(calculatrice);
+		menuPrincipal.add(calculatrice);
 		// Vous remarquez que comme Menu hérite de Option, on peut mettre un menu dans un menu
-		menuPrincipal.ajoute(direBonjour);
-		menuPrincipal.ajouteQuitter("q");
+		menuPrincipal.add(direBonjour);
+		menuPrincipal.addQuit("q");
 		// Définition de l'action pour la calculatrice
 		calculatrice.setAction(new Action()
 		{
@@ -30,7 +30,7 @@ class ExempleMenus
 			}
 		});
 		// Il est possible de passer l'action en paramètre directement dans le constructeur.
-		direBonjour.ajoute(new Option("Dire bonjour", "b", new Action()
+		direBonjour.add(new Option("Dire bonjour", "b", new Action()
 		{
 			public void optionSelectionnee()
 			{
@@ -38,9 +38,9 @@ class ExempleMenus
 			}
 		}));
 		// Ajout d'une option permettant de revenir au menu parent
-		direBonjour.ajouteRevenir("r");;
+		direBonjour.addBack("r");;
 		// Retour automatique au menu parent si une option est exécutée.
-		direBonjour.setRetourAuto(true);
+		direBonjour.setAutoBack(true);
 		// Lancement du menu
 		menuPrincipal.start();
 	}

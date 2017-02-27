@@ -2,13 +2,13 @@ package commandLineMenus.examples;
 
 import commandLineMenus.*;
 
-public class ExempleFonctions
+public class Functions
 {
 	static Menu getMenuPrincipal()
 	{
 		Menu menuPrincipal = new Menu("Menu Principal");
-		menuPrincipal.ajoute(getOptionCalculatrice());
-		menuPrincipal.ajouteQuitter("q");
+		menuPrincipal.add(getOptionCalculatrice());
+		menuPrincipal.addQuit("q");
 		return menuPrincipal;
 	}
 
@@ -50,9 +50,9 @@ public class ExempleFonctions
 	static Menu getMenuDireBonjour()
 	{
 		Menu direBonjour = new Menu("Menu bonjour", "Bonjour", "b");
-		direBonjour.ajoute(getOptionDireBonjour());
-		direBonjour.ajouteRevenir("r");;
-		direBonjour.setRetourAuto(true);
+		direBonjour.add(getOptionDireBonjour());
+		direBonjour.addBack("r");;
+		direBonjour.setAutoBack(true);
 		return direBonjour;
 	}
 	

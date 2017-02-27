@@ -1,5 +1,6 @@
 package commandLineMenus;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
@@ -7,7 +8,11 @@ import java.util.Map;
 import java.util.Set;
 import java.util.TreeMap;
 
+import javax.swing.Renderer;
+
 import commandLineMenus.cycleDetection.CycleDetector;
+import commandLineMenus.rendering.MenuRenderer;
+import commandLineMenus.rendering.examples.MenuDefaultRenderer;
 import commandLineMenus.util.InOut;
 
 /**
@@ -22,45 +27,45 @@ public class Menu extends Option
 {
 	private Map<String, Option> optionsMap = new TreeMap<>();
 	private List<Option> optionsList = new ArrayList<>();
-	private boolean retourAuto = false;
-	private String titreCourt;
+	private boolean autoBack = false;
+	private String shortTitle;
 	private static boolean running = false;
 	
 	/**
 	 * Créée un menu.
-	 * @param titre titre affiché au dessus du menu.
+	 * @param title titre affiché au dessus du menu.
 	 */
 	
-	public Menu(String titre)
+	public Menu(String title)
 	{
-		super(titre, null);
-		titreCourt = titre;
+		this(title, null);
+		shortTitle = title;
 	}
 	
 	/**
 	 * Créée un menu.
-	 * @param titre titre affiché au dessus du menu.
-	 * @param raccourci Si ce menu est aussi une option, 
+	 * @param title titre affiché au dessus du menu.
+	 * @param shorcut Si ce menu est aussi une option, 
 	 * raccourci permettant de l'activer.
 	 */
 	
-	public Menu(String titre, String raccourci)
+	public Menu(String title, String shorcut)
 	{
-		super(titre, raccourci);
+		super(title, shorcut);
 	}
 
 	/**
 	 * Créée un menu.
-	 * @param titreLong titre affiché au dessus du menu.
-	 * @param titreCourt titre affiché en tant qu'élément de menu (ou en tant qu'option).
-	 * @param raccourci Si ce menu est aussi une option, 
+	 * @param longTitle titre affiché au dessus du menu.
+	 * @param shortTitle titre affiché en tant qu'élément de menu (ou en tant qu'option).
+	 * @param shortcut Si ce menu est aussi une option, 
 	 * raccourci permettant de l'activer.
 	 */
 	
-	public Menu(String titreLong, String titreCourt, String raccourci)
+	public Menu(String longTitle, String shortTitle, String shortcut)
 	{
-		super(titreLong, raccourci);
-		this.titreCourt = titreCourt; 
+		super(longTitle, shortcut);
+		this.shortTitle = shortTitle; 
 	}
 
 	/**
@@ -68,15 +73,16 @@ public class Menu extends Option
 	 * @param option option à ajouter.
 	 */
 	
-	public void ajoute(Option option)
+	public void add(Option option)
 	{
-		String raccourci = option.getRaccourci();
+		//TODO verrouiller l'ajout une fois l'appli lancée
+		String raccourci = option.getShorcut();
 		if (raccourci == null)
 			throw new ShortcutMissingException(option);
 		Option autre = optionsMap.get(raccourci);
 		if (autre != null)
 			throw new CollisionException(autre, option);
-		optionsMap.put(option.getRaccourci(), option);
+		optionsMap.put(option.getShorcut(), option);
 		optionsList.add(option);
 	}
 	
@@ -91,41 +97,58 @@ public class Menu extends Option
 		optionsMap.clear();
 	}
 	
+	protected void setRenderers(MenuRenderer menuRenderer)
+	{
+		super.setRenderers(menuRenderer);
+		for (Option option : getOptions())
+			option.setRenderers(this.menuRenderer);
+	}
 	/**
 	 * Ajoute une option permettant de quitter le programme.
-	 * @param raccourci le raccourci permettant de quitter le programme.
+	 * @param shorcut le raccourci permettant de quitter le programme.
 	 */
 	
-	public void ajouteQuitter(String raccourci)
+	public void addQuit(String shorcut)
 	{
-		ajoute(new Option("Quitter", raccourci, Action.QUITTER));
+		add(new Option("Exit", shorcut, Action.QUIT));
 	}
 	
 	/**
 	 * Ajoute une option permettant de revenir au menu précédent.
-	 * @param raccourci le raccourci permettant de revenir au menu précédent.
+	 * @param shorcut le raccourci permettant de revenir au menu précédent.
 	 */
 	
-	public void ajouteRevenir(String raccourci)
+	public void addBack(String shorcut)
 	{
-		ajoute(new Option("Revenir", raccourci, Action.REVENIR));
+		add(new Option("Back", shorcut, Action.BACK));
 	}
 	
 	/**
 	 * Détermine si le choix d'une option entraîne automatiquement le retour au menu précédent.
 	 * Faux par défaut.
-	 * @param retourAuto vrai ssi si le choix d'une option entraîne le retour au 
+	 * @param autoBack vrai ssi si le choix d'une option entraîne le retour au 
 	 * menu précédent.
 	 */
 	
-	public void setRetourAuto(boolean retourAuto)
+	public void setAutoBack(boolean autoBack)
 	{
-		this.retourAuto = retourAuto;
+		this.autoBack = autoBack;
 	}
 	
-	protected String saisitOption()
+	protected String getOption()
 	{
-		return InOut.getString(this.toString());
+		System.out.print(this.toString());
+		while(true)
+		{
+			try
+			{
+				return InOut.getString();				
+			}
+			catch (IOException e) 
+			{
+				System.out.println(menuRenderer.invalidInput(""));
+			}
+		}
 	}
 	
 	/**
@@ -138,48 +161,78 @@ public class Menu extends Option
 		CycleDetector.findCycle(this);
 		if (running)
 			throw new ConcurrentMenusException();
+		// TODO Vérifier qu'aucun menu n'est vide
+		setRenderers(new MenuDefaultRenderer());
 		running = true;
+		run();
+		running = false;
+	}
+
+	protected void run()
+	{
+		if (getOptions().size() == 0)
+			throw new EmptyMenuException();
 		Option option = null;
+		boolean between = false;
 		do
 		{
-			String saisie = saisitOption();
-			option = optionsMap.get(saisie);
-			if (option != null)
-				option.optionSelectionnee();
+			if (between)
+				System.out.println(menuRenderer.betweenMenus());
 			else
-				System.out.println("Cette option n'est pas disponible.");
+				between = true;
+			String get = getOption();
+			option = optionsMap.get(get);
+			if (option != null)
+				option.optionSelected();
+			else
+				System.out.println(menuRenderer.invalidInput(get));
 		}
-		while(option == null || !retourAuto && option.getAction() != Action.REVENIR);
+		while(option == null || !autoBack && option.getAction() != Action.BACK);
 	}
 
 	@Override
-	void optionSelectionnee()
+	void optionSelected()
 	{
-		running = false;
-		this.start();
-		running = true;
+		this.run();
 	}
 	
 	@Override
 	public String stringOfOption()
 	{
-		if (titreCourt != null)
-			return raccourci + " : " + titreCourt;
+		if (shortTitle != null)
+			return menuRenderer.option(shortcut, shortTitle);
 		else
 			return super.stringOfOption();
+	}
+	
+	private String emptyIfNull(String s)
+	{
+		if (s != null)
+			return s;
+		return "";
 	}
 	
 	@Override
 	public String toString()
 	{
-		String res = getTitre() + '\n';
+		String res = menuRenderer.header(getTitle());
+		boolean between = false;
 		for (Option option : optionsList)
-			res += option.stringOfOption() + "\n";
+		{
+			if (!between) 
+				res += menuRenderer.betweenOptions();
+			else
+				between = true;
+			res += option.stringOfOption();
+		}
+		res += emptyIfNull(menuRenderer.footer());
+		res += emptyIfNull(menuRenderer.prompt());
 		return res;
 	}
 
 	public class CollisionException extends RuntimeException
 	{
+		private static final long serialVersionUID = 1142845287292812411L;
 		private Option oldOption, newOption;
 		
 		public Option getOldOption()
@@ -201,15 +254,16 @@ public class Menu extends Option
 		@Override
 		public String toString()
 		{
-			return "Collision entre " + oldOption.getTitre()
-			+ " et " + newOption.getTitre() + " pour le raccourci" +
-			newOption.getRaccourci() + " dans le menu " + 
-			getTitre() + ".";
+			return "Collision between " + oldOption.getTitle()
+			+ " and " + newOption.getTitle() + " for the shorcut " +
+			newOption.getShorcut() + " in the menu " + 
+			getTitle() + ".";
 		}
 	}
 
 	public class ShortcutMissingException extends RuntimeException
 	{
+		private static final long serialVersionUID = -194430644006701341L;
 		private Option option;
 		
 		public Option getOption()
@@ -225,38 +279,31 @@ public class Menu extends Option
 		@Override
 		public String toString()
 		{
-			return "Impossible d'ajouter l'option " + option.getTitre() + 
-				" dans le menu " + getTitre() + " si le raccourci n'a pas été spécifié.";
+			return "Impossible to add option " + option.getTitle() + 
+				" in the menu " + getTitle() + " if the shorcut hasn't been specified.";
 		}
 	}
 	
+	public class EmptyMenuException extends RuntimeException
+	{
+		private static final long serialVersionUID = 3617589300605854823L;
+
+		@Override
+		public String toString()
+		{
+			return "Impossible to launch an empty menu " + getTitle() + ".";
+		}
+	}
+
 	public class ConcurrentMenusException extends RuntimeException
 	{
+		private static final long serialVersionUID = 770804726891062420L;
+
 		@Override
 		public String toString()
 		{
-			return "Impossible de lancer " + getTitre() + ", menu.start() ne peut être lancé que depuis le menu racine.";
+			return "Impossible to launch " + getTitle() + ", menu.start() can only be ran from the root menu.";
 		}
 	}
 	
-	public class OptionNonAvailableException extends Exception
-	{
-		private String shortcut;
-		
-		public String getShortcut()
-		{
-			return shortcut;
-		}
-		
-		OptionNonAvailableException(String shortcut)
-		{
-			this.shortcut = shortcut;
-		}
-		
-		@Override
-		public String toString()
-		{
-			return "Impossible de lancer " + getTitre() + ", menu.start() ne peut être lancé que depuis le menu racine.";
-		}
-	}
 }

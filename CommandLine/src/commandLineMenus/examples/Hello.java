@@ -4,7 +4,7 @@ import commandLineMenus.Action;
 import commandLineMenus.Menu;
 import commandLineMenus.Option;
 
-class Bonjour
+class Hello
 {
 	public static void main(String[] args)
 	{
@@ -14,9 +14,9 @@ class Bonjour
 		// et dont le raccourci clavier est "b"
 		Option direBonjour = new Option("Dire Bonjour", "b");
 		// Ajout de l'option au menu
-		menu.ajoute(direBonjour);
+		menu.add(direBonjour);
 		// Ajout d'une option permettant de quitter l'application
-		menu.ajouteQuitter("q");
+		menu.addQuit("q");
 		// Spécifation de l'action à effectuer lorsqu'une option est sélectionée
 		Action action = new Action()
 		{

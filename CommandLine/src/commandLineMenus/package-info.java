@@ -1,6 +1,7 @@
 /*
 @TODO traduire en anglais
 @TODO permettre de personaliser l'affichage
+@TODO noms de menus dynamiques
 */
 
 
@@ -9,6 +10,7 @@
  * de commande. Le dialogue est fait à partir de menus proposant des 
  * options. 
  * 
+ *
  * Par exemple, le code ci-dessous met en place un menu dont les deux 
  * uniques options sont afficher bonjour et quitter :
  * 

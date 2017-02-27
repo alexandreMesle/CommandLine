@@ -1,9 +1,7 @@
 package commandLineMenus.cycleDetection;
 
-
 import java.util.HashSet;
 import java.util.LinkedList;
-import java.util.List;
 import java.util.Set;
 
 import commandLineMenus.Menu;
@@ -13,11 +11,13 @@ public class CycleDetector
 {
 	private static LinkedList<Menu> findCycle(Set<Option> enCours, Menu menu)
 	{
+		System.out.println(menu.getTitle());
 		LinkedList<Menu> cycle;
 		if (enCours.contains(menu))
 		{
 			cycle = new LinkedList<>();
 			cycle.add(menu);
+			System.out.println("!");
 			return cycle;
 		}
 		enCours.add(menu);
@@ -27,8 +27,10 @@ public class CycleDetector
 				cycle = findCycle(enCours, (Menu)option);
 				if (cycle != null)
 				{
-					if (cycle.getLast() != cycle.getFirst())
+					if (cycle.size() == 1 || cycle.getLast() != cycle.getFirst())
 						cycle.addFirst(menu);
+					else
+						throw new CycleDetectedException(cycle);
 					return cycle;
 				}
 			}
@@ -43,6 +45,4 @@ public class CycleDetector
 		if (cycle != null)
 			throw new CycleDetectedException(cycle);
 	}
-	
-
 }

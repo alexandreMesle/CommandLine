@@ -2,11 +2,9 @@ package commandLineMenus.examples;
 
 import java.util.ArrayList;
 
-import java.util.List;
-
 import commandLineMenus.*;
 
-public class ExempleListes
+public class Lists
 {
 	public static void main(String[] args)
 	{
@@ -16,11 +14,11 @@ public class ExempleListes
 		personnes.add("Marcel");
 		personnes.add("Gisèle");
 		// Création d'un menu proposant une option par personne
-		Liste<String> menu = new Liste<String>("Liste des Personnes", 
+		List<String> menu = new List<String>("Liste des Personnes", 
 			new ListModel<String>()
 			{
 				// Retourne la liste des personnes formant le menu
-				public List<String> getList()
+				public java.util.List<String> getList()
 				{
 					return personnes;
 				}
@@ -29,7 +27,7 @@ public class ExempleListes
 			new ListAction<String>()
 			{
 				// Exécutée automatiquement lorsqu'un élément de liste est sélectionné
-				public void elementSelectionne(int indice, String element)
+				public void selectedItem(int indice, String element)
 				{
 					System.out.println("Vous avez sélectionné "+ element+ ", qui a l'indice " + indice);
 				}
@@ -42,7 +40,7 @@ public class ExempleListes
 				}
 			});
 		// Ajoute une option quitter à la fin de la liste
-		menu.ajouteQuitter("q");
+		menu.addQuit("q");
 		// Lancement du menu
 		menu.start();
 	}

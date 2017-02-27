@@ -1,40 +1,41 @@
 package commandLineMenus.examples;
 
 import java.util.ArrayList;
-import java.util.List;
 
 import commandLineMenus.*;
 
-public class ExempleActionListe
+public class ListActions
 {
 	public static void main(String[] args)
 	{
-		List<String> personnes = new ArrayList<>();
-		personnes.add("Ginette");
-		personnes.add("Marcel");
-		personnes.add("Gisèle");
-		Liste<String> liste = getListePersonne(personnes);
-		liste.start();
+		java.util.List<String> people = new ArrayList<>();
+		people.add("Ginette");
+		people.add("Marcel");
+		people.add("Gisèle");
+		List<String> list = getPeopleList(people);
+		list.start();
 	} 
 
-	// Retourne La liste à afficher
-	private static Liste<String> getListePersonne(final List<String> personnes)
+	// Returns the list to print
+	private static List<String> getPeopleList(final java.util.List<String> people)
 	{
-		Liste<String> liste = new Liste<>("Choisissez une personne pour l'afficher",
-				getListModelPersonnes(personnes),
+		List<String> liste = new List<>("Select someone to diplay his name",
+				getListModelPersonnes(people),
 				getActionListePersonnes());
+		liste.setAutoBack(false);
+		liste.addQuit("q");
 		return liste;
 	}
 	
-	private static ListModel<String> getListModelPersonnes(final List<String> personnes)
+	private static ListModel<String> getListModelPersonnes(final java.util.List<String> people)
 	{
 		return new ListModel<String>()
 		{
 			@Override
-			public List<String> getList()
+			public java.util.List<String> getList()
 			{
 				// Retourne les éléments affichés dans le menu.
-				return personnes;
+				return people;
 			}
 		};
 	}
@@ -44,7 +45,7 @@ public class ExempleActionListe
 		return new ListAction<String>()
 		{
 			// Vide, car on souhaite créer manuellement chaque option.
-			public void elementSelectionne(int indice, String element){}
+			public void selectedItem(int indice, String element){}
 
 			// Retourne l'option associée à element.
 			public Option getOption(final String personne)

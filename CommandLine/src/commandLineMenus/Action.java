@@ -10,8 +10,7 @@ public interface Action
 	 * Action prédéfinie permettant de quitter le programme.
 	 */
 	
-	public static final Action 
-	QUITTER = new Action()
+	public static final Action QUIT = new Action()
 	{
 		@Override 
 		public void optionSelectionnee()
@@ -24,7 +23,7 @@ public interface Action
 	 * Action prédéfinie permettant de revenir au menu précédent.
 	 */
 	
-	public static final Action REVENIR = new Action()
+	public static final Action BACK = new Action()
 	{
 		@Override 
 		public void optionSelectionnee(){}
