@@ -51,14 +51,16 @@ public class DepthFirstSearch
 		if (cycle != null)
 			return cycle;
 		enCours.add(menu);
-		checkEmptyMenu(menu);
-		cycle = depthFirstSearch(enCours, menu.getOptions());		
+		{
+			checkEmptyMenu(menu);
+			cycle = depthFirstSearch(enCours, menu.getOptions());
+			updateCycle(cycle, menu);
+		}
 		enCours.remove(menu);
-		updateCycle(cycle, menu);
 		return cycle;
 	}
 	
-	public static void findCycle(Menu menu)
+	public static void dephtFirstSearch(Menu menu)
 	{
 		Set<Option> enCours = new HashSet<Option>();
 		LinkedList<Menu> cycle = depthFirstSearch(enCours, menu);

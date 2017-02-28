@@ -66,6 +66,12 @@ public class Menu extends Option
 		this.shortTitle = shortTitle; 
 	}
 
+	private void checkConcurrentModification(String message)
+	{
+		if (isLocked())
+			throw new ConcurrentModificationException(message);		
+	}
+	
 	/**
 	 * Ajoute une option dans le menu.
 	 * @param option option à ajouter.
@@ -73,8 +79,7 @@ public class Menu extends Option
 	
 	public void add(Option option)
 	{
-		if (isLocked())
-			throw new ConcurrentModificationException("Impossible to add option \""
+		checkConcurrentModification("Impossible to add option \""
 					+ option.getTitle() + "\" while running.");
 		String raccourci = option.getShorcut();
 		if (raccourci == null)
@@ -108,6 +113,7 @@ public class Menu extends Option
 		for (Option option : getOptions())
 			option.setRenderers(this.menuRenderer);
 	}
+	
 	/**
 	 * Ajoute une option permettant de quitter le programme.
 	 * @param shorcut le raccourci permettant de quitter le programme.
@@ -137,8 +143,7 @@ public class Menu extends Option
 	
 	public void setAutoBack(boolean autoBack)
 	{
-		if (isLocked())
-			throw new ConcurrentModificationException("Impossible to change autoBack while running.");
+		checkConcurrentModification("Impossible to change autoBack while running.");
 		this.autoBack = autoBack;
 	}
 	
@@ -165,7 +170,7 @@ public class Menu extends Option
 	
 	public void start()
 	{
-		DepthFirstSearch.findCycle(this);
+		DepthFirstSearch.dephtFirstSearch(this);
 		if (isLocked())
 			throw new ConcurrentExecutionException();
 		setRenderers(new MenuDefaultRenderer());

@@ -13,7 +13,7 @@ public class Option
 	private String title;
 	protected Action action;
 	MenuRenderer menuRenderer = null;
-
+	
 	public Option(String title, String shortcut, Action action)
 	{
 		this(title, shortcut);
@@ -81,16 +81,24 @@ public class Option
 		return action;
 	}
 
-	protected void lock()
+	protected boolean lock()
 	{
-		locked = true;
+		return setLocked(true);
 	}
 	
-	protected void unlock()
+	protected boolean unlock()
 	{
-		locked = false;
+		return setLocked(false);
+	}
+
+	protected boolean setLocked(boolean isLocked)
+	{
+		boolean locked = isLocked();
+		Option.locked = isLocked;
+		return locked;
 	}
 	
+
 	protected boolean isLocked()
 	{
 		return locked;
@@ -119,7 +127,7 @@ public class Option
 			throw new ConcurrentModificationException("Impossible to set rendering of "
 					+ getTitle() + " while running.");
 		this.menuRenderer = menuRenderer;
-	}	
+	}
 
 	protected void setRenderers(MenuRenderer menuRenderer)
 	{

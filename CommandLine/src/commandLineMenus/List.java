@@ -72,14 +72,17 @@ public class List<T> extends Menu
 	
 	public void setAction(ListAction<T> action)
 	{
+		if (isLocked())
+			throw new ConcurrentModificationException("Impossible to change list action \""
+					+ getTitle() + "\" while running.");
 		this.action = action;
 	}
 	
 	public void setModel(ListModel<T> model)
 	{
 		if (isLocked())
-			throw new ConcurrentModificationException("Impossible to change model of list "
-					+ getTitle() + " while running.");
+			throw new ConcurrentModificationException("Impossible to change list model \""
+					+ getTitle() + "\" while running.");
 		this.model = model;
 	}	
 	
@@ -93,13 +96,6 @@ public class List<T> extends Menu
 			action.selectedItem(indice, element);
 	}
 	
-	@Override
-	public Set<Option> getOptions()
-	{
-		actualise();
-		return super.getOptions();
-	}
-
 	private void add(int index, T element)
 	{
 		Option option = action.getOption(element);
@@ -148,15 +144,14 @@ public class List<T> extends Menu
 		if (liste == null)
 			throw new NoListModelDefinedException(this);
 		clearOptions();
-		boolean wasLocked = isLocked();
-		if (wasLocked) unlock();
+		boolean wasLocked = unlock();
 		for (int i = 0 ; i < liste.size() ; i++)
 			add(i, liste.get(i));
 		if (optionQuit != null)
 			super.add(optionQuit);
 		if (optionBack!= null)
 			super.add(optionBack);
-		if (wasLocked) lock();
+		setLocked(wasLocked);
 		return liste.size();
 	}
 	
@@ -170,12 +165,18 @@ public class List<T> extends Menu
 			System.out.println(renderer.empty());
 		else
 		{
-			DepthFirstSearch.findCycle(this);
-			unlock();
+			DepthFirstSearch.dephtFirstSearch(this);
 			setRenderers(new MenuDefaultRenderer());
-			lock();
 			super.run();
 		}
+	}
+	
+	@Override
+	protected void setRenderers(MenuRenderer menuRenderer)
+	{
+		boolean wasLocked = unlock();
+		super.setRenderers(menuRenderer);
+		setLocked(wasLocked);
 	}
 	
 	/**
@@ -205,8 +206,8 @@ public class List<T> extends Menu
 		@Override
 		public String toString()
 		{
-			return "Il est interdit d'ajouter manuellement une option (" + option.getTitle() +
-					") dans une liste (" + list.getTitle() + ").";
+			return "It is forbidden to manually add and option (ie. : " + option.getTitle() +
+					") in a list (ie. : " + list.getTitle() + ").";
 		}
 	}
 

@@ -1,6 +1,6 @@
 /*
-TODO traduire en anglais
-TODO permettre de personaliser l'affichage
+TODO traduire le code en anglais
+TODO traduire la documentation en anglais
 TODO noms de menus dynamiques
 TODO tests unitaires
 */

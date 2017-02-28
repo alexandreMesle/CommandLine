@@ -32,7 +32,7 @@ public class MenuDefaultRenderer implements MenuRenderer
 	@Override
 	public String betweenMenus()
 	{
-		return "---------------------------";
+		return "\n---------------------------\n---------------------------\n";
 	}
 
 	@Override
@@ -44,7 +44,7 @@ public class MenuDefaultRenderer implements MenuRenderer
 	@Override
 	public String invalidInput(String input)
 	{
-		return "The option " + input + " is not available.\n";
+		return "The shortcut \"" + input + "\" is not available.\n";
 	}
 
 }
