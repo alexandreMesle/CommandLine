@@ -45,7 +45,7 @@ public class Option
 	 * Modifie le raccourci permettant de sélectioner cette option.
 	 */
 	
-	void setShortcut(String shortcut)
+	protected void setShortcut(String shortcut)
 	{
 		this.shortcut = shortcut;
 	}
@@ -71,12 +71,12 @@ public class Option
 	}
 	
 	/**
-	 * Retourne l'action associé à la sélection de l'option.
+	 * Retourne l'action associée à la sélection de l'option.
 	 * @return l'objet dont la méthode optionSelectionnee() sera 
 	 * appelé une fois une option choisie.
 	 */
 	
-	public Action getAction()
+	protected Action getAction()
 	{
 		return action;
 	}
@@ -98,19 +98,18 @@ public class Option
 		return locked;
 	}
 	
-
 	protected boolean isLocked()
 	{
 		return locked;
 	}
 	
-	void optionSelected()
+	protected void optionSelected()
 	{
 		if (action != null)
 			action.optionSelectionnee();
 	}
 	
-	public String stringOfOption()
+	protected String stringOfOption()
 	{
 		return menuRenderer.option(getShorcut(), getTitle());
 	}

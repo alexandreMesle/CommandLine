@@ -1,4 +1,4 @@
-package commandLineMenus.depthFirstSearch;
+package commandLineMenus;
 
 import java.util.HashSet;
 import java.util.LinkedList;

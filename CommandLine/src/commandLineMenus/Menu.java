@@ -1,6 +1,7 @@
 package commandLineMenus;
 
 import java.io.IOException;
+
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.LinkedList;
@@ -9,7 +10,6 @@ import java.util.Map;
 import java.util.Set;
 import java.util.TreeMap;
 
-import commandLineMenus.depthFirstSearch.*;
 import commandLineMenus.rendering.examples.*;
 import commandLineMenus.rendering.*;
 import commandLineMenus.util.InOut;
@@ -173,6 +173,7 @@ public class Menu extends Option
 		DepthFirstSearch.dephtFirstSearch(this);
 		if (isLocked())
 			throw new ConcurrentExecutionException();
+		//TODO inclure les setRenderers() dans le DFS
 		setRenderers(new MenuDefaultRenderer());
 		lock();
 		run();
@@ -202,13 +203,13 @@ public class Menu extends Option
 	}
 
 	@Override
-	void optionSelected()
+	protected void optionSelected()
 	{
 		this.run();
 	}
 	
 	@Override
-	public String stringOfOption()
+	protected String stringOfOption()
 	{
 		if (shortTitle != null)
 			return menuRenderer.option(shortcut, shortTitle);

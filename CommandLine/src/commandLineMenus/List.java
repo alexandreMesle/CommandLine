@@ -1,9 +1,5 @@
 package commandLineMenus;
 
-import java.nio.file.WatchService;
-import java.util.Set;
-
-import commandLineMenus.depthFirstSearch.DepthFirstSearch;
 import commandLineMenus.rendering.*;
 import commandLineMenus.rendering.examples.ListItemDefaultRenderer;
 import commandLineMenus.rendering.examples.MenuDefaultRenderer;
@@ -70,21 +66,21 @@ public class List<T> extends Menu
 	 * @param action L'objet dont la fonction elementSelectionne() va être appelé.
 	 */
 	
-	public void setAction(ListAction<T> action)
-	{
-		if (isLocked())
-			throw new ConcurrentModificationException("Impossible to change list action \""
-					+ getTitle() + "\" while running.");
-		this.action = action;
-	}
-	
-	public void setModel(ListModel<T> model)
-	{
-		if (isLocked())
-			throw new ConcurrentModificationException("Impossible to change list model \""
-					+ getTitle() + "\" while running.");
-		this.model = model;
-	}	
+//	public void setAction(ListAction<T> action)
+//	{
+//		if (isLocked())
+//			throw new ConcurrentModificationException("Impossible to change list action \""
+//					+ getTitle() + "\" while running.");
+//		this.action = action;
+//	}
+//	
+//	public void setModel(ListModel<T> model)
+//	{
+//		if (isLocked())
+//			throw new ConcurrentModificationException("Impossible to change list model \""
+//					+ getTitle() + "\" while running.");
+//		this.model = model;
+//	}	
 	
 	
 	private void selectedItem(int indice, T element)
