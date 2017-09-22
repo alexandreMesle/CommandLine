@@ -1,70 +1,92 @@
 package commandLineMenus;
 
 import java.util.HashSet;
-import java.util.LinkedList;
 import java.util.Set;
-
-import commandLineMenus.*;
+import java.util.Stack;
 
 class DepthFirstSearch
 {
-	private static void checkEmptyMenu(Menu menu)
+	private static interface Visitor
 	{
-		if (!(menu instanceof List<?>) && menu.size() == 0)
-			throw menu.new EmptyMenuException();	
+		public void visit(Menu node);
 	}
 	
-	private static LinkedList<Menu> checkCycle(Set<Option> enCours, Menu menu)
-	{
-		if (enCours.contains(menu))
-		{
-			LinkedList<Menu> cycle = new LinkedList<>();
-			cycle.add(menu);
-			return cycle;
-		}
-		return null;
-	}
+	private	Stack<Option> stack = new Stack<Option>();
+	private	Set<Option> hashStack = new HashSet<Option>();
+	private Set<Visitor> visitors = new HashSet<>();
 	
-	private static void updateCycle(LinkedList<Menu> cycle, Menu menu)
+	public DepthFirstSearch(Menu root)
 	{
-		if (cycle != null 
-				&& (cycle.size() == 1 || cycle.getLast() != cycle.getFirst()))
-			cycle.addFirst(menu);
+		initVisitors();
+		depthFirstSearch(root);
+	}	
 
-	}
-	
-	private static LinkedList<Menu> depthFirstSearch(Set<Option> enCours, Set<Option> options)
+	private void depthFirstSearch(Set<Option> options)
 	{
 		for(Option option : options)
 			if (option instanceof Menu)
-			{
-				LinkedList<Menu> cycle = depthFirstSearch(enCours, (Menu)option);
-				if (cycle != null)
-					return cycle;
-			}
-		return null;
+				depthFirstSearch((Menu)option);
 	}
 	
-	private static LinkedList<Menu> depthFirstSearch(Set<Option> enCours, Menu menu)
+	private void depthFirstSearch(Menu menu)
 	{
-		LinkedList<Menu> cycle = checkCycle(enCours, menu);
-		if (cycle != null)
-			return cycle;
-		enCours.add(menu);
+		visit(menu);
+		push(menu);
+		depthFirstSearch(menu.getOptions());
+		pop(menu);
+	}	
+
+	private void initVisitors()
+	{
+		visitors.add(checkEmptyMenu());
+		visitors.add(checkCycle());
+	}
+
+	private void visit(Menu node)
+	{
+		for (Visitor visitor : visitors)
+			visitor.visit(node);		
+	}
+	
+	private Visitor checkEmptyMenu()
+	{
+		return (node) -> 
 		{
-			checkEmptyMenu(menu);
-			cycle = depthFirstSearch(enCours, menu.getOptions());
-			updateCycle(cycle, menu);
-		}
-		enCours.remove(menu);
-		return cycle;
+			if (!(node instanceof List<?>) && node.size() == 0)
+				throw node.new EmptyMenuException();	
+		};
 	}
 	
-	public static void dephtFirstSearch(Menu menu)
+	private Visitor checkCycle()
 	{
-		Set<Option> enCours = new HashSet<Option>();
-		LinkedList<Menu> cycle = depthFirstSearch(enCours, menu);
-		if (cycle != null)
-			throw new Menu.CycleDetectedException(cycle);
+		return (node) ->
+		{
+			if (isInStack(node))
+				throw new Menu.CycleDetectedException(subList(node));
+		};
+	}
+	
+	
+	private boolean isInStack(Menu node)
+	{
+		return hashStack.contains(node);
+	}
+	
+	private java.util.List<Option> subList(Menu node)
+	{
+		stack.push(node);		
+		return stack.subList(stack.indexOf(node), stack.size());
+	}
+
+	private void push(Menu node)
+	{
+		stack.push(node);
+		hashStack.add(node);
+	}
+	
+	private void pop(Menu node)
+	{
+		stack.pop();
+		hashStack.remove(node);
 	}
 }

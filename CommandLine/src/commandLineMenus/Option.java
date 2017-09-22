@@ -1,6 +1,8 @@
 package commandLineMenus;
 
+import commandLineMenus.interfaces.Action;
 import commandLineMenus.rendering.MenuRenderer;
+import commandLineMenus.rendering.examples.MenuDefaultRenderer;
 
 /**
  * Option figurant dans un menu.
@@ -12,7 +14,7 @@ public class Option
 	protected String shortcut;
 	private String title;
 	protected Action action;
-	MenuRenderer menuRenderer = null;
+	protected MenuRenderer menuRenderer = new MenuDefaultRenderer();
 	
 	public Option(String title, String shortcut, Action action)
 	{

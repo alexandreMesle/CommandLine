@@ -3,6 +3,8 @@ package commandLineMenus.examples;
 import java.util.ArrayList;
 
 import commandLineMenus.*;
+import commandLineMenus.interfaces.ListAction;
+import commandLineMenus.interfaces.ListModel;
 
 public class Lists
 {
@@ -21,22 +23,14 @@ public class Lists
 				public java.util.List<String> getList()
 				{
 					return personnes;
-				}
-	
+				}	
 			},
 			new ListAction<String>()
 			{
 				// Exécutée automatiquement lorsqu'un élément de liste est sélectionné
 				public void selectedItem(int indice, String element)
 				{
-					System.out.println("Vous avez sélectionné "+ element+ ", qui a l'indice " + indice);
-				}
-	
-				// Retourne l'option que l'on souhaite créer, null si l'on préfère que l'option soit 
-				// crée automatiquement
-				public Menu getOption(final String element)
-				{
-					return null;
+					System.out.println("Vous avez sélectionné " + element + ", qui a l'indice " + indice);
 				}
 			});
 		// Ajoute une option quitter à la fin de la liste

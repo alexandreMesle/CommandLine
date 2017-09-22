@@ -1,4 +1,4 @@
-package tests;
+package commandLineMenus.tests;
 
 import static org.junit.Assert.*;
 
@@ -8,6 +8,7 @@ import org.junit.Test;
 
 import commandLineMenus.Menu;
 import commandLineMenus.Menu.CycleDetectedException;
+import commandLineMenus.Menu.EmptyMenuException;
 import commandLineMenus.Option;
 
 public class TestMenus
@@ -52,13 +53,26 @@ public class TestMenus
 		}
 		catch(CycleDetectedException c)		
 		{
-			List<Menu> cycle = c.getCycleDetected();
+			List<Option> cycle = c.getCycleDetected();
 			assertTrue(cycle.get(0) == racine);
 			assertTrue(cycle.get(1) == feuille);
 			assertTrue(cycle.get(2) == racine);
 		}
-		
 	}
-	
+
+	@Test
+	public void checkEmptyMnu()
+	{
+		Menu racine = new Menu("racine", "r");
+		try
+		{
+			racine.start();
+			assertTrue("An exception should have occurred !", false);
+		}
+		catch(EmptyMenuException e)		
+		{
+			assertEquals(e.getMenu(), racine);
+		}
+	}
 	
 }

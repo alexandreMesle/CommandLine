@@ -3,10 +3,11 @@ package commandLineMenus.examples;
 import java.util.ArrayList;
 
 import commandLineMenus.*;
-import commandLineMenus.interfaces.ListAction;
+import commandLineMenus.interfaces.Action;
 import commandLineMenus.interfaces.ListModel;
+import commandLineMenus.interfaces.ListOption;
 
-public class ListActions
+public class ListOptions
 {
 	public static void main(String[] args)
 	{
@@ -23,7 +24,7 @@ public class ListActions
 	{
 		List<String> liste = new List<>("Select someone to display his name",
 				getListModelPersonnes(people),
-				getActionListePersonnes());
+				getOptionListePersonnes());
 		liste.setAutoBack(false);
 		liste.addQuit("q");
 		return liste;
@@ -42,14 +43,22 @@ public class ListActions
 		};
 	}
 	
-	private static ListAction<String> getActionListePersonnes()
+	private static ListOption<String> getOptionListePersonnes()
 	{
-		return new ListAction<String>()
+		return new ListOption<String>()
 		{
-			// Vide, car on souhaite créer manuellement chaque option.
-			public void selectedItem(int indice, String personne)
+			// Retourne l'option associée à element.
+			public Option getOption(final String personne)
 			{
-				System.out.println(personne);
+				// Crée une option, le raccourci est laissé null car il sera écrasé par l'indice
+				return new Option("Display " + personne, null, new Action()
+				{
+					// Action exécutée si l'option est sélectionnée.
+					public void optionSelectionnee()
+					{
+						System.out.println(personne);
+					}
+				});
 			}
 		};
 	}

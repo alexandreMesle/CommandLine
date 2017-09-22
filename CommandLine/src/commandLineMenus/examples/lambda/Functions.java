@@ -1,7 +1,6 @@
-package commandLineMenus.examples;
+package commandLineMenus.examples.lambda;
 
 import commandLineMenus.*;
-import commandLineMenus.interfaces.Action;
 
 public class Functions
 {
@@ -15,37 +14,19 @@ public class Functions
 
 	static Option getOptionCalculatrice()
 	{
-		Option calculatrice = new Option("Calculatrice", "c", getActionCalculatrice());
+		Option calculatrice = new Option("Calculatrice", "c", 
+			() -> 
+			{
+				int a = commandLineMenus.util.InOut.getInt("Saisissez la première opérande : "),
+					b = commandLineMenus.util.InOut.getInt("Saisissez la deuxième opérande : ");
+					System.out.println("" + a + " + " + b + " = " + (a+b));
+			});
 		return calculatrice;
 	}
 
-	static Action getActionCalculatrice()
-	{
-		return new Action()
-		{
-			public void optionSelectionnee()
-			{
-				int a = commandLineMenus.util.InOut.getInt("Saisissez la première opérande : "),
-						b = commandLineMenus.util.InOut.getInt("Saisissez la deuxième opérande : ");
-				System.out.println("" + a + " + " + b + " = " + (a+b));
-			}
-		};
-	}
-	
-	static Action getActionDireBonjour()
-	{
-		return new Action()
-		{
-			public void optionSelectionnee()
-			{
-				System.out.println("Bonjour !");
-			}
-		};
-	}
-	
 	static Option getOptionDireBonjour()
 	{
-		return new Option("Dire bonjour", "b", getActionDireBonjour());
+		return new Option("Dire bonjour", "b", () -> System.out.println("Bonjour !"));
 	}
 	
 	static Menu getMenuDireBonjour()

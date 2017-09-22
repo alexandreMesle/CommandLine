@@ -32,7 +32,7 @@ public class MenuDefaultRenderer implements MenuRenderer
 	@Override
 	public String betweenMenus()
 	{
-		return "\n---------------------------\n---------------------------\n";
+		return "\n---------------------------\n";
 	}
 
 	@Override

@@ -1,4 +1,4 @@
-package commandLineMenus;
+package commandLineMenus.interfaces;
 
 import java.util.List;
 

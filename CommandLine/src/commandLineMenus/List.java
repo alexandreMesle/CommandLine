@@ -1,5 +1,9 @@
 package commandLineMenus;
 
+import commandLineMenus.interfaces.Action;
+import commandLineMenus.interfaces.ListAction;
+import commandLineMenus.interfaces.ListModel;
+import commandLineMenus.interfaces.ListOption;
 import commandLineMenus.rendering.*;
 import commandLineMenus.rendering.examples.ListItemDefaultRenderer;
 import commandLineMenus.rendering.examples.MenuDefaultRenderer;
@@ -16,10 +20,19 @@ import commandLineMenus.rendering.examples.MenuDefaultRenderer;
 
 public class List<T> extends Menu
 {
-	private ListAction<T> action;
-	private ListItemRenderer<T> renderer = null;
+	private ListAction<T> listAction = null;
+	private ListOption<T> listOption = null;
 	private ListModel<T> model = null;
 	private Option optionQuit = null, optionBack = null;
+	private ListItemRenderer<T> renderer;
+	
+	private List(String titre, ListModel<T> model)
+	{
+		super(titre);
+		this.model = model;
+		setAutoBack(true);
+		setListItemRenderer(new ListItemDefaultRenderer<>());
+	}
 	
 	/**
 	 * Créée une liste.
@@ -29,11 +42,20 @@ public class List<T> extends Menu
 	
 	public List(String titre, ListModel<T> model, ListAction<T> action)
 	{
-		super(titre);
-		this.model = model;
-		this.action = action;
-		setAutoBack(true);
-		setListItemRenderer(new ListItemDefaultRenderer<>());
+		this(titre, model);
+		this.listAction = action;
+	}
+	
+	/**
+	 * Créée une liste.
+	 * @param titre intitulé affiché au dessus-de la liste.
+	 * @param action l'objet permettant de gérer la liste.
+	 */
+	
+	public List(String titre, ListModel<T> model, ListOption<T> option)
+	{
+		this(titre, model);
+		this.listOption = option;
 	}
 	
 	/**
@@ -46,6 +68,19 @@ public class List<T> extends Menu
 	public List(String titre, String raccourci, ListModel<T> model, ListAction<T> action)
 	{
 		this(titre, model, action);
+		this.shortcut = raccourci;
+	}
+	
+	/**
+	 * Créée une liste.
+	 * @param titre intitulé affiché au dessus-de la liste.
+	 * @param action l'objet permettant de gérer la liste.
+	 * @param raccourci raccourci utilisé dans le cas où cette liste est utilisé comme option dans un menu.
+	 */
+	
+	public List(String titre, String raccourci, ListModel<T> model, ListOption<T> option)
+	{
+		this(titre, model, option);
 		this.shortcut = raccourci;
 	}
 	
@@ -63,7 +98,7 @@ public class List<T> extends Menu
 
 	/**
 	 * Détermine la fonction à appeler quand un élément est sélectionné.
-	 * @param action L'objet dont la fonction elementSelectionne() va être appelé.
+	 * @param listAction L'objet dont la fonction elementSelectionne() va être appelé.
 	 */
 	
 //	public void setAction(ListAction<T> action)
@@ -85,25 +120,39 @@ public class List<T> extends Menu
 	
 	private void selectedItem(int indice, T element)
 	{
-		Option option = action.getOption(element);
-		if (option != null)
+		if (listOption != null)
 			super.optionSelected();
-		else
-			action.selectedItem(indice, element);
+		if (listAction != null)
+			listAction.selectedItem(indice, element);
+//		Option option = listAction.getOption(element);
+//		if (option != null)
+//			super.optionSelected();
+//		else
+//			listAction.selectedItem(indice, element);
 	}
 	
 	private void add(int index, T element)
 	{
-		Option option = action.getOption(element);
-		if (option == null)
+		if (listAction != null)
 			super.add(new Option(renderer.title(index, element), 
 					renderer.shortcut(index, element),
 					getAction(index, element))) ;
-		else
+		if (listOption != null)
 		{
+			Option option = listOption.getOption(element);
 			option.setShortcut(renderer.shortcut(index, element));
 			super.add(option);
 		}
+//		Option option = listAction.getOption(element);
+//		if (option == null)
+//			super.add(new Option(renderer.title(index, element), 
+//					renderer.shortcut(index, element),
+//					getAction(index, element))) ;
+//		else
+//		{
+//			option.setShortcut(renderer.shortcut(index, element));
+//			super.add(option);
+//		
 	}
 	
 	/**
@@ -151,17 +200,22 @@ public class List<T> extends Menu
 		return liste.size();
 	}
 	
+	private boolean xor(boolean a, boolean b)
+	{
+		return (a && !b) || (!a && b);
+	}
+	
 	@Override
 	protected void run()
 	{
-		if (action == null)
+		if (!xor(listAction == null, listOption == null))
 			throw new NoListActionDefinedException(this);
 		int nbOptions = actualise();
 		if (nbOptions == 0)
 			System.out.println(renderer.empty());
 		else
 		{
-			DepthFirstSearch.dephtFirstSearch(this);
+			new DepthFirstSearch(this);
 			setRenderers(new MenuDefaultRenderer());
 			super.run();
 		}
@@ -202,7 +256,7 @@ public class List<T> extends Menu
 		@Override
 		public String toString()
 		{
-			return "It is forbidden to manually add and option (ie. : " + option.getTitle() +
+			return "It is forbidden to manually add an option (ie. : " + option.getTitle() +
 					") in a list (ie. : " + list.getTitle() + ").";
 		}
 	}

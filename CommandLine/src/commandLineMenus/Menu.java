@@ -13,6 +13,7 @@ import java.util.Set;
 import java.util.TreeMap;
 
 import commandLineMenus.rendering.examples.*;
+import commandLineMenus.interfaces.Action;
 import commandLineMenus.rendering.*;
 import commandLineMenus.util.InOut;
 
@@ -149,7 +150,7 @@ public class Menu extends Option
 		this.autoBack = autoBack;
 	}
 	
-	protected String getOption()
+	protected String inputOption()
 	{
 		System.out.print(this.toString());
 		while(true)
@@ -172,7 +173,8 @@ public class Menu extends Option
 	
 	public void start()
 	{
-		DepthFirstSearch.dephtFirstSearch(this);
+//		System.out.println(this);
+		new DepthFirstSearch(this);
 		if (isLocked())
 			throw new ConcurrentExecutionException();
 		//TODO inclure les setRenderers() dans le DFS
@@ -194,7 +196,7 @@ public class Menu extends Option
 				System.out.println(menuRenderer.betweenMenus());
 			else
 				between = true;
-			String get = getOption();
+			String get = inputOption();
 			option = optionsMap.get(get);
 			if (option != null)
 				option.optionSelected();
@@ -292,6 +294,11 @@ public class Menu extends Option
 	{
 		private static final long serialVersionUID = 3617589300605854823L;
 
+		public Menu getMenu()
+		{
+			return Menu.this;
+		}
+		
 		public EmptyMenuException() 
 		{
 			super("Impossible to launch the empty menu \"" + getTitle() + "\".");
@@ -313,25 +320,31 @@ public class Menu extends Option
 	{
 		private static final long serialVersionUID = -2884917321791851520L;
 
-		private LinkedList<Menu> cycleDetected;
+		private List<Option> cycleDetected;
 		
-		public CycleDetectedException(LinkedList<Menu> cycleDetected)
+		public CycleDetectedException(List<Option> cycleDetected)
 		{
 			super("A directed cycle has been detected in the menu tree :\n" 
 					+ stringOfCycle(cycleDetected));
 			this.cycleDetected = cycleDetected;
 		}
 		
-		public List<Menu> getCycleDetected()
+		public List<Option> getCycleDetected()
 		{
 			return Collections.unmodifiableList(cycleDetected);
 		}
 		
-		static private String stringOfCycle(List<Menu> list)
+		@Override
+		public String toString()
 		{
-			String res = "";
+			return stringOfCycle(cycleDetected);
+		}
+		
+		static private String stringOfCycle(List<Option> list)
+		{
+			String res = "[";
 			boolean first = true;
-			for (Menu menu : list)
+			for (Option menu : list)
 			{
 				if (!first)
 					res += " -> ";
@@ -339,7 +352,7 @@ public class Menu extends Option
 					first = false;
 				res += menu.getTitle();
 			}
-			return res;
+			return res + "]";
 		}
 	}
 }

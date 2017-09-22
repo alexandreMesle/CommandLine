@@ -1,4 +1,4 @@
-package commandLineMenus;
+package commandLineMenus.interfaces;
 
 /**
  * Permet d'affecter des actions au choix d'un élément dans un menu.
