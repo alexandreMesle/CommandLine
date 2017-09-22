@@ -3,6 +3,8 @@ package commandLineMenus;
 import java.io.IOException;
 
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
 import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
@@ -311,10 +313,18 @@ public class Menu extends Option
 	{
 		private static final long serialVersionUID = -2884917321791851520L;
 
+		private LinkedList<Menu> cycleDetected;
+		
 		public CycleDetectedException(LinkedList<Menu> cycleDetected)
 		{
 			super("A directed cycle has been detected in the menu tree :\n" 
 					+ stringOfCycle(cycleDetected));
+			this.cycleDetected = cycleDetected;
+		}
+		
+		public List<Menu> getCycleDetected()
+		{
+			return Collections.unmodifiableList(cycleDetected);
 		}
 		
 		static private String stringOfCycle(List<Menu> list)

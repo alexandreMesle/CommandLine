@@ -6,7 +6,7 @@ import java.util.Set;
 
 import commandLineMenus.*;
 
-public class DepthFirstSearch
+class DepthFirstSearch
 {
 	private static void checkEmptyMenu(Menu menu)
 	{
