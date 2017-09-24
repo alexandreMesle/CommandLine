@@ -108,7 +108,7 @@ public class Option
 	protected void optionSelected()
 	{
 		if (action != null)
-			action.optionSelectionnee();
+			action.optionSelected();
 		else
 			throw this.new NoActionDefinedException();
 	}

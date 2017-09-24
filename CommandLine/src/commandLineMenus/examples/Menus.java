@@ -23,7 +23,7 @@ class Menus
 		calculatrice.setAction(new Action()
 		{
 			// Méthode exécutée lorsque l'option calculatrice est sélectionnée.
-			public void optionSelectionnee()
+			public void optionSelected()
 			{
 				int a = InOut.getInt("Saisissez la première opérande : "),
 						b = InOut.getInt("Saisissez la deuxième opérande : ");
@@ -33,7 +33,7 @@ class Menus
 		// Il est possible de passer l'action en paramètre directement dans le constructeur.
 		direBonjour.add(new Option("Dire bonjour", "b", new Action()
 		{
-			public void optionSelectionnee()
+			public void optionSelected()
 			{
 				System.out.println("Bonjour !");
 			}

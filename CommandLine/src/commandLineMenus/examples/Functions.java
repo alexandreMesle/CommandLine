@@ -24,7 +24,7 @@ public class Functions
 	{
 		return new Action()
 		{
-			public void optionSelectionnee()
+			public void optionSelected()
 			{
 				int a = InOut.getInt("Saisissez la première opérande : "),
 						b = InOut.getInt("Saisissez la deuxième opérande : ");
@@ -37,7 +37,7 @@ public class Functions
 	{
 		return new Action()
 		{
-			public void optionSelectionnee()
+			public void optionSelected()
 			{
 				System.out.println("Bonjour !");
 			}

@@ -13,7 +13,7 @@ public interface Action
 	public static final Action QUIT = new Action()
 	{
 		@Override 
-		public void optionSelectionnee()
+		public void optionSelected()
 		{
 			System.exit(0);
 		}
@@ -26,12 +26,12 @@ public interface Action
 	public static final Action BACK = new Action()
 	{
 		@Override 
-		public void optionSelectionnee(){}
+		public void optionSelected(){}
 	};
 
 	/**
 	 * Fonction automatiquement exécutée quand une option est sélectionnée.
 	 */
 	
-	public void optionSelectionnee();
+	public void optionSelected();
 }

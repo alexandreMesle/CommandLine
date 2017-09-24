@@ -8,29 +8,27 @@ class Hello
 {
 	public static void main(String[] args)
 	{
-		// Création d'un menu dont le titre est "Menu Bonjour"
-		Menu menu = new Menu("Menu bonjour");
-		// Création d'une option de menu dont le titre est "Dire bonjour"
-		// et dont le raccourci clavier est "b"
-		Option direBonjour = new Option("Dire Bonjour", "b");
-		// Ajout de l'option au menu
-		menu.add(direBonjour);
-		// Ajout d'une option permettant de quitter l'application
+		// Creates a menu with the title Hello
+		Menu menu = new Menu("Hello Menu");
+		// Creates an option with the title "Say Hello", the shorcut to select it is "h"
+		Option sayHelloOption = new Option("Say Hello", "h");
+		// Adds the option sayHello to the menu.
+		menu.add(sayHelloOption);
+		// Adds the option allowing to close the menu.
 		menu.addQuit("q");
-		// Spécifation de l'action à effectuer lorsqu'une option est sélectionée
-		Action action = new Action()
+		// Creates an action that will be binded to the sayHello option. 
+		Action sayHelloAction = new Action()
 		{
-			// Méthode appelée automatiquement lorsqu'une option 
-			// est sélectionnée
+			// optionSelected() is triggered each time the "sayHello" option is selected.
 			@Override
-			public void optionSelectionnee()
+			public void optionSelected()
 			{
-				System.out.println("Bonjour !");
+				System.out.println("Hello !");
 			}
 		};
-		// Affectation d'une action à l'option direBonjour
-		direBonjour.setAction(action);
-		// Lancement du menu
+		// Binds sayHelloAction to the option sayHelloOption 
+		sayHelloOption.setAction(sayHelloAction);
+		// Launches the menu
 		menu.start();
 	}
 }

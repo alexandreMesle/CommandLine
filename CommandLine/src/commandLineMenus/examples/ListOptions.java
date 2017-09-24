@@ -54,7 +54,7 @@ public class ListOptions
 				return new Option("Display " + personne, null, new Action()
 				{
 					// Action exécutée si l'option est sélectionnée.
-					public void optionSelectionnee()
+					public void optionSelected()
 					{
 						System.out.println(personne);
 					}

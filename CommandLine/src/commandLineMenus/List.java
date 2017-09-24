@@ -90,7 +90,7 @@ public class List<T> extends Menu
 		return new Action()
 		{
 			@Override
-			public void optionSelectionnee()
+			public void optionSelected()
 			{
 				selectedItem(indice, element);
 			}

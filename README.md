@@ -1,53 +1,61 @@
 # CommandLine
 
-Framework for building command-line user interfaces. Through menus and options, it allows developpers to quickly develop a back-end user intefarce.
+Framework for building command-line user interfaces. Through menus and options, it allows developpers to quickly develop a back-end user interface.
 
+# How to use it
+
+The framework organises the user dialog between menus and options. It allows the user to navigate through menus. 
+In each menu, the user choses an option, the selection of an option triggers an action.
 
 ## Menus and options
+
+In the following example, we show how to create a menu, and how to include an option in this menu.
  
 ```
-// Création d'un menu dont le titre est "Menu Bonjour"
-Menu menu = new Menu("Menu bonjour");
-// Création d'une option de menu dont le titre est "Dire bonjour"
-// et dont le raccourci clavier est "b"
-Option direBonjour = new Option("Dire Bonjour", "b");
-// Ajout de l'option au menu
-menu.ajoute(direBonjour);
-// Ajout d'une option permettant de quitter l'application
-menu.ajouteQuitter("q");
-// Spécifation de l'action à effectuer lorsqu'une option est sélectionée
-Action action = new Action()
+// Creates a menu with the title Hello
+Menu menu = new Menu("Hello Menu");
+// Creates an option with the title "Say Hello", the shorcut to select it is "h"
+Option sayHelloOption = new Option("Say Hello", "h");
+// Adds the option sayHello to the menu.
+menu.add(sayHelloOption);
+// Adds the option allowing to close the menu.
+menu.addQuit("q");
+// Creates an action that will be binded to the sayHello option. 
+Action sayHelloAction = new Action()
 {
-	// Méthode appelée automatiquement lorsqu'une option 
-	// est sélectionnée
-	public void optionSelectionnee()
+	// optionSelected() is triggered each time the "sayHello" option is selected.
+	@Override
+	public void optionSelected()
 	{
-		System.out.println("Bonjour !");
+		System.out.println("Hello !");
 	}
 };
-// Affectation d'une action à l'option direBonjour
-direBonjour.setAction(action);
-// Exécution du menu
+// Binds sayHelloAction to the option sayHelloOption 
+sayHelloOption.setAction(sayHelloAction);
+// Launches the menu
 menu.start();
 ```
   
-Le code ci-dessus affiche le menu suivant :
+The previous code displays the following menu.
   
 ```
-Menu bonjour
-b : Dire Bonjour
-q : Quitter
+Hello Menu
+
+h : Say Hello
+q : Exit
+
+Select an option : 
 ```
 
-La saisie du raccourci "b" active l'option "Dire bonjour", et la saisie 
-de "q" ferme l'application. Dans le cas où l'option "Dire bonjour" est 
-sélectionnée, la méthode optionSelectionnee() reliée à cette option 
-est exécutée.
+Inputing the shorcut "h" selects the option "Say Hello", and then inputing "q" closes the application.
+You can notice that selecting the option "Say Hello" automatically triggers the method 'optionSelected()'. 
+
+## Nesting menus
 
 Vous avez aussi la possibilité d'imbriquer un menu dans un menu, 
 comme dans l'exemple ci-dessous :
 
- <PRE class="prettyprint">
+```
 // Création du menu racine de l'application.
 Menu menuPrincipal = new Menu("Menu Principal");
 // Création de deux options
@@ -83,11 +91,11 @@ direBonjour.ajouteRevenir("r");;
 direBonjour.setRetourAuto(true);
 // Lancement du menu
 menuPrincipal.start();
-</PRE>
+```
 
 Voici un exemple d'exécution du programme :
 
-<PRE>
+```
 Menu Principal
 c : Calculatrice
 b : Bonjour
@@ -111,12 +119,14 @@ c : Calculatrice
 b : Menu bonjour
 q : Quitter
 q
-</PRE>
+```
+
+## Lists
 
 La librarie permet aussi de créer automatiquement un menu en utilisant une 
 liste :
 
- <PRE class="prettyprint">
+```
 // Création d'une liste contenant les trois chaînes "Ginette", "Marcel" et "Gisèle"
 final ArrayList&lt;String&gt; personnes = new ArrayList<>();
 personnes.add("Ginette");
@@ -150,26 +160,28 @@ Liste&lt;String&gt; menu = new Liste&lt;String&gt;("Liste des Personnes",
 menu.ajouteQuitter("q");
 // Lancement du menu
 menu.start();
-</PRE>
+```
 
 Voici un exemple d'exécution : 
 
-<PRE>
+```
 1 : Ginette
 2 : Marcel
 3 : Gisèle
 q : Quitter
 2
 Vous avez sélectionné Marcel, qui a l'indice 1
-</PRE>
+```
 
 (Attention, dans java.util.List les indices commencent à 0. Mais ils sont 
 affichés en partant de l'indice 1.
 
+## Code organisation
+
 Il est conseillé, pour clarifier le code, de répartir les 
 instructions dans des fonctions de la façon suivante :
 
- <PRE class="prettyprint">
+```
 static Menu getMenuPrincipal()
 {
 	Menu menuPrincipal = new Menu("Menu Principal");
@@ -227,12 +239,13 @@ public static void main(String[] args)
 	Menu menu = getMenuPrincipal();
 	menu.start();
 }
+```
 
-</PRE>
+## Nesting options in lists
 
 Vous avez aussi la possibilité d'inclure des options dans des listes.
 
-<PRE class="prettyprint">
+```
 public static void main(String[] args)
 {
 	List<String> personnes = new ArrayList<>();
@@ -278,4 +291,8 @@ private static ActionListe<String> getActionListePersonnes(final List<String> pe
 		}
 	};
 }
- 
+```
+
+## Lambda expressions
+
+It is strongly advised to use lambda expressions. 
