@@ -2,7 +2,23 @@
 
 Framework for building command-line user interfaces. Through menus and options, it allows developers to quickly set up a back-end user interface.
 
-# How to use it
+## Why ?
+
+We all know that setting up a dialogue between the user and the machine can ba a pain in the knee. Checking all the inputs, setting up a tree of menus is something most programmers can do, but it is a great loss of time since a lot of copy and paste operations are required.
+
+This package is made to gain a lot of time. You can build command line menus, set up the navigation between them, bind operations to options, and the framework will manage the navigation, the input/output operations, the error handling, and so on. It is highly customizable, supplied with a lot of examples, and it helps you organize your code a way that makes maintenance easy.
+
+## Range
+
+It is a good idea to use this framework if you want to very quickly develop a minimalist command-line user interface. Especially if you need a backend at a minimal cost.
+
+But it would be a very bad idea to provide a command-line front end for a standard user. In this case, I recommand you to use a javaFX or J2EE user interface.
+
+## Documentation
+
+I advise you to read the following quick start. After that, feel free to look at the javadoc.
+
+# Quick start
 
 The framework organizes the user dialog between menus and options. It allows the user to navigate through menus. 
 In each menu, the user chooses an option, the selection of an option triggers an action.
@@ -78,7 +94,8 @@ Menu sayHelloMenu = new Menu("Say Hello Sub-Menu", "Hello", "h");
 rootMenu.add(calculatorOption);
 
 // Adds the sub-menu sayHelloMenu to the rootMenu
-// Please notice that since Menu extends Option, polymorphism allows us to pass the Menu sayHelloMenu where an Option was expected.
+// Please notice that since Menu extends Option
+// Polymorphism allows us to pass the Menu sayHelloMenu where an Option was expected.
 rootMenu.add(sayHelloMenu);
 
 // Adds the quit option
@@ -109,7 +126,8 @@ sayHelloMenu.add(
 // Adds an option to go back to the rootMenu
 sayHelloMenu.addBack("r");
 
-// Once an option has been selected in sayHelloMenu, and the associated action is done, we will automatically go back to the rootMenu. 
+// Once an option has been selected in sayHelloMenu, and the associated action is done, 
+// we will automatically go back to the rootMenu. 
 sayHelloMenu.setAutoBack(true);
 
 rootMenu.start();
@@ -166,8 +184,7 @@ q
 
 ## Lists
 
-La librarie permet aussi de créer automatiquement un menu en utilisant une 
-liste :
+One can also populate a menu with items from a list. It is then possible to display in a list items extracted from a database, and to ask the user to select one.
 
 ```
 // Creates a list containing "Ginette", "Marcel" et "Gisèle"
@@ -179,7 +196,7 @@ people.add("Gisèle");
 // Creates a menu with an option for each people in the list
 List<String> menu = new List<String>("People list", 
 	new ListData<String>()		
-{
+	{
 		// Returns the data needed to refresh the list each time it is displayed. 
 		public java.util.List<String> getList()
 		{
@@ -198,7 +215,7 @@ menu.addQuit("q");
 menu.start();
 ```
 
-Voici un exemple d'exécution : 
+Here is an example
 
 ```
 1 : Ginette
@@ -206,16 +223,15 @@ Voici un exemple d'exécution :
 3 : Gisèle
 q : Quitter
 2
-Vous avez sélectionné Marcel, qui a l'indice 1
+You have selected Marcel, who has the  index 2
 ```
 
-(Attention, dans java.util.List les indices commencent à 0. Mais ils sont 
-affichés en partant de l'indice 1.
+The existence of a `getList()` seems confusing, but since the data can change while the application is running (for instance if you ask a user to select an item for deletion), it is required to refresh the list before displaying it.
+
+And achtung ! In java.util.List indexes start from 0, but in order not to confuse the user, the indexes displayed start from 1.
 
 ## Code organisation
 
-Il est conseillé, pour clarifier le code, de répartir les 
-instructions dans des fonctions de la façon suivante :
 
 ```
 static Menu getMenuPrincipal()
