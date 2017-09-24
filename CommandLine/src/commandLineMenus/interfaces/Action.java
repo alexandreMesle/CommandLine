@@ -1,5 +1,7 @@
 package commandLineMenus.interfaces;
 
+import commandLineMenus.Menu;
+
 /**
  * Permet d'affecter des actions au choix d'un élément dans un menu.
  */
@@ -13,10 +15,7 @@ public interface Action
 	public static final Action QUIT = new Action()
 	{
 		@Override 
-		public void optionSelected()
-		{
-			System.exit(0);
-		}
+		public void optionSelected(){Menu.quit();}
 	};
 	
 	/**

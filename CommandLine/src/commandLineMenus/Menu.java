@@ -27,6 +27,7 @@ public class Menu extends Option
 	private List<Option> optionsList = new ArrayList<>();
 	private boolean autoBack = false;
 	private String shortTitle;
+	private static boolean betweenMenus, exit;
 	
 	/**
 	 * Créée un menu.
@@ -165,6 +166,8 @@ public class Menu extends Option
 		//TODO inclure les setRenderers() dans le DFS
 		setRenderers(new MenuDefaultRenderer());
 		lock();
+		betweenMenus = false;
+		exit = false;
 		run();
 		unlock();
 	}
@@ -174,7 +177,6 @@ public class Menu extends Option
 		if (getOptions().size() == 0)
 			throw new EmptyMenuException();
 		Option option = null;
-		boolean betweenMenus = false;
 		do
 		{
 			if (betweenMenus)
@@ -188,9 +190,15 @@ public class Menu extends Option
 			else
 				menuRenderer.outputString(menuRenderer.invalidInput(get));
 		}
-		while(option == null || !autoBack && option.getAction() != Action.BACK);
+		while(keepOnRunning(option));
 	}
 
+	private boolean keepOnRunning(Option option)
+	{
+		return !exit && (option == null 
+				|| (!autoBack && option.getAction() != Action.BACK));
+	}
+	
 	@Override
 	protected void optionSelected()
 	{
@@ -339,5 +347,10 @@ public class Menu extends Option
 			}
 			return res + "]";
 		}
+	}
+	
+	public static void quit()
+	{
+		exit = true; 
 	}
 }

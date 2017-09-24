@@ -37,5 +37,8 @@ class Hello
 		
 		// Launches the menu
 		helloMenu.start();
+
+		// Must be printed once the menu has been left.
+		System.out.println("Good bye!");	
 	}
 }

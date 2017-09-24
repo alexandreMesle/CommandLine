@@ -41,6 +41,9 @@ sayHelloOption.setAction(sayHelloAction);
 
 // Launches the menu
 helloMenu.start();
+
+// Must be printed once the menu has been left.
+System.out.println("Good bye!");
 ```
   
 The previous code displays the following menu.
@@ -137,6 +140,9 @@ q : Exit
 
 Select an option : 
 h
+
+---------------------------
+
 Say Hello Sub-Menu
 
 h : Say Hello
@@ -164,38 +170,31 @@ La librarie permet aussi de créer automatiquement un menu en utilisant une
 liste :
 
 ```
-// Création d'une liste contenant les trois chaînes "Ginette", "Marcel" et "Gisèle"
-final ArrayList&lt;String&gt; personnes = new ArrayList<>();
-personnes.add("Ginette");
-personnes.add("Marcel");
-personnes.add("Gisèle");
-// Création d'un menu proposant une option par personne
-Liste&lt;String&gt; menu = new Liste&lt;String&gt;("Liste des Personnes", 
-	new ActionListe&lt;String&gt;()
-	{
-		// Retourne la liste des personnes formant le menu
-		public List&lt;String&gt; getListe()
-		{
-			return personnes;
-		}
+// Creates a list containing "Ginette", "Marcel" et "Gisèle"
+final ArrayList<String> people = new ArrayList<>();
+people.add("Ginette");
+people.add("Marcel");
+people.add("Gisèle");
 
-		// Exécutée automatiquement lorsqu'un élément de liste est sélectionné
-		public void elementSelectionne(int indice, String element)
+// Creates a menu with an option for each people in the list
+List<String> menu = new List<String>("People list", 
+	new ListData<String>()		
+{
+		// Returns the data needed to refresh the list each time it is displayed. 
+		public java.util.List<String> getList()
 		{
-			System.out.println("Vous avez sélectionné "+ element+ ", qui a l'indice " + indice);
-		}
-		
-		// Retourne l'option que l'on souhaite créer, null si l'on préfère que l'option soit 
-		// crée automatiquement.
-		public Option getOption(String element)
+			return people;
+		}	
+	},
+	new ListAction<String>()
+	{				
+		// Triggered each time an item is selected
+		public void itemSelected(int index, String someone)
 		{
-			return null;
+			System.out.println("You have selected " + someone + ", who has the index " + index);
 		}
-
 	});
-// Ajoute une option quitter à la fin de la liste
-menu.ajouteQuitter("q");
-// Lancement du menu
+menu.addQuit("q");
 menu.start();
 ```
 
