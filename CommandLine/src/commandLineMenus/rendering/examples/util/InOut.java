@@ -1,4 +1,4 @@
-package commandLineMenus.util;
+package commandLineMenus.rendering.examples.util;
 
 import java.io.BufferedReader;
 import java.io.IOException;

@@ -1,6 +1,7 @@
 package commandLineMenus.examples.lambda;
 
 import commandLineMenus.*;
+import commandLineMenus.rendering.examples.util.InOut;
 
 public class Functions
 {
@@ -17,8 +18,8 @@ public class Functions
 		Option calculatrice = new Option("Calculatrice", "c", 
 			() -> 
 			{
-				int a = commandLineMenus.util.InOut.getInt("Saisissez la première opérande : "),
-					b = commandLineMenus.util.InOut.getInt("Saisissez la deuxième opérande : ");
+				int a = InOut.getInt("Saisissez la première opérande : "),
+					b = InOut.getInt("Saisissez la deuxième opérande : ");
 					System.out.println("" + a + " + " + b + " = " + (a+b));
 			});
 		return calculatrice;

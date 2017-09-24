@@ -1,12 +1,9 @@
 package commandLineMenus;
 
-import java.io.IOException;
 
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Collections;
 import java.util.HashSet;
-import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -14,8 +11,7 @@ import java.util.TreeMap;
 
 import commandLineMenus.rendering.examples.*;
 import commandLineMenus.interfaces.Action;
-import commandLineMenus.rendering.*;
-import commandLineMenus.util.InOut;
+import commandLineMenus.interfaces.MenuRenderer;
 
 /**
  * Menu affiché en ligne de commande. En haut du menu est affiché le {@link titre}, 
@@ -152,18 +148,8 @@ public class Menu extends Option
 	
 	protected String inputOption()
 	{
-		System.out.print(this.toString());
-		while(true)
-		{
-			try
-			{
-				return InOut.getString();				
-			}
-			catch (IOException e) 
-			{
-				System.out.println(menuRenderer.invalidInput(""));
-			}
-		}
+		menuRenderer.outputString(this.toString());
+		return menuRenderer.inputString();
 	}
 	
 	/**
@@ -173,7 +159,6 @@ public class Menu extends Option
 	
 	public void start()
 	{
-//		System.out.println(this);
 		new DepthFirstSearch(this);
 		if (isLocked())
 			throw new ConcurrentExecutionException();
@@ -189,19 +174,19 @@ public class Menu extends Option
 		if (getOptions().size() == 0)
 			throw new EmptyMenuException();
 		Option option = null;
-		boolean between = false;
+		boolean betweenMenus = false;
 		do
 		{
-			if (between)
-				System.out.println(menuRenderer.betweenMenus());
+			if (betweenMenus)
+				menuRenderer.outputString((menuRenderer.betweenMenus()));
 			else
-				between = true;
+				betweenMenus = true;
 			String get = inputOption();
 			option = optionsMap.get(get);
 			if (option != null)
 				option.optionSelected();
 			else
-				System.out.println(menuRenderer.invalidInput(get));
+				menuRenderer.outputString(menuRenderer.invalidInput(get));
 		}
 		while(option == null || !autoBack && option.getAction() != Action.BACK);
 	}
@@ -320,16 +305,16 @@ public class Menu extends Option
 	{
 		private static final long serialVersionUID = -2884917321791851520L;
 
-		private List<Option> cycleDetected;
+		private List<Menu> cycleDetected;
 		
-		public CycleDetectedException(List<Option> cycleDetected)
+		public CycleDetectedException(List<Menu> cycleDetected)
 		{
 			super("A directed cycle has been detected in the menu tree :\n" 
 					+ stringOfCycle(cycleDetected));
 			this.cycleDetected = cycleDetected;
 		}
 		
-		public List<Option> getCycleDetected()
+		public List<Menu> getCycleDetected()
 		{
 			return Collections.unmodifiableList(cycleDetected);
 		}
@@ -340,7 +325,7 @@ public class Menu extends Option
 			return stringOfCycle(cycleDetected);
 		}
 		
-		static private String stringOfCycle(List<Option> list)
+		static private String stringOfCycle(List<Menu> list)
 		{
 			String res = "[";
 			boolean first = true;

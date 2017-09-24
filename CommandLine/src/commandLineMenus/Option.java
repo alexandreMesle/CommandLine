@@ -1,7 +1,7 @@
 package commandLineMenus;
 
 import commandLineMenus.interfaces.Action;
-import commandLineMenus.rendering.MenuRenderer;
+import commandLineMenus.interfaces.MenuRenderer;
 import commandLineMenus.rendering.examples.MenuDefaultRenderer;
 
 /**
@@ -109,6 +109,8 @@ public class Option
 	{
 		if (action != null)
 			action.optionSelectionnee();
+		else
+			throw this.new NoActionDefinedException();
 	}
 	
 	protected String stringOfOption()
@@ -145,4 +147,15 @@ public class Option
 			super(message);
 		}
 	}
+
+	public class NoActionDefinedException extends RuntimeException
+	{
+		private static final long serialVersionUID = 6139684008297267150L;
+
+		public NoActionDefinedException() 
+		{
+			super("Option " + getTitle() + " has no action defined.");
+		}
+	}
+
 }

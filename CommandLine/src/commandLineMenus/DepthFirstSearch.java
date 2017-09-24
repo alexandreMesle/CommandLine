@@ -11,8 +11,8 @@ class DepthFirstSearch
 		public void visit(Menu node);
 	}
 	
-	private	Stack<Option> stack = new Stack<Option>();
-	private	Set<Option> hashStack = new HashSet<Option>();
+	private	Stack<Menu> stack = new Stack<Menu>();
+	private	Set<Menu> stackSet = new HashSet<Menu>();
 	private Set<Visitor> visitors = new HashSet<>();
 	
 	public DepthFirstSearch(Menu root)
@@ -33,7 +33,7 @@ class DepthFirstSearch
 		visit(menu);
 		push(menu);
 		depthFirstSearch(menu.getOptions());
-		pop(menu);
+		pop();
 	}	
 
 	private void initVisitors()
@@ -69,24 +69,30 @@ class DepthFirstSearch
 	
 	private boolean isInStack(Menu node)
 	{
-		return hashStack.contains(node);
+		return stackSet.contains(node);
 	}
 	
-	private java.util.List<Option> subList(Menu node)
+	private java.util.List<Menu> subList(Menu node)
 	{
 		stack.push(node);		
 		return stack.subList(stack.indexOf(node), stack.size());
 	}
 
+	private Menu top()
+	{
+		return stack.peek();
+	}
+	
 	private void push(Menu node)
 	{
 		stack.push(node);
-		hashStack.add(node);
+		stackSet.add(node);
 	}
 	
-	private void pop(Menu node)
+	private void pop()
 	{
+		Option node = top();
 		stack.pop();
-		hashStack.remove(node);
+		stackSet.remove(node);
 	}
 }

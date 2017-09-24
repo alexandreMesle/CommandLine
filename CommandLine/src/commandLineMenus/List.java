@@ -2,9 +2,10 @@ package commandLineMenus;
 
 import commandLineMenus.interfaces.Action;
 import commandLineMenus.interfaces.ListAction;
+import commandLineMenus.interfaces.ListItemRenderer;
 import commandLineMenus.interfaces.ListModel;
 import commandLineMenus.interfaces.ListOption;
-import commandLineMenus.rendering.*;
+import commandLineMenus.interfaces.MenuRenderer;
 import commandLineMenus.rendering.examples.ListItemDefaultRenderer;
 import commandLineMenus.rendering.examples.MenuDefaultRenderer;
 
@@ -24,7 +25,7 @@ public class List<T> extends Menu
 	private ListOption<T> listOption = null;
 	private ListModel<T> model = null;
 	private Option optionQuit = null, optionBack = null;
-	private ListItemRenderer<T> renderer;
+	private ListItemRenderer<T> itemRenderer;
 	
 	private List(String titre, ListModel<T> model)
 	{
@@ -74,7 +75,7 @@ public class List<T> extends Menu
 	/**
 	 * Créée une liste.
 	 * @param titre intitulé affiché au dessus-de la liste.
-	 * @param action l'objet permettant de gérer la liste.
+	 * @param option l'objet permettant de gérer la liste.
 	 * @param raccourci raccourci utilisé dans le cas où cette liste est utilisé comme option dans un menu.
 	 */
 	
@@ -124,35 +125,20 @@ public class List<T> extends Menu
 			super.optionSelected();
 		if (listAction != null)
 			listAction.selectedItem(indice, element);
-//		Option option = listAction.getOption(element);
-//		if (option != null)
-//			super.optionSelected();
-//		else
-//			listAction.selectedItem(indice, element);
 	}
 	
 	private void add(int index, T element)
 	{
 		if (listAction != null)
-			super.add(new Option(renderer.title(index, element), 
-					renderer.shortcut(index, element),
+			super.add(new Option(itemRenderer.title(index, element), 
+					itemRenderer.shortcut(index, element),
 					getAction(index, element))) ;
 		if (listOption != null)
 		{
 			Option option = listOption.getOption(element);
-			option.setShortcut(renderer.shortcut(index, element));
+			option.setShortcut(itemRenderer.shortcut(index, element));
 			super.add(option);
 		}
-//		Option option = listAction.getOption(element);
-//		if (option == null)
-//			super.add(new Option(renderer.title(index, element), 
-//					renderer.shortcut(index, element),
-//					getAction(index, element))) ;
-//		else
-//		{
-//			option.setShortcut(renderer.shortcut(index, element));
-//			super.add(option);
-//		
 	}
 	
 	/**
@@ -212,7 +198,7 @@ public class List<T> extends Menu
 			throw new NoListActionDefinedException(this);
 		int nbOptions = actualise();
 		if (nbOptions == 0)
-			System.out.println(renderer.empty());
+			menuRenderer.outputString(itemRenderer.empty());
 		else
 		{
 			new DepthFirstSearch(this);
@@ -238,7 +224,7 @@ public class List<T> extends Menu
 		if (isLocked())
 			throw new ConcurrentModificationException("Impossible to change renderer of list " 
 					+ getTitle() + " while running.");
-		this.renderer = convertisseur;
+		this.itemRenderer = convertisseur;
 	}
 
 	public static class ManualOptionAddForbiddenException extends RuntimeException

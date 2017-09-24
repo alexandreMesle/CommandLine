@@ -1,4 +1,4 @@
-package commandLineMenus.rendering;
+package commandLineMenus.interfaces;
 
 public interface ListItemRenderer<T>
 {

@@ -1,6 +1,6 @@
 package commandLineMenus.rendering.examples;
 
-import commandLineMenus.rendering.ListItemRenderer;
+import commandLineMenus.interfaces.ListItemRenderer;
 
 public class ListItemDefaultRenderer<T> implements ListItemRenderer<T>
 {

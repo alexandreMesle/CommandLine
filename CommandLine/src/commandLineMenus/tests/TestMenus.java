@@ -53,7 +53,7 @@ public class TestMenus
 		}
 		catch(CycleDetectedException c)		
 		{
-			List<Option> cycle = c.getCycleDetected();
+			List<Menu> cycle = c.getCycleDetected();
 			assertTrue(cycle.get(0) == racine);
 			assertTrue(cycle.get(1) == feuille);
 			assertTrue(cycle.get(2) == racine);

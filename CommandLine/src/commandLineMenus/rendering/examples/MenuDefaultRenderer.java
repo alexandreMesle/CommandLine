@@ -1,6 +1,7 @@
 package commandLineMenus.rendering.examples;
 
-import commandLineMenus.rendering.MenuRenderer;
+import commandLineMenus.interfaces.MenuRenderer;
+import commandLineMenus.rendering.examples.util.InOut;
 
 public class MenuDefaultRenderer implements MenuRenderer
 {
@@ -34,7 +35,7 @@ public class MenuDefaultRenderer implements MenuRenderer
 	{
 		return "\n---------------------------\n";
 	}
-
+	
 	@Override
 	public String prompt()
 	{
@@ -45,6 +46,28 @@ public class MenuDefaultRenderer implements MenuRenderer
 	public String invalidInput(String input)
 	{
 		return "The shortcut \"" + input + "\" is not available.\n";
+	}
+
+	@Override
+	public String inputString()
+	{
+		while(true)
+		{
+			try
+			{
+				return InOut.getString();
+			}
+			catch (Exception e) 
+			{
+				System.out.println(invalidInput(""));
+			}
+		}		
+	}
+
+	@Override
+	public void outputString(String string)
+	{
+		System.out.println(string);
 	}
 
 }

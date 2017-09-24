@@ -15,7 +15,6 @@ TODO tests unitaires
  * Par exemple, le code ci-dessous met en place un menu dont les deux 
  * uniques options sont afficher bonjour et quitter :
  * 
- * 
 <script type="text/javascript" src="run_prettify.js"></script>
  <PRE class="prettyprint">
 // Création d'un menu dont le titre est "Menu Bonjour"
