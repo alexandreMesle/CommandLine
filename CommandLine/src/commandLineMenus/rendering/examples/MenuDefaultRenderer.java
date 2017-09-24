@@ -19,7 +19,7 @@ public class MenuDefaultRenderer implements MenuRenderer
 	}
 	
 	@Override
-	public String betweenOptions()
+	public String optionsSeparator()
 	{
 		return "\n";
 	}
@@ -31,7 +31,7 @@ public class MenuDefaultRenderer implements MenuRenderer
 	}
 
 	@Override
-	public String betweenMenus()
+	public String menusSeparator()
 	{
 		return "\n---------------------------\n";
 	}

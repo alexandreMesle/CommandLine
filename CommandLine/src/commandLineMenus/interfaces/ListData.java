@@ -7,7 +7,7 @@ import java.util.List;
  * dans une liste, et actualiser les éléments de la liste devant être affichée.
  */
 
-public interface ListModel<T>
+public interface ListData<T>
 {
 	/**
 	 * Fonction permettant de rafraîchir la liste juste avant de l'afficher.

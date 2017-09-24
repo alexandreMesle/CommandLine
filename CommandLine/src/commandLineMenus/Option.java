@@ -35,6 +35,18 @@ public class Option
 	}
 	
 	/**
+	 * Créée une option.
+	 * @param title titre de l'option.
+	 * @param action
+	 */
+	
+	public Option(String title, Action action)
+	{
+		this.title = title;
+		this.action = action;		
+	}
+	
+	/**
 	 * Retourne le raccourci permettant de sélectioner cette option.
 	 */
 	

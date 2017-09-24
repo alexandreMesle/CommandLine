@@ -9,40 +9,51 @@ class Menus
 {
 	public static void main(String[] args)
 	{
-		// Création du menu racine de l'application.
-		Menu menuPrincipal = new Menu("Menu Principal");
-		// Création de deux options
-		Option calculatrice = new Option("Calculatrice", "c");
-		Menu direBonjour = new Menu("Menu bonjour", "Bonjour", "b");
-		// Imbrication des deux options dans le menu
-		menuPrincipal.add(calculatrice);
-		// Vous remarquez que comme Menu hérite de Option, on peut mettre un menu dans un menu
-		menuPrincipal.add(direBonjour);
-		menuPrincipal.addQuit("q");
-		// Définition de l'action pour la calculatrice
-		calculatrice.setAction(new Action()
+		// Creates the root menu of the application
+		Menu rootMenu = new Menu("Root Menu");
+		
+		// Creates two options
+		Option calculatorOption = new Option("Calculator", "c");
+		Menu sayHelloMenu = new Menu("Say Hello Sub-Menu", "Hello", "h");
+		
+		// Adds an option to the rootMenu 
+		rootMenu.add(calculatorOption);
+		
+		// Adds the sub-menu sayHelloMenu to the rootMenu
+		// Please notice that since Menu extends Option, polymorphism allows us to pass the Menu sayHelloMenu where an Option was expected.
+		rootMenu.add(sayHelloMenu);
+		
+		// Adds the quit option
+		rootMenu.addQuit("q");
+		
+		// Defines the action that will be triggered if the calculator is selected.
+		calculatorOption.setAction(new Action()
 		{
-			// Méthode exécutée lorsque l'option calculatrice est sélectionnée.
+			// Method triggered if the calculatorOption is selected 
 			public void optionSelected()
 			{
-				int a = InOut.getInt("Saisissez la première opérande : "),
-						b = InOut.getInt("Saisissez la deuxième opérande : ");
+				int a = InOut.getInt("Input the first operand : "),
+						b = InOut.getInt("Input the second operand : ");
 				System.out.println("" + a + " + " + b + " = " + (a+b));
 			}
 		});
-		// Il est possible de passer l'action en paramètre directement dans le constructeur.
-		direBonjour.add(new Option("Dire bonjour", "b", new Action()
-		{
-			public void optionSelected()
-			{
-				System.out.println("Bonjour !");
-			}
-		}));
-		// Ajout d'une option permettant de revenir au menu parent
-		direBonjour.addBack("r");;
-		// Retour automatique au menu parent si une option est exécutée.
-		direBonjour.setAutoBack(true);
-		// Lancement du menu
-		menuPrincipal.start();
+		
+		// Please notice that the action can be passed to the constructor of Option 
+		sayHelloMenu.add(				
+				new Option("Say Hello", "h", new Action()
+				{
+					public void optionSelected()
+					{
+						System.out.println("Hello!");
+					}
+				}));
+		
+		// Adds an option to go back to the rootMenu
+		sayHelloMenu.addBack("r");
+		
+		// Once an option has been selected in sayHelloMenu, and the associated action is done, we will automatically go back to the rootMenu. 
+		sayHelloMenu.setAutoBack(true);
+		
+		rootMenu.start();
 	}
 }

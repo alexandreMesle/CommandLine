@@ -178,7 +178,7 @@ public class Menu extends Option
 		do
 		{
 			if (betweenMenus)
-				menuRenderer.outputString((menuRenderer.betweenMenus()));
+				menuRenderer.outputString((menuRenderer.menusSeparator()));
 			else
 				betweenMenus = true;
 			String get = inputOption();
@@ -221,7 +221,7 @@ public class Menu extends Option
 		for (Option option : optionsList)
 		{
 			if (!between) 
-				res += menuRenderer.betweenOptions();
+				res += menuRenderer.optionsSeparator();
 			else
 				between = true;
 			res += option.stringOfOption();

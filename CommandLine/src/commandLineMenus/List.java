@@ -3,7 +3,7 @@ package commandLineMenus;
 import commandLineMenus.interfaces.Action;
 import commandLineMenus.interfaces.ListAction;
 import commandLineMenus.interfaces.ListItemRenderer;
-import commandLineMenus.interfaces.ListModel;
+import commandLineMenus.interfaces.ListData;
 import commandLineMenus.interfaces.ListOption;
 import commandLineMenus.interfaces.MenuRenderer;
 import commandLineMenus.rendering.examples.ListItemDefaultRenderer;
@@ -23,11 +23,11 @@ public class List<T> extends Menu
 {
 	private ListAction<T> listAction = null;
 	private ListOption<T> listOption = null;
-	private ListModel<T> model = null;
+	private ListData<T> model = null;
 	private Option optionQuit = null, optionBack = null;
 	private ListItemRenderer<T> itemRenderer;
 	
-	private List(String titre, ListModel<T> model)
+	private List(String titre, ListData<T> model)
 	{
 		super(titre);
 		this.model = model;
@@ -41,7 +41,7 @@ public class List<T> extends Menu
 	 * @param action l'objet permettant de gérer la liste.
 	 */
 	
-	public List(String titre, ListModel<T> model, ListAction<T> action)
+	public List(String titre, ListData<T> model, ListAction<T> action)
 	{
 		this(titre, model);
 		this.listAction = action;
@@ -53,7 +53,7 @@ public class List<T> extends Menu
 	 * @param action l'objet permettant de gérer la liste.
 	 */
 	
-	public List(String titre, ListModel<T> model, ListOption<T> option)
+	public List(String titre, ListData<T> model, ListOption<T> option)
 	{
 		this(titre, model);
 		this.listOption = option;
@@ -66,7 +66,7 @@ public class List<T> extends Menu
 	 * @param raccourci raccourci utilisé dans le cas où cette liste est utilisé comme option dans un menu.
 	 */
 	
-	public List(String titre, String raccourci, ListModel<T> model, ListAction<T> action)
+	public List(String titre, String raccourci, ListData<T> model, ListAction<T> action)
 	{
 		this(titre, model, action);
 		this.shortcut = raccourci;
@@ -79,7 +79,7 @@ public class List<T> extends Menu
 	 * @param raccourci raccourci utilisé dans le cas où cette liste est utilisé comme option dans un menu.
 	 */
 	
-	public List(String titre, String raccourci, ListModel<T> model, ListOption<T> option)
+	public List(String titre, String raccourci, ListData<T> model, ListOption<T> option)
 	{
 		this(titre, model, option);
 		this.shortcut = raccourci;
@@ -124,7 +124,7 @@ public class List<T> extends Menu
 		if (listOption != null)
 			super.optionSelected();
 		if (listAction != null)
-			listAction.selectedItem(indice, element);
+			listAction.itemSelected(indice, element);
 	}
 	
 	private void add(int index, T element)
@@ -169,7 +169,7 @@ public class List<T> extends Menu
 		optionBack = new Option("Back", raccourci, Action.BACK);
 	}
 	
-	private int actualise()
+	private int actualize()
 	{
 		java.util.List<T> liste = model.getList();
 		if (liste == null)
@@ -196,7 +196,7 @@ public class List<T> extends Menu
 	{
 		if (!xor(listAction == null, listOption == null))
 			throw new NoListActionDefinedException(this);
-		int nbOptions = actualise();
+		int nbOptions = actualize();
 		if (nbOptions == 0)
 			menuRenderer.outputString(itemRenderer.empty());
 		else

@@ -4,7 +4,7 @@ import java.util.ArrayList;
 
 import commandLineMenus.*;
 import commandLineMenus.interfaces.Action;
-import commandLineMenus.interfaces.ListModel;
+import commandLineMenus.interfaces.ListData;
 import commandLineMenus.interfaces.ListOption;
 
 public class ListOptions
@@ -23,21 +23,21 @@ public class ListOptions
 	private static List<String> getPeopleList(final java.util.List<String> people)
 	{
 		List<String> liste = new List<>("Select someone to display his name",
-				getListModelPersonnes(people),
+				getListDataPersonnes(people),
 				getOptionListePersonnes());
 		liste.setAutoBack(false);
 		liste.addQuit("q");
 		return liste;
 	}
 	
-	private static ListModel<String> getListModelPersonnes(final java.util.List<String> people)
+	private static ListData<String> getListDataPersonnes(final java.util.List<String> people)
 	{
-		return new ListModel<String>()
+		return new ListData<String>()
 		{
 			@Override
 			public java.util.List<String> getList()
 			{
-				// Retourne les éléments affichés dans le menu.
+				// Returns the people that will be printed.
 				return people;
 			}
 		};
@@ -47,16 +47,16 @@ public class ListOptions
 	{
 		return new ListOption<String>()
 		{
-			// Retourne l'option associée à element.
-			public Option getOption(final String personne)
+			// Each person will become an option, the following method returns the option associated with each one. 
+			public Option getOption(final String someone)
 			{
-				// Crée une option, le raccourci est laissé null car il sera écrasé par l'indice
-				return new Option("Display " + personne, null, new Action()
+				// Creates an option for someone. The shortcut is useless because it will by default be the index of someone. 
+				return new Option("Display " + someone, new Action()
 				{
-					// Action exécutée si l'option est sélectionnée.
+					// Method triggered if someone is selected.
 					public void optionSelected()
 					{
-						System.out.println(personne);
+						System.out.println(someone);
 					}
 				});
 			}

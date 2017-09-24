@@ -4,7 +4,7 @@ import java.util.ArrayList;
 
 import commandLineMenus.*;
 import commandLineMenus.interfaces.ListAction;
-import commandLineMenus.interfaces.ListModel;
+import commandLineMenus.interfaces.ListData;
 
 public class ListActions
 {
@@ -29,9 +29,9 @@ public class ListActions
 		return liste;
 	}
 	
-	private static ListModel<String> getListModelPersonnes(final java.util.List<String> people)
+	private static ListData<String> getListModelPersonnes(final java.util.List<String> people)
 	{
-		return new ListModel<String>()
+		return new ListData<String>()
 		{
 			@Override
 			public java.util.List<String> getList()
@@ -47,7 +47,7 @@ public class ListActions
 		return new ListAction<String>()
 		{
 			// Vide, car on souhaite créer manuellement chaque option.
-			public void selectedItem(int indice, String personne)
+			public void itemSelected(int indice, String personne)
 			{
 				System.out.println(personne);
 			}

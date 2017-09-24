@@ -13,5 +13,5 @@ public interface ListAction<T>
 	 * @param item élément sélectionné.
 	 */
 	
-	public void selectedItem(int index, T item);
+	public void itemSelected(int index, T item);
 }

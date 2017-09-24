@@ -1,11 +1,11 @@
 # CommandLine
 
-Framework for building command-line user interfaces. Through menus and options, it allows developpers to quickly develop a back-end user interface.
+Framework for building command-line user interfaces. Through menus and options, it allows developers to quickly set up a back-end user interface.
 
 # How to use it
 
-The framework organises the user dialog between menus and options. It allows the user to navigate through menus. 
-In each menu, the user choses an option, the selection of an option triggers an action.
+The framework organizes the user dialog between menus and options. It allows the user to navigate through menus. 
+In each menu, the user chooses an option, the selection of an option triggers an action.
 
 ## Menus and options
 
@@ -13,26 +13,26 @@ In the following example, we show how to create a menu, and how to include an op
  
 ```
 // Creates a menu with the title Hello
-Menu menu = new Menu("Hello Menu");
+Menu helloMenu = new Menu("Hello Menu");
 
 // Creates an option with the title "Say Hello", the shorcut to select it is "h"
 Option sayHelloOption = new Option("Say Hello", "h");
 
 // Adds the option sayHello to the menu.
-menu.add(sayHelloOption);
+helloMenu.add(sayHelloOption);
 
 // Adds the option allowing to close the menu.
-menu.addQuit("q");
+helloMenu.addQuit("q");
 
 // Creates an action that will be binded to the sayHello option. 
 Action sayHelloAction = new Action()
 {
-
+	
 	// optionSelected() is triggered each time the "sayHello" option is selected.
 	@Override
 	public void optionSelected()
 	{
-		System.out.println("Hello !");
+		System.out.println("Hello!");
 	}
 };
 
@@ -40,7 +40,7 @@ Action sayHelloAction = new Action()
 sayHelloOption.setAction(sayHelloAction);
 
 // Launches the menu
-menu.start();
+helloMenu.start();
 ```
   
 The previous code displays the following menu.
@@ -54,77 +54,107 @@ q : Exit
 Select an option : 
 ```
 
-Inputing the shorcut "h" selects the option "Say Hello", and then inputing "q" closes the application.
-You can notice that selecting the option "Say Hello" automatically triggers the method 'optionSelected()'. 
+Inputing the shortcut "h" selects the option "Say Hello", and then inputing "q" closes the application.
+You can notice that selecting the option "Say Hello" automatically triggers the method `optionSelected()`. 
 
 ## Nesting menus
 
-Vous avez aussi la possibilité d'imbriquer un menu dans un menu, 
-comme dans l'exemple ci-dessous :
+Since `Menu` inherits `Option`, it is possible to nest a menu A inside a menu B. Then A will appear as a sub-menu of B.
+The user will have the possibility to select A as if it was an option of the menu B, and the action associated with 
+this selection will automatically be the opening of A.   
 
 ```
-// Création du menu racine de l'application.
-Menu menuPrincipal = new Menu("Menu Principal");
-// Création de deux options
-Option calculatrice = new Option("Calculatrice", "c");
-Menu direBonjour = new Menu("Menu bonjour", "Bonjour", "b");
-// Imbrication des deux options dans le menu
-menuPrincipal.ajoute(calculatrice);
-// Vous remarquez que comme Menu hérite de Option, on peut mettre un menu dans un menu
-menuPrincipal.ajoute(direBonjour);
-menuPrincipal.ajouteQuitter("q");
-// Définition de l'action pour la calculatrice
-calculatrice.setAction(new Action()
+// Creates the root menu of the application
+Menu rootMenu = new Menu("Root Menu");
+
+// Creates two options
+Option calculatorOption = new Option("Calculator", "c");
+Menu sayHelloMenu = new Menu("Say Hello Sub-Menu", "Hello", "h");
+
+// Adds an option to the rootMenu 
+rootMenu.add(calculatorOption);
+
+// Adds the sub-menu sayHelloMenu to the rootMenu
+// Please notice that since Menu extends Option, polymorphism allows us to pass the Menu sayHelloMenu where an Option was expected.
+rootMenu.add(sayHelloMenu);
+
+// Adds the quit option
+rootMenu.addQuit("q");
+
+// Defines the action that will be triggered if the calculator is selected.
+calculatorOption.setAction(new Action()
 {
-	// Méthode exécutée lorsque l'option calculatrice est sélectionnée.
-	public void optionSelectionnee()
+	// Method triggered if the calculatorOption is selected 
+	public void optionSelected()
 	{
-		int a = utilitaires.EntreesSorties.getInt("Saisissez la première opérande : "),
-		b = utilitaires.EntreesSorties.getInt("Saisissez la deuxième opérande : ");
+		int a = InOut.getInt("Input the first operand : "),
+				b = InOut.getInt("Input the second operand : ");
 		System.out.println("" + a + " + " + b + " = " + (a+b));
 	}
 });
-// Il est possible de passer l'action en paramètre directement dans le constructeur.
-direBonjour.ajoute(new Option("Dire bonjour", "b", new Action()
-{
-	public void optionSelectionnee()
-	{
-		System.out.println("Bonjour !");
-	}
-}));
-// Ajout d'une option permettant de revenir au menu parent
-direBonjour.ajouteRevenir("r");;
-// Retour automatique au menu parent si une option est exécutée.
-direBonjour.setRetourAuto(true);
-// Lancement du menu
-menuPrincipal.start();
+
+// Please notice that the action can be passed to the constructor of Option 
+sayHelloMenu.add(				
+		new Option("Say Hello", "h", new Action()
+		{
+			public void optionSelected()
+			{
+				System.out.println("Hello!");
+			}
+		}));
+
+// Adds an option to go back to the rootMenu
+sayHelloMenu.addBack("r");
+
+// Once an option has been selected in sayHelloMenu, and the associated action is done, we will automatically go back to the rootMenu. 
+sayHelloMenu.setAutoBack(true);
+
+rootMenu.start();
 ```
 
-Voici un exemple d'exécution du programme :
+Here is an example of how the program behaves : 
 
 ```
-Menu Principal
-c : Calculatrice
-b : Bonjour
-q : Quitter
+Root Menu
+
+c : Calculator
+h : Hello
+q : Exit
+
+Select an option : 
 c
-Saisissez la première opérande : 5
-Saisissez la deuxième opérande : 6
-5 + 6 = 11
-Menu Principal
-c : Calculatrice
-b : Menu bonjour
-q : Quitter
-b
-Menu bonjour
-b : Dire bonjour
-r : Revenir
-b
-Bonjour !
-Menu Principal
-c : Calculatrice
-b : Menu bonjour
-q : Quitter
+Input the first operand : 2
+Input the second operand : 3
+2 + 3 = 5
+
+---------------------------
+
+Root Menu
+
+c : Calculator
+h : Hello
+q : Exit
+
+Select an option : 
+h
+Say Hello Sub-Menu
+
+h : Say Hello
+r : Back
+
+Select an option : 
+h
+Hello!
+
+---------------------------
+
+Root Menu
+
+c : Calculator
+h : Hello
+q : Exit
+
+Select an option : 
 q
 ```
 

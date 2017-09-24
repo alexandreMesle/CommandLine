@@ -6,61 +6,62 @@ import commandLineMenus.rendering.examples.util.InOut;
 
 public class Functions
 {
-	static Menu getMenuPrincipal()
+	static Menu getMainMenu()
 	{
-		Menu menuPrincipal = new Menu("Menu Principal");
-		menuPrincipal.add(getOptionCalculatrice());
-		menuPrincipal.addQuit("q");
-		return menuPrincipal;
+		Menu mainMenu = new Menu("Main Menu");
+		mainMenu.add(getCalculatorOption());
+		mainMenu.add(getSayHelloMenu());
+		mainMenu.addQuit("q");
+		return mainMenu;
 	}
 
-	static Option getOptionCalculatrice()
+	static Option getCalculatorOption()
 	{
-		Option calculatrice = new Option("Calculatrice", "c", getActionCalculatrice());
-		return calculatrice;
+		Option calculator = new Option("Calculator", "c", getCalculatorAction());
+		return calculator;
 	}
 
-	static Action getActionCalculatrice()
+	static Action getCalculatorAction()
 	{
 		return new Action()
 		{
 			public void optionSelected()
 			{
-				int a = InOut.getInt("Saisissez la première opérande : "),
-						b = InOut.getInt("Saisissez la deuxième opérande : ");
+				int a = InOut.getInt("Input the first operand : "),
+						b = InOut.getInt("Input the second operand : ");
 				System.out.println("" + a + " + " + b + " = " + (a+b));
 			}
 		};
 	}
 	
-	static Action getActionDireBonjour()
+	static Action getSayHelloAction()
 	{
 		return new Action()
 		{
 			public void optionSelected()
 			{
-				System.out.println("Bonjour !");
+				System.out.println("Hello!");
 			}
 		};
 	}
 	
-	static Option getOptionDireBonjour()
+	static Option getSayHelloOption()
 	{
-		return new Option("Dire bonjour", "b", getActionDireBonjour());
+		return new Option("Say Hello", "h", getSayHelloAction());
 	}
 	
-	static Menu getMenuDireBonjour()
+	static Menu getSayHelloMenu()
 	{
-		Menu direBonjour = new Menu("Menu bonjour", "Bonjour", "b");
-		direBonjour.add(getOptionDireBonjour());
-		direBonjour.addBack("r");;
-		direBonjour.setAutoBack(true);
-		return direBonjour;
+		Menu sayHelloMenu = new Menu("Say Hello Menu", "Hello", "h");
+		sayHelloMenu.add(getSayHelloOption());
+		sayHelloMenu.addBack("r");;
+		sayHelloMenu.setAutoBack(true);
+		return sayHelloMenu;
 	}
 	
 	public static void main(String[] args)
 	{
-		Menu menu = getMenuPrincipal();
+		Menu menu = getMainMenu();
 		menu.start();
 	}
 }
