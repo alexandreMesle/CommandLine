@@ -93,10 +93,8 @@ public class Option
 		return setLocked(false);
 	}
 
-	/**
+	/*
 	 * Return the former value of isLocked
-	 * @param isLocked
-	 * @return
 	 */
 	
 	protected boolean setLocked(boolean isLocked)

@@ -12,7 +12,7 @@ import java.util.TreeMap;
 import commandLineMenus.interfaces.Action;
 
 /** Menu printed on the terminal (if you don't override the layout)
- * The {@link titre} is displayed on the top of the menu, followed by 
+ * The {@link title} is displayed on the top of the menu, followed by 
  * an options list.
  * 
  * The user can select one option that is automatically triggered, or add 
@@ -42,18 +42,18 @@ public class Menu extends Option
 	/**
 	 * Creates a menu.
 	 * @param title The title displayed on the top of the menu.
-	 * @param shorcut If this is a sub-menu, the shortcut that will appear in the parent menu.
+	 * @param shortcut If this is a sub-menu, the shortcut that will appear in the parent menu.
 	 */
 	
-	public Menu(String title, String shorcut)
+	public Menu(String title, String shortcut)
 	{
-		super(title, shorcut);
+		super(title, shortcut);
 	}
 
 	/**
 	 * Creates a menu.
-	 * @param longtitle The title displayed on the top of the menu.
-	 * @param shorcut If this is a sub-menu, the shortcut that will appear in the parent menu.
+	 * @param longTitle The title displayed on the top of the menu.
+	 * @param shortcut If this is a sub-menu, the shortcut that will appear in the parent menu.
 	 * @param shortTitle If this is a sub-menu, the title that will appear in the parent menu.
 	 */
 	
@@ -377,14 +377,8 @@ public class Menu extends Option
 		{
 			return Collections.unmodifiableList(cycleDetected);
 		}
-		
-		@Override
-		public String toString()
-		{
-			return stringOfCycle(cycleDetected);
-		}
-		
-		static private String stringOfCycle(List<Menu> list)
+
+		private static String stringOfCycle(List<Menu> list)
 		{
 			String res = "[";
 			boolean first = true;
@@ -397,6 +391,13 @@ public class Menu extends Option
 				res += menu.getTitle();
 			}
 			return res + "]";
+		}
+
+
+		@Override
+		public String toString()
+		{
+			return stringOfCycle(cycleDetected);
 		}
 	}
 	

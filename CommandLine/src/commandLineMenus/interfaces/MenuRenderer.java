@@ -1,7 +1,8 @@
 package commandLineMenus.interfaces;
 
 /**
- * Override this class if you want to customize the display of the user dialog. A default implementation is provided with the package. 
+ * Override this class if you want to customize the display of 
+ * the user dialog. A default implementation is provided with the package. 
  * @see commandLineMenus.rendering.examples.MenuDefaultRenderer
  */
 
@@ -11,6 +12,7 @@ public interface MenuRenderer
 	 * Outputs message to the user.
 	 * @param message The message to print.
 	 */
+	
 	public void outputString(String message);
 
 	/**
@@ -66,7 +68,8 @@ public interface MenuRenderer
 	public String prompt();
 	
 	/**
-	 * The string to print if the user made a wrong input.  	
+	 * The string to print if the user made a wrong input.  
+	 * @param input The string input by the user.	
 	 * @return The string to print
 	 */
 

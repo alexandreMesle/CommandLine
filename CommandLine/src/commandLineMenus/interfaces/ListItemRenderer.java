@@ -13,9 +13,9 @@ public interface ListItemRenderer<T>
 	 * Returns the shortcut that will be displayed, 
 	 * please make sure there will be no collision.
 	 * 
-	 * @param index The index of the item. Be caferul, 
+	 * @param index The index of the item. Be careful, 
 	 * the indexes begin from 1.
-	 * @param item The item binded with this shorcut.
+	 * @param item The item binded with this shortcut.
 	 * @return The shortcut that will be displayed.
 	 */
 	
@@ -24,9 +24,9 @@ public interface ListItemRenderer<T>
 	/**
 	 * Returns the title that will be displayed.
 	 * 
-	 * @param index The index of the item. Be caferul, 
+	 * @param index The index of the item. Be careful, 
 	 * the indexes begin from 1.
-	 * @param item The item binded with this shorcut.
+	 * @param item The item binded with this shortcut.
 	 * @return The title that will be displayed.
 	 */
 	public String title(int index, T item);

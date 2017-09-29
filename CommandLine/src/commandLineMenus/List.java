@@ -35,7 +35,7 @@ public class List<T> extends Menu
 	 * Creates a List.
 	 * @param title The title of the list.
 	 * @param data the implementation of ListData that refreshes the list
-	 * @action action The implementation of ListAction that will be triggered if 
+	 * @param action The implementation of ListAction that will be triggered if 
 	 * an item is selected.
 	 */
 	
@@ -49,7 +49,7 @@ public class List<T> extends Menu
 	 * Creates a List.
 	 * @param title The title of the list.
 	 * @param data The implementation of ListData that refreshes the list
-	 * @action option The sub-menu that will be opened if 
+	 * @param option The sub-menu that will be opened if 
 	 * an item is selected.
 	 */
 	
@@ -62,31 +62,31 @@ public class List<T> extends Menu
 	/**
 	 * Creates a List.
 	 * @param title The title of the list.
-	 * @param shorcut The shortcut that opens the list if this is a sub-menu.
+	 * @param shortcut The shortcut that opens the list if this is a sub-menu.
 	 * @param data The implementation of ListData that refreshes the list
-	 * @action action The implementation of ListAction that will be triggered if 
+	 * @param action The implementation of ListAction that will be triggered if 
 	 * an item is selected.
 	 */
 	
-	public List(String titre, String shorcut, ListData<T> model, ListAction<T> action)
+	public List(String title, String shortcut, ListData<T> data, ListAction<T> action)
 	{
-		this(titre, model, action);
-		this.shortcut = shorcut;
+		this(title, data, action);
+		this.shortcut = shortcut;
 	}
 	
 	/**
 	 * Creates a List.
 	 * @param title The title of the list.
-	 * @param shorcut The shortcut that opens the list if this is a sub-menu.
+	 * @param shortcut The shortcut that opens the list if this is a sub-menu.
 	 * @param data The implementation of ListData that refreshes the list
-	 * @action option The sub-menu that will be opened if 
+	 * @param option The sub-menu that will be opened if 
 	 * an item is selected.
 	 */
 	
-	public List(String titre, String raccourci, ListData<T> model, ListOption<T> option)
+	public List(String title, String shortcut, ListData<T> data, ListOption<T> option)
 	{
-		this(titre, model, option);
-		this.shortcut = raccourci;
+		this(title, data, option);
+		this.shortcut = shortcut;
 	}
 	
 	private Action getAction(final int indice, final T element)
@@ -124,7 +124,7 @@ public class List<T> extends Menu
 	}
 	
 	/**
-	 * Do never call add() if this is a list, it is forbidden to manually add an option in a List<>.
+	 * Do never call add() if this is a list, it is forbidden to manually add an option in a List.
 	 */
 	
 	@Override
@@ -205,7 +205,7 @@ public class List<T> extends Menu
 	/**
 	 * Overrides the default display of an item with a custom one. listItemRenderer only applies to 
 	 * the current list.
-	 * @param listItemRenderer The implementation of ListItemRenderer<T> that customizes the display.
+	 * @param listItemRenderer The implementation of ListItemRenderer that customizes the display.
 	 */
 	
 	public void setListItemRenderer(ListItemRenderer<T> listItemRenderer)
@@ -241,7 +241,7 @@ public class List<T> extends Menu
 	}
 
 	/**
-	 * Thrown if the current list has no ListData<>
+	 * Thrown if the current list has no ListData
 	 */
 	
 	public static class NoListDataDefinedException extends RuntimeException

@@ -3,7 +3,7 @@ package commandLineMenus.interfaces;
 import commandLineMenus.Option;
 
 /**
- * Nest options into a List<T>. For each item, 
+ * Nest options into a List. For each item, 
  * getOption(T item) will return he option associated
  * with the item.
  * @param <T> the type of each item. Be careful, 
@@ -17,7 +17,7 @@ public interface ListOption<T>
 	/**
 	 * Returns the option binded to an item of the list.
 	 * @param item the element that will be shown in the list.
-	 * @returns The sub-menu that will be opened if item is selected.
+	 * @return The sub-menu that will be opened if item is selected.
 	 */
 	
 	public Option getOption(T item);
