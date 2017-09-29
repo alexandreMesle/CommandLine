@@ -11,7 +11,6 @@ import commandLineMenus.Menu;
 import commandLineMenus.Menu.CycleDetectedException;
 import commandLineMenus.Menu.EmptyMenuException;
 import commandLineMenus.Option;
-import junit.framework.Assert;
 
 public class TestMenus
 {
