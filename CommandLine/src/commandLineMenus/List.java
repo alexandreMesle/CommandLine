@@ -9,13 +9,10 @@ import commandLineMenus.interfaces.ListOption;
 import commandLineMenus.rendering.examples.ListItemDefaultRenderer;
 
 /**
- * Liste de valeurs (de type T) dans laquelle l'utilisateur
- * doit faire une sélection. Les valeurs de trouvant dans le champs
- * {@link liste} sont affichées et l'utilisateur est invité à saisir
- * l'indice de l'élément qu'il souhaite. Par défaut, la méthode toString
- * héritée de Object est utilisée pour afficher les éléments de menu, 
- * mais vous pouvez le modifier en utilisant la méthode 
- * {@link setToString}.
+ * Menu dynamically populated with a list of items. The type T is not 
+ * the type displayed but the type kept in memory for further treatment.
+ * The data is read through a ListData.
+ * The selection of an item triggers either a ListAction, either a ListOption.
  */
 
 public class List<T> extends Menu
@@ -26,56 +23,64 @@ public class List<T> extends Menu
 	private Option optionQuit = null, optionBack = null;
 	private ListItemRenderer<T> itemRenderer;
 	
-	private List(String titre, ListData<T> model)
+	private List(String title, ListData<T> data)
 	{
-		super(titre);
-		this.model = model;
+		super(title);
+		this.model = data;
 		setAutoBack(true);
 		setListItemRenderer(new ListItemDefaultRenderer<>());
 	}
 	
 	/**
-	 * Créée une liste.
-	 * @param titre intitulé affiché au dessus-de la liste.
-	 * @param action l'objet permettant de gérer la liste.
+	 * Creates a List.
+	 * @param title The title of the list.
+	 * @param data the implementation of ListData that refreshes the list
+	 * @action action The implementation of ListAction that will be triggered if 
+	 * an item is selected.
 	 */
 	
-	public List(String titre, ListData<T> model, ListAction<T> action)
+	public List(String title, ListData<T> data, ListAction<T> action)
 	{
-		this(titre, model);
+		this(title, data);
 		this.listAction = action;
 	}
 	
 	/**
-	 * Créée une liste.
-	 * @param titre intitulé affiché au dessus-de la liste.
-	 * @param action l'objet permettant de gérer la liste.
+	 * Creates a List.
+	 * @param title The title of the list.
+	 * @param data The implementation of ListData that refreshes the list
+	 * @action option The sub-menu that will be opened if 
+	 * an item is selected.
 	 */
 	
-	public List(String titre, ListData<T> model, ListOption<T> option)
+	public List(String title, ListData<T> data, ListOption<T> option)
 	{
-		this(titre, model);
+		this(title, data);
 		this.listOption = option;
 	}
 	
 	/**
-	 * Créée une liste.
-	 * @param titre intitulé affiché au dessus-de la liste.
-	 * @param action l'objet permettant de gérer la liste.
-	 * @param raccourci raccourci utilisé dans le cas où cette liste est utilisé comme option dans un menu.
+	 * Creates a List.
+	 * @param title The title of the list.
+	 * @param shorcut The shortcut that opens the list if this is a sub-menu.
+	 * @param data The implementation of ListData that refreshes the list
+	 * @action action The implementation of ListAction that will be triggered if 
+	 * an item is selected.
 	 */
 	
-	public List(String titre, String raccourci, ListData<T> model, ListAction<T> action)
+	public List(String titre, String shorcut, ListData<T> model, ListAction<T> action)
 	{
 		this(titre, model, action);
-		this.shortcut = raccourci;
+		this.shortcut = shorcut;
 	}
 	
 	/**
-	 * Créée une liste.
-	 * @param titre intitulé affiché au dessus-de la liste.
-	 * @param option l'objet permettant de gérer la liste.
-	 * @param raccourci raccourci utilisé dans le cas où cette liste est utilisé comme option dans un menu.
+	 * Creates a List.
+	 * @param title The title of the list.
+	 * @param shorcut The shortcut that opens the list if this is a sub-menu.
+	 * @param data The implementation of ListData that refreshes the list
+	 * @action option The sub-menu that will be opened if 
+	 * an item is selected.
 	 */
 	
 	public List(String titre, String raccourci, ListData<T> model, ListOption<T> option)
@@ -119,7 +124,7 @@ public class List<T> extends Menu
 	}
 	
 	/**
-	 * Déclenche une erreur, il est interdit de modifier les options d'une Liste.
+	 * Do never call add() if this is a list, it is forbidden to manually add an option in a List<>.
 	 */
 	
 	@Override
@@ -146,12 +151,12 @@ public class List<T> extends Menu
 		optionBack = new Option("Back", raccourci, Action.BACK);
 	}
 	
-	public ListAction<T> getListAction()
+	ListAction<T> getListAction()
 	{
 		return listAction;
 	}
 	
-	public ListOption<T> getListOption()
+	ListOption<T> getListOption()
 	{
 		return listOption;
 	}
@@ -161,7 +166,7 @@ public class List<T> extends Menu
 	{
 		java.util.List<T> liste = model.getList();
 		if (liste == null)
-			throw new NoListModelDefinedException(this);
+			throw new NoListDataDefinedException(this);
 		clearOptions();
 		boolean wasLocked = unlock();
 		for (int i = 0 ; i < liste.size() ; i++)
@@ -182,23 +187,39 @@ public class List<T> extends Menu
 			menuRenderer.outputString(itemRenderer.empty());
 		else
 		{
+			unlock();
 			new DepthFirstSearch(this);
+			lock();
 		}
-		return super.runOnce();
+		Option option = null;
+		printBetweenMenus();
+		String get = inputOption();
+		option = getOption(get);
+		if (option != null)
+			option.optionSelected();
+		else
+			menuRenderer.outputString(menuRenderer.invalidInput(get));
+		return option;
 	}	
 	
 	/**
-	 * Définit de quelle façon vont s'afficher les éléments de menu.
+	 * Overrides the default display of an item with a custom one. listItemRenderer only applies to 
+	 * the current list.
+	 * @param listItemRenderer The implementation of ListItemRenderer<T> that customizes the display.
 	 */
 	
-	public void setListItemRenderer(ListItemRenderer<T> convertisseur)
+	public void setListItemRenderer(ListItemRenderer<T> listItemRenderer)
 	{
 		if (isLocked())
 			throw new ConcurrentModificationException("Impossible to change renderer of list " 
 					+ getTitle() + " while running.");
-		this.itemRenderer = convertisseur;
+		this.itemRenderer = listItemRenderer;
 	}
 
+	/**
+	 * Thrown if one tries to manully edit the options displayed.
+	 */
+	
 	public static class ManualOptionAddForbiddenException extends RuntimeException
 	{
 		private static final long serialVersionUID = -5126287607702961669L;
@@ -219,12 +240,16 @@ public class List<T> extends Menu
 		}
 	}
 
-	public static class NoListModelDefinedException extends RuntimeException
+	/**
+	 * Thrown if the current list has no ListData<>
+	 */
+	
+	public static class NoListDataDefinedException extends RuntimeException
 	{
 		private static final long serialVersionUID = 3072039179151217765L;
 		private List<?> list;
 		
-		public NoListModelDefinedException(List<?> list)
+		public NoListDataDefinedException(List<?> list)
 		{
 			this.list = list;
 		}
@@ -236,12 +261,18 @@ public class List<T> extends Menu
 		}
 	}
 
-	public static class NoListActionDefinedException extends RuntimeException
+	/**
+	 * Thrown if there is a problem with the listAction or the listOption.
+	 * Only one of the two must be defined. The exception is raised is none is defined, 
+	 * and if both are defined.
+	 */
+	
+	public static class ListActionOrOptionException extends RuntimeException
 	{
 		private static final long serialVersionUID = -4035301642069764296L;
 		private List<?> list;
 		
-		public NoListActionDefinedException(List<?> list)
+		public ListActionOrOptionException(List<?> list)
 		{
 			this.list = list;
 		}
@@ -253,4 +284,3 @@ public class List<T> extends Menu
 		}
 	}
 }
-	

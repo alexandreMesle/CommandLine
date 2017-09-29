@@ -67,7 +67,6 @@ public class MenuDefaultRenderer implements MenuRenderer
 	@Override
 	public void outputString(String string)
 	{
-//		throw new RuntimeException();
 		System.out.println(string);
 	}
 	

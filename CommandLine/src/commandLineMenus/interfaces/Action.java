@@ -3,35 +3,26 @@ package commandLineMenus.interfaces;
 import commandLineMenus.Menu;
 
 /**
- * Permet d'affecter des actions au choix d'un élément dans un menu.
+ * Binds an action to an option. 
  */
 
 public interface Action
 {
 	/**
-	 * Action prédéfinie permettant de quitter le programme.
+	 * Predefined action that leaves all menus.
 	 */
 	
-	public static final Action QUIT = new Action()
-	{
-		@Override 
-		public void optionSelected(){Menu.quit();}
-	};
-	
+	public static final Action QUIT = () -> Menu.quit();
+			
 	/**
-	 * Action prédéfinie permettant de revenir au menu précédent.
+	 * Predefined action that goes back to the parent menu.
 	 */
 	
-	public static final Action BACK = new Action()
-	{
-		@Override 
-		public void optionSelected(){
-			// TODO add a real goback action
-		}
-	};
-
+	// TODO add a real goback
+	public static final Action BACK = () -> {};
+	
 	/**
-	 * Fonction automatiquement exécutée quand une option est sélectionnée.
+	 * Automatically triggered when an option is selected.
 	 */
 	
 	public void optionSelected();

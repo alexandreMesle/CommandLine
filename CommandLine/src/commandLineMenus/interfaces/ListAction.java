@@ -1,16 +1,18 @@
 package commandLineMenus.interfaces;
 
 /**
- * Permet de gérer les listes. C'est-à-dire : affecter une action au choix d'un élément 
- * dans une liste, et actualiser les éléments de la liste devant être affichée.
+ * Binds an action to item from a List<T>. Each time an item 
+ * will be selected, the selectedItem() method will be triggered.
+ * 
+ * @param <T> The type of the items in the List<T>
  */
 
 public interface ListAction<T>
 {
 	/**
-	 * Fonction exécutée lorsqu'un élément est choisi dans une liste.
-	 * @param index indice de l'élément sélectionné.
-	 * @param item élément sélectionné.
+	 * Triggered when the item is selected in a List<T>.
+	 * @param index Index of the selected item.
+	 * @param item The item selected.
 	 */
 	
 	public void itemSelected(int index, T item);

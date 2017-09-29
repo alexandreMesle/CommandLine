@@ -5,7 +5,8 @@ import commandLineMenus.interfaces.MenuRenderer;
 import commandLineMenus.rendering.examples.MenuDefaultRenderer;
 
 /**
- * Option figurant dans un menu.
+ * Option displayed in a menu. The user will be prompted to type the shorcut to 
+ * select it.
  */
 
 public class Option
@@ -16,16 +17,10 @@ public class Option
 	protected Action action;
 	protected MenuRenderer menuRenderer = null;
 	
-	public Option(String title, String shortcut, Action action)
-	{
-		this(title, shortcut);
-		this.action = action;
-	}
-	
 	/**
-	 * Créée une option.
-	 * @param title titre de l'option.
-	 * @param shortcut raccourci à saisir pour activer l'option.
+	 * Creates an option.
+	 * @param title The title of the option.
+	 * @param shortcut The shorcut that selects it.
 	 */
 	
 	public Option(String title, String shortcut)
@@ -35,19 +30,21 @@ public class Option
 	}
 	
 	/**
-	 * Créée une option.
-	 * @param title titre de l'option.
-	 * @param action
+	 * Creates an option.
+	 * @param title The title of the option.
+	 * @param shortcut The shorcut that selects it.
+	 * @param action The action that will be triggered if the option is selected.
 	 */
 	
-	public Option(String title, Action action)
+	public Option(String title, String shortcut, Action action)
 	{
-		this.title = title;
-		this.action = action;		
+		this(title, shortcut);
+		this.action = action;
 	}
 	
 	/**
-	 * Retourne le raccourci permettant de sélectioner cette option.
+	 * Returns the shorcut to select the option.
+	 * @return The shorcut to select the option
 	 */
 	
 	public String getShorcut()
@@ -55,17 +52,14 @@ public class Option
 		return shortcut;
 	}
 
-	/**
-	 * Modifie le raccourci permettant de sélectioner cette option.
-	 */
-	
 	protected void setShortcut(String shortcut)
 	{
 		this.shortcut = shortcut;
 	}
 
 	/**
-	 * Retourne le libellé de l'option.
+	 * Returns the title of the option.
+	 * @return The title of the option
 	 */
 	
 	public String getTitle()
@@ -74,21 +68,15 @@ public class Option
 	}
 
 	/**
-	 * Affecte une action à la sélection de l'option.
-	 * @param action l'objet dont la méthode optionSelectionnee() sera 
-	 * appelé une fois une option choisie.
+	 * Binds an action to the option. 
+	 * @param action The object who possesses the optionSelected() method that will
+	 * be triggered if the option is selected.
 	 */
 	
 	public void setAction(Action action)
 	{
 		this.action = action;
 	}
-	
-	/**
-	 * Retourne l'action associée à la sélection de l'option.
-	 * @return l'objet dont la méthode optionSelectionnee() sera 
-	 * appelé une fois une option choisie.
-	 */
 	
 	protected Action getAction()
 	{
@@ -141,6 +129,12 @@ public class Option
 	{
 		return getTitle();
 	}
+
+	/**
+	 * Overrides the default renderer with a custom one, the menuRendere will be applied 
+	 * to this and all the sub-menus.
+	 * @param menuRenderer The Renderer that will be applied.
+	 */
 	
 	public void setRenderer(MenuRenderer menuRenderer)
 	{
@@ -150,10 +144,19 @@ public class Option
 		this.menuRenderer = menuRenderer;
 	}
 
+	/** 
+	 * Returns the renderer applied to this option.
+	 * @return The renderer applied to this option.
+	 */
+	
 	public MenuRenderer getRenderer()
 	{
 		return menuRenderer;
 	}
+	
+	/**
+	 * Thrown if you try to modify the menus or options once a menu has been launched.
+	 */
 	
 	public class ConcurrentModificationException extends RuntimeException
 	{
@@ -165,6 +168,10 @@ public class Option
 		}
 	}
 
+	/**
+	 * Thrown if no action is defined for the current option.
+	 */
+	
 	public class NoActionDefinedException extends RuntimeException
 	{
 		private static final long serialVersionUID = 6139684008297267150L;
@@ -174,5 +181,4 @@ public class Option
 			super("Option " + getTitle() + " has no action defined.");
 		}
 	}
-
 }

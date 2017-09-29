@@ -3,16 +3,15 @@ package commandLineMenus.interfaces;
 import java.util.List;
 
 /**
- * Permet de gérer les listes. C'est-à-dire : affecter une action au choix d'un élément 
- * dans une liste, et actualiser les éléments de la liste devant être affichée.
+ * Refreshs a List<T> before printing it.
+ * @param <T> The type of element of the List<T>.
  */
 
 public interface ListData<T>
 {
 	/**
-	 * Fonction permettant de rafraîchir la liste juste avant de l'afficher.
-	 * @returns la liste des éléments parmi lesquels la sélection devra 
-	 * se faire.
+	 * Returns the elements that will be printed.
+	 * @returns The elements that will be printed.
 	 */
 	
 	public List<T> getList();

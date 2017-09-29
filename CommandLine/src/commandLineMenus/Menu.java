@@ -2,22 +2,23 @@ package commandLineMenus;
 
 
 import java.util.ArrayList;
+
 import java.util.Collections;
-import java.util.HashSet;
+import java.util.Collection;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 import java.util.TreeMap;
 
 import commandLineMenus.interfaces.Action;
 
-/**
- * Menu affiché en ligne de commande. En haut du menu est affiché le {@link titre}, 
- * suivi par une liste d'options. L'utilisateur est invité à choisir une option
- * qui est ensuite exécutée. Il est possible de placer un sous-menu en option, 
- * ou il est possible d'utiliser la classe Option pour affecter une action à la sélection 
- * d'une action.
+/** Menu printed on the terminal (if you don't override the layout)
+ * The {@link titre} is displayed on the top of the menu, followed by 
+ * an options list.
+ * 
+ * The user can select one option that is automatically triggered, or add 
+ * a sub-menu as an option.
  */
+
 
 public class Menu extends Option
 {
@@ -28,8 +29,8 @@ public class Menu extends Option
 	private static boolean betweenMenus, exit;
 	
 	/**
-	 * Créée un menu.
-	 * @param title titre affiché au dessus du menu.
+	 * Creates a menu.
+	 * @param title The title displayed on the top of the menu.
 	 */
 	
 	public Menu(String title)
@@ -39,10 +40,9 @@ public class Menu extends Option
 	}
 	
 	/**
-	 * Créée un menu.
-	 * @param title titre affiché au dessus du menu.
-	 * @param shorcut Si ce menu est aussi une option, 
-	 * raccourci permettant de l'activer.
+	 * Creates a menu.
+	 * @param title The title displayed on the top of the menu.
+	 * @param shorcut If this is a sub-menu, the shortcut that will appear in the parent menu.
 	 */
 	
 	public Menu(String title, String shorcut)
@@ -51,11 +51,10 @@ public class Menu extends Option
 	}
 
 	/**
-	 * Créée un menu.
-	 * @param longTitle titre affiché au dessus du menu.
-	 * @param shortTitle titre affiché en tant qu'élément de menu (ou en tant qu'option).
-	 * @param shortcut Si ce menu est aussi une option, 
-	 * raccourci permettant de l'activer.
+	 * Creates a menu.
+	 * @param longtitle The title displayed on the top of the menu.
+	 * @param shorcut If this is a sub-menu, the shortcut that will appear in the parent menu.
+	 * @param shortTitle If this is a sub-menu, the title that will appear in the parent menu.
 	 */
 	
 	public Menu(String longTitle, String shortTitle, String shortcut)
@@ -71,8 +70,8 @@ public class Menu extends Option
 	}
 	
 	/**
-	 * Ajoute une option dans le menu.
-	 * @param option option à ajouter.
+	 * Adds an option in the current menu.
+	 * @param option The option to add.
 	 */
 	
 	public void add(Option option)
@@ -89,11 +88,21 @@ public class Menu extends Option
 		optionsList.add(option);
 	}
 	
-	public Set<Option> getOptions()
+	/**
+	 * Returns the options of this menu.
+	 * @return The options of this menu.
+	 */
+
+	public Collection<Option> getOptions()
 	{
-		return new HashSet<>(optionsMap.values());
+		return Collections.unmodifiableCollection(optionsMap.values());
 	}
 	
+	/**
+	 * The number of options in the current menu.
+	 * @return The number of options.
+	 */
+
 	public int size()
 	{
 		return optionsList.size();
@@ -106,8 +115,8 @@ public class Menu extends Option
 	}
 
 	/**
-	 * Ajoute une option permettant de quitter le programme.
-	 * @param shorcut le raccourci permettant de quitter le programme.
+	 * Adds an option to close all menus.
+	 * @param shorcut The shortcut that will appear in the menu.
 	 */
 	
 	public void addQuit(String shorcut)
@@ -116,8 +125,8 @@ public class Menu extends Option
 	}
 	
 	/**
-	 * Ajoute une option permettant de revenir au menu précédent.
-	 * @param shorcut le raccourci permettant de revenir au menu précédent.
+	 * Adds an option to go back to the parent menu.
+	 * @param shorcut The shortcut that will appear in the menu.
 	 */
 	
 	public void addBack(String shorcut)
@@ -126,10 +135,9 @@ public class Menu extends Option
 	}
 	
 	/**
-	 * Détermine si le choix d'une option entraîne automatiquement le retour au menu précédent.
-	 * Faux par défaut.
-	 * @param autoBack vrai ssi si le choix d'une option entraîne le retour au 
-	 * menu précédent.
+	 * Setter for autoBack, that is true iff we go back to the parent menu once the action 
+	 * is complete.
+	 * @param autoBack iff go back to the parent menu once the action is complete.
 	 */
 	
 	public void setAutoBack(boolean autoBack)
@@ -144,16 +152,16 @@ public class Menu extends Option
 		return menuRenderer.inputString();
 	}
 	
-	/**
-	 * Exécute le menu.	Attention, il n'est autorisé de lancer qu'un menu à la fois. Si vous avez besoin de lancer
-	 * un menu dans un sous-menu, lisez la documentation du package pour voir comment procéder. 
-	 */
-	
 	private void reset()
 	{
 		betweenMenus = false;
 		exit = false;
 	}
+
+	/**
+	 * Launches the menu. Be careful, the menu is run in he main thread and it is not possible
+	 * to start a menu while an other is running.
+	 */
 	
 	public void start()
 	{
@@ -177,17 +185,28 @@ public class Menu extends Option
 		return getOptions().size();
 	}
 	
+	protected void printBetweenMenus()
+	{
+		if (betweenMenus)
+			menuRenderer.outputString((menuRenderer.menusSeparator()));
+		else
+			betweenMenus = true;
+		
+	}
+	
+	protected Option getOption(String shortcut)
+	{
+		return optionsMap.get(shortcut);
+	}
+	
 	protected Option runOnce()
 	{
 		Option option = null;
 		if (actualize() == 0)
 			throw new EmptyMenuException();
-		if (betweenMenus)
-			menuRenderer.outputString((menuRenderer.menusSeparator()));
-		else
-			betweenMenus = true;
+		printBetweenMenus();
 		String get = inputOption();
-		option = optionsMap.get(get);
+		option = getOption(get);
 		if (option != null)
 			option.optionSelected();
 		else
@@ -240,7 +259,6 @@ public class Menu extends Option
 		boolean between = false;
 		for (Option option : optionsList)
 		{
-			menuRenderer.outputString(option.shortcut);
 			if (!between) 
 				res += menuRenderer.optionsSeparator();
 			else
@@ -252,7 +270,11 @@ public class Menu extends Option
 		return res;
 	}
 
-	class CollisionException extends RuntimeException
+	/**
+	 * Thrown if two options have the same shorcut.
+	 */
+	
+	public class CollisionException extends RuntimeException
 	{
 		private static final long serialVersionUID = 1142845287292812411L;
 		private Option oldOption, newOption;
@@ -278,6 +300,10 @@ public class Menu extends Option
 		}
 	}
 
+	/**
+	 * Thrown if an option has no shorcut.
+	 */
+	
 	public class ShortcutMissingException extends RuntimeException
 	{
 		private static final long serialVersionUID = -194430644006701341L;
@@ -296,6 +322,10 @@ public class Menu extends Option
 		}
 	}
 	
+	/**
+	 * Thrown if a menu has no option.
+	 */
+	
 	public class EmptyMenuException extends RuntimeException
 	{
 		private static final long serialVersionUID = 3617589300605854823L;
@@ -311,6 +341,10 @@ public class Menu extends Option
 		}
 	}
 
+	/**
+	 * Thrown if a menu is launched while an other is running.
+	 */
+
 	public class ConcurrentExecutionException extends RuntimeException
 	{
 		private static final long serialVersionUID = 770804726891062420L;
@@ -321,6 +355,10 @@ public class Menu extends Option
 				+ "\", a menu application is already running.");
 		}
 	}
+	
+	/**
+	 * Thrown if a menu is an ancestor if himself.
+	 */
 	
 	public static class CycleDetectedException extends RuntimeException
 	{
@@ -362,11 +400,19 @@ public class Menu extends Option
 		}
 	}
 	
+	/**
+	 * Once quit() is called, all the menus will close as soon as possible. 
+	 */
+	
 	public static void quit()
 	{
 		exit = true; 
 	}
 
+	/**
+	 * One soBack() is called, the current menu will close as soon as possible.
+	 */
+	
 	public static void goBack()
 	{
 		// TODO goBack method

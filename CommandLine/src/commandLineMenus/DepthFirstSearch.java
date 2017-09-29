@@ -1,10 +1,13 @@
 package commandLineMenus;
 
 import java.util.HashSet;
+
+
 import java.util.Set;
+import java.util.Collection;
 import java.util.Stack;
 
-import commandLineMenus.List.NoListActionDefinedException;
+import commandLineMenus.List.ListActionOrOptionException;
 import commandLineMenus.rendering.examples.MenuDefaultRenderer;
 
 class DepthFirstSearch
@@ -24,7 +27,7 @@ class DepthFirstSearch
 		depthFirstSearch(root);
 	}	
 
-	private void depthFirstSearch(Set<Option> options)
+	private void depthFirstSearch(Collection<Option> options)
 	{
 		for(Option option : options)
 			depthFirstSearch(option);
@@ -60,7 +63,7 @@ class DepthFirstSearch
 	{
 		return (node) -> 
 		{
-			if (node instanceof Menu)
+			if (node instanceof Menu && !(node instanceof List<?>))
 			{
 				Menu menu = (Menu) node;
 					if (menu.size() == 0)
@@ -100,7 +103,7 @@ class DepthFirstSearch
 			{
 				List<?> list = (List<?>)node;
 				if (!xor(list.getListAction() == null, list.getListOption() == null))
-					throw new NoListActionDefinedException(list);
+					throw new ListActionOrOptionException(list);
 			}
 		};
 	}

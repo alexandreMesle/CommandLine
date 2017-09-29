@@ -7,12 +7,12 @@ import commandLineMenus.interfaces.Action;
 import commandLineMenus.interfaces.ListData;
 import commandLineMenus.interfaces.ListOption;
 
-public class ListOptionsExample
+public class ListOptions
 {
 	// If you have to manipulate data, use a private non static field.
 	java.util.List<String> people ;
 	
-	ListOptionsExample(java.util.List<String> people)
+	ListOptions(java.util.List<String> people)
 	{
 		this.people = people;
 		List<String> list = getPeopleList();
@@ -47,7 +47,8 @@ public class ListOptionsExample
 		return new ListOption<String>()
 		{
 			// Each person will become an option
-			// The following method returns the option associated with each one. 
+			// The following method returns the option 
+			// associated with each one. 
 			public Option getOption(String someone)
 			{
 				return getPersonneMenu(someone);
@@ -65,6 +66,7 @@ public class ListOptionsExample
 		return someoneMenu;
 	}
 	
+	// Returns the option to display someone
 	private Option getDisplaySomeoneOption(String someone)
 	{
 		return new Option("show", "s", new Action()
@@ -76,7 +78,8 @@ public class ListOptionsExample
 			}
 		});
 	}
-
+	
+	// Returns the option to delete someone
 	private Option getDeleteSomeoneOption(String someone)
 	{
 		return new Option("delete", "d", new Action()
@@ -91,12 +94,14 @@ public class ListOptionsExample
 		});
 	}
 
+	// Do not use the main to create the menus, always create
+	// into functions.
 	public static void main(String[] args)
 	{
 		java.util.List<String> people = new ArrayList<>();
 		people.add("Ginette");
 		people.add("Marcel");
 		people.add("Gisèle");
-		new ListOptionsExample(people);
+		new ListOptions(people);
 	} 
 }

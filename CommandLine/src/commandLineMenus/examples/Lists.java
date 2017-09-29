@@ -20,7 +20,8 @@ public class Lists
 		List<String> menu = new List<String>("People list", 
 			new ListData<String>()		
 			{
-				// Returns the data needed to refresh the list each time it is displayed. 
+				// Returns the data needed to refresh the list 
+				// each time it is displayed. 
 				public java.util.List<String> getList()
 				{
 					return people;
@@ -31,7 +32,8 @@ public class Lists
 				// Triggered each time an item is selected
 				public void itemSelected(int index, String someone)
 				{
-					System.out.println("You have selected " + someone + ", who has the index " + index);
+					System.out.println("You have selected " + someone 
+							+ ", who has the index " + index);
 				}
 			});
 		menu.addQuit("q");

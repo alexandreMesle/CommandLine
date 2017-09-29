@@ -55,7 +55,5 @@ class Menus
 		sayHelloMenu.setAutoBack(true);
 		
 		rootMenu.start();
-		
-		System.out.println("coucou");
 	}
 }

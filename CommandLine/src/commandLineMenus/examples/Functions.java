@@ -11,20 +11,22 @@ public class Functions
 	{
 		Menu mainMenu = new Menu("Main Menu");
 		
-		// Adding a submenu or an option is then done with a method call
+		// Adds a submenu or an option is then done 
+		// with a method call
 		mainMenu.add(getCalculatorOption());
 		mainMenu.add(getSayHelloMenu());
 		mainMenu.addQuit("q");
 		return mainMenu;
 	}
-
+	
 	// Returns the calculator option
 	static Option getCalculatorOption()
 	{
-		Option calculator = new Option("Calculator", "c", getCalculatorAction());
+		Option calculator = new Option("Calculator", "c", 
+				getCalculatorAction());
 		return calculator;
 	}
-
+	
 	// It is advised to write each action in a separate method
 	static Action getCalculatorAction()
 	{

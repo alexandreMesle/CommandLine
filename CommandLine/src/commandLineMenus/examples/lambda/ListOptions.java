@@ -7,20 +7,19 @@ import commandLineMenus.interfaces.ListOption;
 
 public class ListOptions
 {
-	public static void main(String[] args)
+	java.util.List<String> people;
+	
+	public ListOptions(java.util.List<String> people)
 	{
-		java.util.List<String> people = new ArrayList<>();
-		people.add("Ginette");
-		people.add("Marcel");
-		people.add("Gisèle");
+		this.people = people;
 		List<String> list = getPeopleList(people);
 		list.start();
-	} 
-
-	private static List<String> getPeopleList(final java.util.List<String> people)
+	}
+	
+	private List<String> getPeopleList(final java.util.List<String> people)
 	{
 		List<String> liste = new List<>("Select someone to display his name",
-				() -> people, // 
+				() -> people, 
 				getListOptionPersonne()
 				);
 		liste.setAutoBack(false);
@@ -28,8 +27,17 @@ public class ListOptions
 		return liste;
 	}
 	
-	private static ListOption<String> getListOptionPersonne()
+	private ListOption<String> getListOptionPersonne()
 	{
 		return (String personne) -> new Option("Display " + personne, null, () -> System.out.println(personne));
 	}
+	
+	public static void main(String[] args)
+	{
+		java.util.List<String> people = new ArrayList<>();
+		people.add("Ginette");
+		people.add("Marcel");
+		people.add("Gisèle");
+		new ListOptions(people);
+	} 
 }
