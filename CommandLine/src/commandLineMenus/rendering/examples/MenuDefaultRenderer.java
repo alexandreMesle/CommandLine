@@ -67,7 +67,13 @@ public class MenuDefaultRenderer implements MenuRenderer
 	@Override
 	public void outputString(String string)
 	{
+//		throw new RuntimeException();
 		System.out.println(string);
 	}
-
+	
+	@Override
+	public String toString()
+	{
+		return "Menu default renderer";
+	}
 }

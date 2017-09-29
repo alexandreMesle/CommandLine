@@ -3,6 +3,7 @@ package commandLineMenus.tests;
 import static org.junit.Assert.*;
 
 import java.util.List;
+import java.util.Stack;
 
 import org.junit.Test;
 
@@ -10,9 +11,15 @@ import commandLineMenus.Menu;
 import commandLineMenus.Menu.CycleDetectedException;
 import commandLineMenus.Menu.EmptyMenuException;
 import commandLineMenus.Option;
+import junit.framework.Assert;
 
 public class TestMenus
 {
+	
+	private void compareOutputs(Stack<PrintedMenu> expected, MenuMockRenderer mock)
+	{
+		assertEquals(expected, mock.getPrintedMenus());
+	}
 
 	@Test
 	public void checkTitle()
@@ -40,6 +47,73 @@ public class TestMenus
 	}
 	
 	@Test
+	public void quit()
+	{
+		Menu menu = new Menu("titre");
+		MenuMockRenderer mock = new MenuMockRenderer(); 
+		menu.setRenderer(mock);
+		menu.addQuit("q");
+		mock.input("q");
+		menu.start();
+		PrintedMenu output = new PrintedMenu();
+		output.setTitle("titre");
+		output.option("q", "Exit");
+		Stack<PrintedMenu> outputs = new Stack<>();
+		outputs.push(output);
+		compareOutputs(outputs, mock);
+	}
+	
+	@Test
+	public void nestingOptions()
+	{
+		MenuMockRenderer mock = new MenuMockRenderer(); 
+		mock.input("o");
+		mock.input("o");
+		mock.input("q");
+		
+		Menu menu = new Menu("Titre");
+		menu.setRenderer(mock);
+		
+		Option option = new Option("Option", "o", () -> {});
+		menu.add(option);
+		
+		menu.addQuit("q");
+		menu.start();
+
+		Stack<PrintedMenu> outputs = new Stack<>();
+		PrintedMenu output = new PrintedMenu();
+
+		output.setTitle("Titre");
+		output.option("o", "Option");
+		output.option("q", "Exit");
+		
+		outputs.push(output);
+		outputs.push(output);
+		outputs.push(output);
+
+		compareOutputs(outputs, mock);
+	}
+
+	@Test
+	public void checkRenderers()
+	{
+		MenuMockRenderer mock = new MenuMockRenderer(); 
+
+		Menu menu = new Menu("Titre");
+		menu.setRenderer(mock);
+		
+		Option option = new Option("Option", "o", () -> {});
+		menu.add(option);
+		menu.addQuit("q");
+		
+		mock.input("q");
+		menu.start();
+		
+		assertEquals(menu.getRenderer(), mock);
+		assertEquals(option.getRenderer(), mock);
+	}
+	
+	@Test
 	public void checkCycle()
 	{
 		Menu racine = new Menu("racine", "r"),
@@ -54,9 +128,9 @@ public class TestMenus
 		catch(CycleDetectedException c)		
 		{
 			List<Menu> cycle = c.getCycleDetected();
-			assertTrue(cycle.get(0) == racine);
-			assertTrue(cycle.get(1) == feuille);
-			assertTrue(cycle.get(2) == racine);
+			assertEquals(cycle.get(0), racine);
+			assertEquals(cycle.get(1), feuille);
+			assertEquals(cycle.get(2), racine);
 		}
 	}
 
@@ -74,5 +148,4 @@ public class TestMenus
 			assertEquals(e.getMenu(), racine);
 		}
 	}
-	
 }

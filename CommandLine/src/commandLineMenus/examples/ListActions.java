@@ -10,46 +10,53 @@ public class ListActions
 {
 	public static void main(String[] args)
 	{
+		// Since List extends Menu, it is possible to assign a List<String> to a Menu.
+		Menu peopleMenu = getPeopleList();
+		
+		// Starts the menu
+		peopleMenu.start();
+	} 
+
+	// Returns the menu to print, please note that the return type is List
+	private static List<String> getPeopleList()
+	{
 		java.util.List<String> people = new ArrayList<>();
 		people.add("Ginette");
 		people.add("Marcel");
 		people.add("Gisèle");
-		List<String> list = getPeopleList(people);
-		list.start();
-	} 
-
-	// Returns the list to print
-	private static List<String> getPeopleList(final java.util.List<String> people)
-	{
+		
+		// The List<> constructor takes as arguments the title, the ListData, and the ListAction.
 		List<String> liste = new List<>("Select someone to display his name",
-				getListModelPersonnes(people),
+				getListDataPersonnes(people),
 				getActionListePersonnes());
 		liste.setAutoBack(false);
 		liste.addQuit("q");
 		return liste;
 	}
 	
-	private static ListData<String> getListModelPersonnes(final java.util.List<String> people)
+	// The listData<> contains the function that refreshes the List.
+	private static ListData<String> getListDataPersonnes(final java.util.List<String> people)
 	{
 		return new ListData<String>()
 		{
 			@Override
 			public java.util.List<String> getList()
 			{
-				// Retourne les éléments affichés dans le menu.
+				// Returns the list printed in the menu
 				return people;
 			}
 		};
 	}
 	
+	// The list action contains the methods that are triggered if an item is selected.
 	private static ListAction<String> getActionListePersonnes()
 	{
 		return new ListAction<String>()
 		{
-			// Vide, car on souhaite créer manuellement chaque option.
-			public void itemSelected(int indice, String personne)
+			// Triggered if a item is selected, the index and item are passed as arguments.
+			public void itemSelected(int index, String someone)
 			{
-				System.out.println(personne);
+				System.out.println(someone);
 			}
 		};
 	}

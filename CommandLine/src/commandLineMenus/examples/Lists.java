@@ -19,7 +19,7 @@ public class Lists
 		// Creates a menu with an option for each people in the list
 		List<String> menu = new List<String>("People list", 
 			new ListData<String>()		
-		{
+			{
 				// Returns the data needed to refresh the list each time it is displayed. 
 				public java.util.List<String> getList()
 				{

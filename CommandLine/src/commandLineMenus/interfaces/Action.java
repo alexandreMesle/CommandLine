@@ -25,7 +25,9 @@ public interface Action
 	public static final Action BACK = new Action()
 	{
 		@Override 
-		public void optionSelected(){}
+		public void optionSelected(){
+			// TODO add a real goback action
+		}
 	};
 
 	/**

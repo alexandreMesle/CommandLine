@@ -14,7 +14,7 @@ public class Option
 	protected String shortcut;
 	private String title;
 	protected Action action;
-	protected MenuRenderer menuRenderer = new MenuDefaultRenderer();
+	protected MenuRenderer menuRenderer = null;
 	
 	public Option(String title, String shortcut, Action action)
 	{
@@ -105,6 +105,12 @@ public class Option
 		return setLocked(false);
 	}
 
+	/**
+	 * Return the former value of isLocked
+	 * @param isLocked
+	 * @return
+	 */
+	
 	protected boolean setLocked(boolean isLocked)
 	{
 		boolean locked = isLocked();
@@ -144,12 +150,11 @@ public class Option
 		this.menuRenderer = menuRenderer;
 	}
 
-	protected void setRenderers(MenuRenderer menuRenderer)
+	public MenuRenderer getRenderer()
 	{
-		if (this.menuRenderer == null && menuRenderer != null)
-			setRenderer(menuRenderer);
+		return menuRenderer;
 	}
-
+	
 	public class ConcurrentModificationException extends RuntimeException
 	{
 		private static final long serialVersionUID = 6139684008297267150L;

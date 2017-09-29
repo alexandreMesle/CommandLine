@@ -9,9 +9,7 @@ import java.util.Map;
 import java.util.Set;
 import java.util.TreeMap;
 
-import commandLineMenus.rendering.examples.*;
 import commandLineMenus.interfaces.Action;
-import commandLineMenus.interfaces.MenuRenderer;
 
 /**
  * Menu affiché en ligne de commande. En haut du menu est affiché le {@link titre}, 
@@ -106,14 +104,7 @@ public class Menu extends Option
 		optionsList.clear();
 		optionsMap.clear();
 	}
-	
-	protected void setRenderers(MenuRenderer menuRenderer)
-	{
-		super.setRenderers(menuRenderer);
-		for (Option option : getOptions())
-			option.setRenderers(this.menuRenderer);
-	}
-	
+
 	/**
 	 * Ajoute une option permettant de quitter le programme.
 	 * @param shorcut le raccourci permettant de quitter le programme.
@@ -158,37 +149,58 @@ public class Menu extends Option
 	 * un menu dans un sous-menu, lisez la documentation du package pour voir comment procéder. 
 	 */
 	
+	private void reset()
+	{
+		betweenMenus = false;
+		exit = false;
+	}
+	
 	public void start()
 	{
 		new DepthFirstSearch(this);
 		if (isLocked())
 			throw new ConcurrentExecutionException();
-		//TODO inclure les setRenderers() dans le DFS
-		setRenderers(new MenuDefaultRenderer());
-		lock();
-		betweenMenus = false;
-		exit = false;
-		run();
-		unlock();
+		try
+		{
+			lock();
+			reset();
+			run();
+		}
+		finally
+		{
+			unlock();			
+		}
 	}
 
+	protected int actualize()
+	{
+		return getOptions().size();
+	}
+	
+	protected Option runOnce()
+	{
+		Option option = null;
+		if (actualize() == 0)
+			throw new EmptyMenuException();
+		if (betweenMenus)
+			menuRenderer.outputString((menuRenderer.menusSeparator()));
+		else
+			betweenMenus = true;
+		String get = inputOption();
+		option = optionsMap.get(get);
+		if (option != null)
+			option.optionSelected();
+		else
+			menuRenderer.outputString(menuRenderer.invalidInput(get));
+		return option;
+	}
+	
 	protected void run()
 	{
-		if (getOptions().size() == 0)
-			throw new EmptyMenuException();
 		Option option = null;
 		do
-		{
-			if (betweenMenus)
-				menuRenderer.outputString((menuRenderer.menusSeparator()));
-			else
-				betweenMenus = true;
-			String get = inputOption();
-			option = optionsMap.get(get);
-			if (option != null)
-				option.optionSelected();
-			else
-				menuRenderer.outputString(menuRenderer.invalidInput(get));
+		{			
+			option = runOnce();
 		}
 		while(keepOnRunning(option));
 	}
@@ -228,6 +240,7 @@ public class Menu extends Option
 		boolean between = false;
 		for (Option option : optionsList)
 		{
+			menuRenderer.outputString(option.shortcut);
 			if (!between) 
 				res += menuRenderer.optionsSeparator();
 			else
@@ -352,5 +365,10 @@ public class Menu extends Option
 	public static void quit()
 	{
 		exit = true; 
+	}
+
+	public static void goBack()
+	{
+		// TODO goBack method
 	}
 }

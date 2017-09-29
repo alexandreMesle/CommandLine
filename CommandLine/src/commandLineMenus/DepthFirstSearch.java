@@ -4,15 +4,18 @@ import java.util.HashSet;
 import java.util.Set;
 import java.util.Stack;
 
+import commandLineMenus.List.NoListActionDefinedException;
+import commandLineMenus.rendering.examples.MenuDefaultRenderer;
+
 class DepthFirstSearch
 {
 	private static interface Visitor
 	{
-		public void visit(Menu node);
+		public void visit(Option node);
 	}
 	
-	private	Stack<Menu> stack = new Stack<Menu>();
-	private	Set<Menu> stackSet = new HashSet<Menu>();
+	private	Stack<Menu> stack = new Stack<>();
+	private	Set<Menu> stackSet = new HashSet<>();
 	private Set<Visitor> visitors = new HashSet<>();
 	
 	public DepthFirstSearch(Menu root)
@@ -24,25 +27,30 @@ class DepthFirstSearch
 	private void depthFirstSearch(Set<Option> options)
 	{
 		for(Option option : options)
-			if (option instanceof Menu)
-				depthFirstSearch((Menu)option);
+			depthFirstSearch(option);
 	}
 	
-	private void depthFirstSearch(Menu menu)
+	private void depthFirstSearch(Option option)
 	{
-		visit(menu);
-		push(menu);
-		depthFirstSearch(menu.getOptions());
-		pop();
+		visit(option);
+		if (option instanceof Menu)
+		{
+			Menu menu = (Menu)option;
+			push(menu);
+			depthFirstSearch(menu.getOptions());
+			pop();
+		}
 	}	
 
 	private void initVisitors()
 	{
 		visitors.add(checkEmptyMenu());
+		visitors.add(setRenderers());
 		visitors.add(checkCycle());
+		visitors.add(checkActionDefined());
 	}
 
-	private void visit(Menu node)
+	private void visit(Option node)
 	{
 		for (Visitor visitor : visitors)
 			visitor.visit(node);		
@@ -52,8 +60,12 @@ class DepthFirstSearch
 	{
 		return (node) -> 
 		{
-			if (!(node instanceof List<?>) && node.size() == 0)
-				throw node.new EmptyMenuException();	
+			if (node instanceof Menu)
+			{
+				Menu menu = (Menu) node;
+					if (menu.size() == 0)
+				throw menu.new EmptyMenuException();	
+			}
 		};
 	}
 	
@@ -61,13 +73,44 @@ class DepthFirstSearch
 	{
 		return (node) ->
 		{
-			if (isInStack(node))
-				throw new Menu.CycleDetectedException(subList(node));
+			if ((node instanceof Menu) && isInStack(node))
+				throw new Menu.CycleDetectedException(subList((Menu)node));
+		};
+	}
+
+	private Visitor setRenderers()
+	{
+		return (node) ->
+		{
+			if (node.getRenderer() == null)
+			{
+				if (isEmpty())
+					node.setRenderer(new MenuDefaultRenderer());
+				else
+					node.setRenderer(top().getRenderer());
+			}
+		};
+	}
+
+	private Visitor checkActionDefined()
+	{
+		return (node) -> 
+		{
+			if (node instanceof List<?>)
+			{
+				List<?> list = (List<?>)node;
+				if (!xor(list.getListAction() == null, list.getListOption() == null))
+					throw new NoListActionDefinedException(list);
+			}
 		};
 	}
 	
-	
-	private boolean isInStack(Menu node)
+	private boolean xor(boolean a, boolean b)
+	{
+		return (a && !b) || (!a && b);
+	}
+
+	private boolean isInStack(Option node)
 	{
 		return stackSet.contains(node);
 	}
@@ -78,7 +121,7 @@ class DepthFirstSearch
 		return stack.subList(stack.indexOf(node), stack.size());
 	}
 
-	private Menu top()
+	private Option top()
 	{
 		return stack.peek();
 	}
@@ -94,5 +137,10 @@ class DepthFirstSearch
 		Option node = top();
 		stack.pop();
 		stackSet.remove(node);
+	}
+
+	private boolean isEmpty()
+	{
+		return stackSet.isEmpty();
 	}
 }

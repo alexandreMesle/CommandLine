@@ -1,13 +1,12 @@
 package commandLineMenus;
 
 import commandLineMenus.interfaces.Action;
+
 import commandLineMenus.interfaces.ListAction;
 import commandLineMenus.interfaces.ListItemRenderer;
 import commandLineMenus.interfaces.ListData;
 import commandLineMenus.interfaces.ListOption;
-import commandLineMenus.interfaces.MenuRenderer;
 import commandLineMenus.rendering.examples.ListItemDefaultRenderer;
-import commandLineMenus.rendering.examples.MenuDefaultRenderer;
 
 /**
  * Liste de valeurs (de type T) dans laquelle l'utilisateur
@@ -97,28 +96,6 @@ public class List<T> extends Menu
 		};
 	}
 
-	/**
-	 * Détermine la fonction à appeler quand un élément est sélectionné.
-	 * @param listAction L'objet dont la fonction elementSelectionne() va être appelé.
-	 */
-	
-//	public void setAction(ListAction<T> action)
-//	{
-//		if (isLocked())
-//			throw new ConcurrentModificationException("Impossible to change list action \""
-//					+ getTitle() + "\" while running.");
-//		this.action = action;
-//	}
-//	
-//	public void setModel(ListModel<T> model)
-//	{
-//		if (isLocked())
-//			throw new ConcurrentModificationException("Impossible to change list model \""
-//					+ getTitle() + "\" while running.");
-//		this.model = model;
-//	}	
-	
-	
 	private void selectedItem(int indice, T element)
 	{
 		if (listOption != null)
@@ -169,7 +146,18 @@ public class List<T> extends Menu
 		optionBack = new Option("Back", raccourci, Action.BACK);
 	}
 	
-	private int actualize()
+	public ListAction<T> getListAction()
+	{
+		return listAction;
+	}
+	
+	public ListOption<T> getListOption()
+	{
+		return listOption;
+	}
+	
+	@Override
+	protected int actualize()
 	{
 		java.util.List<T> liste = model.getList();
 		if (liste == null)
@@ -186,34 +174,18 @@ public class List<T> extends Menu
 		return liste.size();
 	}
 	
-	private boolean xor(boolean a, boolean b)
-	{
-		return (a && !b) || (!a && b);
-	}
-	
 	@Override
-	protected void run()
+	protected Option runOnce()
 	{
-		if (!xor(listAction == null, listOption == null))
-			throw new NoListActionDefinedException(this);
 		int nbOptions = actualize();
 		if (nbOptions == 0)
 			menuRenderer.outputString(itemRenderer.empty());
 		else
 		{
 			new DepthFirstSearch(this);
-			setRenderers(new MenuDefaultRenderer());
-			super.run();
 		}
-	}
-	
-	@Override
-	protected void setRenderers(MenuRenderer menuRenderer)
-	{
-		boolean wasLocked = unlock();
-		super.setRenderers(menuRenderer);
-		setLocked(wasLocked);
-	}
+		return super.runOnce();
+	}	
 	
 	/**
 	 * Définit de quelle façon vont s'afficher les éléments de menu.
