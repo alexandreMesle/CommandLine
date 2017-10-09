@@ -10,7 +10,7 @@ import commandLineMenus.interfaces.ListOption;
 public class ListOptions
 {
 	// If you have to manipulate data, use a private non static field.
-	java.util.List<String> people ;
+	private java.util.List<String> people ;
 	
 	ListOptions(java.util.List<String> people)
 	{
@@ -19,7 +19,7 @@ public class ListOptions
 		list.start();
 	}
 	
-		// Returns the list to print
+    // Returns the list to print
 	private List<String> getPeopleList()
 	{
 		List<String> liste = new List<>("Select someone",
