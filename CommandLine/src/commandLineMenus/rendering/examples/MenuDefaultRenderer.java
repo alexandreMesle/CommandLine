@@ -1,6 +1,6 @@
 package commandLineMenus.rendering.examples;
 
-import commandLineMenus.interfaces.MenuRenderer;
+import commandLineMenus.MenuRenderer;
 import commandLineMenus.rendering.examples.util.InOut;
 
 public class MenuDefaultRenderer implements MenuRenderer

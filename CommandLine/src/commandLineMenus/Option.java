@@ -1,9 +1,5 @@
 package commandLineMenus;
 
-import commandLineMenus.interfaces.Action;
-import commandLineMenus.interfaces.MenuRenderer;
-import commandLineMenus.rendering.examples.MenuDefaultRenderer;
-
 /**
  * Option displayed in a menu. The user will be prompted to type the shorcut to 
  * select it.

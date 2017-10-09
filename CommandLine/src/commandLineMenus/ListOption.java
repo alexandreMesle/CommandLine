@@ -1,6 +1,4 @@
-package commandLineMenus.interfaces;
-
-import commandLineMenus.Option;
+package commandLineMenus;
 
 /**
  * Nest options into a List. For each item, 

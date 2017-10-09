@@ -1,4 +1,4 @@
-package commandLineMenus.interfaces;
+package commandLineMenus;
 
 /**
  * Override this class if you want to customize the display of 

@@ -8,7 +8,7 @@ import java.util.Map;
 import java.util.Queue;
 import java.util.Stack;
 
-import commandLineMenus.interfaces.MenuRenderer;
+import commandLineMenus.MenuRenderer;
 
 class PrintedMenu
 {

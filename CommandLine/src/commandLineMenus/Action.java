@@ -1,6 +1,4 @@
-package commandLineMenus.interfaces;
-
-import commandLineMenus.Menu;
+package commandLineMenus;
 
 /**
  * Binds an action to an option. 

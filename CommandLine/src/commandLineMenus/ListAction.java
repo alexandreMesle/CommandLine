@@ -1,4 +1,4 @@
-package commandLineMenus.interfaces;
+package commandLineMenus;
 
 /**
  * Binds an action to item from a List. Each time an item 

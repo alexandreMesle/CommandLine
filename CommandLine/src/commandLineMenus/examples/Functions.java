@@ -1,7 +1,6 @@
 package commandLineMenus.examples;
 
 import commandLineMenus.*;
-import commandLineMenus.interfaces.Action;
 import commandLineMenus.rendering.examples.util.InOut;
 
 public class Functions

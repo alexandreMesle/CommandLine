@@ -1,11 +1,5 @@
 package commandLineMenus;
 
-import commandLineMenus.interfaces.Action;
-
-import commandLineMenus.interfaces.ListAction;
-import commandLineMenus.interfaces.ListItemRenderer;
-import commandLineMenus.interfaces.ListData;
-import commandLineMenus.interfaces.ListOption;
 import commandLineMenus.rendering.examples.ListItemDefaultRenderer;
 
 /**

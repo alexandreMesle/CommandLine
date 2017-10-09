@@ -1,4 +1,4 @@
-package commandLineMenus.interfaces;
+package commandLineMenus;
 
 /**
  * Overrides the display of an item in a list. By default, 

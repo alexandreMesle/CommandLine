@@ -1,8 +1,8 @@
 package commandLineMenus.examples;
 
+import commandLineMenus.Action;
 import commandLineMenus.Menu;
 import commandLineMenus.Option;
-import commandLineMenus.interfaces.Action;
 import commandLineMenus.rendering.examples.util.InOut;
 
 class Menus

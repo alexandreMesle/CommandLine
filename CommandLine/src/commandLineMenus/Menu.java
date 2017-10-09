@@ -9,8 +9,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
 
-import commandLineMenus.interfaces.Action;
-
 /** Menu printed on the terminal (if you don't override the layout)
  * The {@link title} is displayed on the top of the menu, followed by 
  * an options list.

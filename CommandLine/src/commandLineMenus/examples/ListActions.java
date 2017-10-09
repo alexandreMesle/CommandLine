@@ -3,8 +3,6 @@ package commandLineMenus.examples;
 import java.util.ArrayList;
 
 import commandLineMenus.*;
-import commandLineMenus.interfaces.ListAction;
-import commandLineMenus.interfaces.ListData;
 
 public class ListActions
 {
