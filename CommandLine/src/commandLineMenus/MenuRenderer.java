@@ -1,7 +1,7 @@
 package commandLineMenus;
 
 /**
- * Override this class if you want to customize the display of 
+ * Override it if you want to customize the display of 
  * the user dialog. A default implementation is provided with the package. 
  * @see commandLineMenus.rendering.examples.MenuDefaultRenderer
  */
@@ -31,7 +31,7 @@ public interface MenuRenderer
 	
 	/**
 	 * Prints an option
-	 * @param shortcut The shorcut to select this option.
+	 * @param shortcut The shortcut to select this option.
 	 * @param label The label of the option
 	 * @return The string to print
 	 */
