@@ -12,11 +12,13 @@ You must have Java 9 installed.
 
 ## Installing
 
-Just clone the repository and link commandLineMenus to your project. 
+Clone the repository and :
+* link commandLineMenus.jar
+* or link the complete project to your classpath. 
 
 ## Running the tests
 
-Run a sample code in the example package, or MenuTests from tests package. 
+Run a sample code in the examples package, or MenuTests from tests package. 
 
 ## Contributing
 
@@ -24,7 +26,7 @@ If ever you found a bug, feel free to submit a patch solvind it. Either way, you
 
 ## Deployment
 
-Include the project in the runnable jar file to deploy.
+Include the jarfile in the runnable jar file to deploy.
 
 ## How to use it
 
