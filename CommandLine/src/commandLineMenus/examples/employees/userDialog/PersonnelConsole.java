@@ -1,9 +1,10 @@
-package commandLineMenus.examples.personnel.userDialog;
+package commandLineMenus.examples.employees.userDialog;
 
 import java.util.ArrayList;
 
-import commandLineMenus.examples.personnel.core.*;
 import commandLineMenus.*;
+import commandLineMenus.examples.employees.core.*;
+
 import static commandLineMenus.rendering.examples.util.InOut.*;
 
 public class PersonnelConsole

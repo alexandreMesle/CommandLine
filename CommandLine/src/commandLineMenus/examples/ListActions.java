@@ -25,15 +25,15 @@ public class ListActions
 		
 		// The List<> constructor takes as arguments the title, the ListData, and the ListAction.
 		List<String> liste = new List<>("Select someone to display his name",
-				getListDataPersonnes(people),
-				getActionListePersonnes());
+				getListDataPeople(people),
+				getActionListPeople());
 		liste.setAutoBack(false);
 		liste.addQuit("q");
 		return liste;
 	}
 	
 	// The listData<> contains the function that refreshes the List.
-	private static ListData<String> getListDataPersonnes(final java.util.List<String> people)
+	private static ListData<String> getListDataPeople(final java.util.List<String> people)
 	{
 		return new ListData<String>()
 		{
@@ -47,7 +47,7 @@ public class ListActions
 	}
 	
 	// The list action contains the methods that are triggered if an item is selected.
-	private static ListAction<String> getActionListePersonnes()
+	private static ListAction<String> getActionListPeople()
 	{
 		return new ListAction<String>()
 		{

@@ -19,8 +19,8 @@ public class ListActions
 	private static List<String> getPeopleList(final java.util.List<String> people)
 	{
 		List<String> liste = new List<>("Select someone to display his name",
-				() -> people, // la liste à agfficher
-				(int indice, String personne) -> System.out.println(personne) // ce qui se produit quand un élément est sélectionné
+				() -> people, // The list to print
+				(int index, String someone) -> System.out.println(someone) // what happens when a item is selected
 				);
 		liste.setAutoBack(false);
 		liste.addQuit("q");

@@ -20,14 +20,14 @@ public class ListOptions
 	private List<String> getPeopleList()
 	{
 		List<String> liste = new List<>("Select someone",
-				getListDataPersonnes(),
-				getOptionListePersonnes());
+				getListDataPeople(),
+				getOptionListPeople());
 		liste.setAutoBack(false);
 		liste.addQuit("q");
 		return liste;
 	}
 	
-	private ListData<String> getListDataPersonnes()
+	private ListData<String> getListDataPeople()
 	{
 		return new ListData<String>()
 		{
@@ -39,7 +39,7 @@ public class ListOptions
 		};
 	}
 	
-	private ListOption<String> getOptionListePersonnes()
+	private ListOption<String> getOptionListPeople()
 	{
 		return new ListOption<String>()
 		{
@@ -56,7 +56,7 @@ public class ListOptions
 	// Creates an sub-menu for someone. 
 	private Option getPersonneMenu(final String someone)
 	{
-		Menu someoneMenu = new Menu(someone);
+		Menu someoneMenu = new Menu("Edit " + someone, someone, null);
 		someoneMenu.add(getDisplaySomeoneOption(someone));
 		someoneMenu.add(getDeleteSomeoneOption(someone));
 		someoneMenu.setAutoBack(true);
@@ -86,7 +86,6 @@ public class ListOptions
 			{
 				people.remove(someone);
 				System.out.println(someone + " has been deleted.");
-				System.out.println(people);
 			}
 		});
 	}

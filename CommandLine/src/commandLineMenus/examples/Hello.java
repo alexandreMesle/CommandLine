@@ -11,7 +11,7 @@ class Hello
 		// Creates a menu with the title Hello
 		Menu helloMenu = new Menu("Hello Menu");
 		
-		// Creates an option with the title "Say Hello", the shorcut to select it is "h"
+		// Creates an option with the title "Say Hello", the shortcut to select it is "h"
 		Option sayHelloOption = new Option("Say Hello", "h");
 		
 		// Adds the option sayHello to the menu.

@@ -6,31 +6,40 @@ import commandLineMenus.*;
 
 public class ListOptions
 {
-	java.util.List<String> people;
+	private java.util.List<String> people ;
 	
-	public ListOptions(java.util.List<String> people)
+	ListOptions(java.util.List<String> people)
 	{
 		this.people = people;
-		List<String> list = getPeopleList(people);
+		List<String> list = getPeopleList();
 		list.start();
 	}
 	
-	private List<String> getPeopleList(final java.util.List<String> people)
+	private List<String> getPeopleList()
 	{
-		List<String> liste = new List<>("Select someone to display his name",
-				() -> people, 
-				getListOptionPersonne()
+		List<String> liste = new List<>("Select someone",
+				() -> people,
+				(someone) -> getPersonneMenu(someone)
 				);
 		liste.setAutoBack(false);
 		liste.addQuit("q");
 		return liste;
 	}
 	
-	private ListOption<String> getListOptionPersonne()
+	private Option getPersonneMenu(final String someone)
 	{
-		return (String personne) -> new Option("Display " + personne, null, () -> System.out.println(personne));
+		Menu someoneMenu = new Menu("Edit " + someone, someone, null);
+		someoneMenu.add(new Option("show", "s", 
+				() -> {System.out.println("You must give the man a name : " + someone + ".");})
+				);
+		someoneMenu.add(new Option("delete", "d", 
+					() -> {people.remove(someone); System.out.println(someone + " has been deleted.");})
+				);
+		someoneMenu.setAutoBack(true);
+		return someoneMenu;
 	}
 	
+
 	public static void main(String[] args)
 	{
 		java.util.List<String> people = new ArrayList<>();

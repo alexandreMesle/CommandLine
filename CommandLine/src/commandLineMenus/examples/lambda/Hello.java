@@ -7,11 +7,11 @@ class Hello
 {
 	public static void main(String[] args)
 	{
-		Menu menu = new Menu("Menu bonjour");
-		Option direBonjour = new Option("Dire Bonjour", "b");
-		menu.add(direBonjour);
+		Menu menu = new Menu("Hello Menu");
+		Option sayHelloOption = new Option("Say Hello", "h");
+		menu.add(sayHelloOption);
 		menu.addQuit("q");
-		direBonjour.setAction( () -> System.out.println("Bonjour !") );
+		sayHelloOption.setAction( () -> System.out.println("Hello!") );
 		menu.start();
 	}
 }

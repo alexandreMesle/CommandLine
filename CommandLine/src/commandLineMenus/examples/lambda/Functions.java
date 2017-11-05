@@ -5,43 +5,43 @@ import commandLineMenus.rendering.examples.util.InOut;
 
 public class Functions
 {
-	static Menu getMenuPrincipal()
+	static Menu getMainMenu()
 	{
-		Menu menuPrincipal = new Menu("Menu Principal");
-		menuPrincipal.add(getOptionCalculatrice());
-		menuPrincipal.addQuit("q");
-		return menuPrincipal;
+		Menu mainMenu = new Menu("Main Menu");
+		mainMenu.add(getOptionCalculator());
+		mainMenu.addQuit("q");
+		return mainMenu;
 	}
 
-	static Option getOptionCalculatrice()
+	static Option getOptionCalculator()
 	{
-		Option calculatrice = new Option("Calculatrice", "c", 
+		Option calculator = new Option("Calculator", "c", 
 			() -> 
 			{
-				int a = InOut.getInt("Saisissez la première opérande : "),
-					b = InOut.getInt("Saisissez la deuxième opérande : ");
+				int a = InOut.getInt("Input first operand: "),
+					b = InOut.getInt("Input second operand: ");
 					System.out.println("" + a + " + " + b + " = " + (a+b));
 			});
-		return calculatrice;
+		return calculator;
 	}
 
-	static Option getOptionDireBonjour()
+	static Option getOptionSayHello()
 	{
-		return new Option("Dire bonjour", "b", () -> System.out.println("Bonjour !"));
+		return new Option("Say Hello", "h", () -> System.out.println("Hello!"));
 	}
 	
-	static Menu getMenuDireBonjour()
+	static Menu getSayHelloMenu()
 	{
-		Menu direBonjour = new Menu("Menu bonjour", "Bonjour", "b");
-		direBonjour.add(getOptionDireBonjour());
-		direBonjour.addBack("r");;
-		direBonjour.setAutoBack(true);
-		return direBonjour;
+		Menu sayHello = new Menu("Say Hello Menu", "Hello", "h");
+		sayHello.add(getOptionSayHello());
+		sayHello.addBack("r");;
+		sayHello.setAutoBack(true);
+		return sayHello;
 	}
 	
 	public static void main(String[] args)
 	{
-		Menu menu = getMenuPrincipal();
+		Menu menu = getMainMenu();
 		menu.start();
 	}
 }

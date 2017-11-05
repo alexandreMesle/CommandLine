@@ -8,23 +8,23 @@ class Menus
 {
 	public static void main(String[] args)
 	{
-		Menu menuPrincipal = new Menu("Menu Principal");
-		Option calculatrice = new Option("Calculatrice", "c");
-		Menu direBonjour = new Menu("Menu bonjour", "Bonjour", "b");
-		menuPrincipal.add(calculatrice);
-		menuPrincipal.add(direBonjour);
-		menuPrincipal.addQuit("q");
-		calculatrice.setAction( () -> 
+		Menu mainMenu = new Menu("Mein Menu");
+		Option calculator = new Option("Calculator", "c");
+		Menu sayHello = new Menu("Say Hello Menu", "Hello", "h");
+		mainMenu.add(calculator);
+		mainMenu.add(sayHello);
+		mainMenu.addQuit("q");
+		calculator.setAction( () -> 
 		{
-			int a = InOut.getInt("Saisissez la première opérande : "),
-				b = InOut.getInt("Saisissez la deuxième opérande : ");
+			int a = InOut.getInt("Input first operand: "),
+				b = InOut.getInt("Saisissez Input second operand: ");
 				System.out.println("" + a + " + " + b + " = " + (a+b));
 		});
-		direBonjour.add(new Option("Dire bonjour", "b", 
-				() -> System.out.println("Bonjour !")
+		sayHello.add(new Option("Say Hello", "h", 
+				() -> System.out.println("Hello!")
 				));
-		direBonjour.addBack("r");;
-		direBonjour.setAutoBack(true);
-		menuPrincipal.start();
+		sayHello.addBack("r");;
+		sayHello.setAutoBack(true);
+		mainMenu.start();
 	}
 }

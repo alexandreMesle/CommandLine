@@ -8,14 +8,14 @@ public class Lists
 {
 	public static void main(String[] args)
 	{
-		final ArrayList<String> personnes = new ArrayList<>();
-		personnes.add("Ginette");
-		personnes.add("Marcel");
-		personnes.add("Gisèle");
+		final ArrayList<String> people = new ArrayList<>();
+		people.add("Ginette");
+		people.add("Marcel");
+		people.add("Gisèle");
 		List<String> menu = new List<String>(
-				"Liste des Personnes", 
-				() -> personnes,
-				(int indice, String element) -> System.out.println("Vous avez sélectionné "+ element+ ", qui a l'indice " + indice)
+				"People list", 
+				() -> people,
+				(int index, String element) -> System.out.println("You have selected "+ element+ ", who has the index " + index)
 				);
 		menu.addQuit("q");
 		menu.start();

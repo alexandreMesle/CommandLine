@@ -1,4 +1,4 @@
-package commandLineMenus.examples.personnel.core;
+package commandLineMenus.examples.employees.core;
 
 public class ImpossibleToSaveException extends Exception
 {

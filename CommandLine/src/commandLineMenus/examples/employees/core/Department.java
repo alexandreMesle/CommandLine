@@ -1,4 +1,4 @@
-package commandLineMenus.examples.personnel.core;
+package commandLineMenus.examples.employees.core;
 
 import java.io.Serializable;
 import java.util.Collections;
