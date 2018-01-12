@@ -114,22 +114,44 @@ public class Menu extends Option
 
 	/**
 	 * Adds an option to close all menus.
-	 * @param shorcut The shortcut that will appear in the menu.
+	 * @param shortcut The shortcut that will appear in the menu.
 	 */
 	
-	public void addQuit(String shorcut)
+	public void addQuit(String shortcut)
 	{
-		add(new Option("Exit", shorcut, Action.QUIT));
+		add(new Option("Exit", shortcut, Action.QUIT));
+	}
+	
+	/**
+	 * Adds an option to close all menus.
+	 * @param titlte The title that will appear in the menu.
+	 * @param shortcut The shortcut that will appear in the menu.
+	 */
+	
+	public void addQuit(String title, String shortcut)
+	{
+		add(new Option(title, shortcut, Action.QUIT));
 	}
 	
 	/**
 	 * Adds an option to go back to the parent menu.
-	 * @param shorcut The shortcut that will appear in the menu.
+	 * @param shortcut The shortcut that will appear in the menu.
 	 */
 	
-	public void addBack(String shorcut)
+	public void addBack(String shortcut)
 	{
-		add(new Option("Back", shorcut, Action.BACK));
+		add(new Option("Back", shortcut, Action.BACK));
+	}
+	
+	/**
+	 * Adds an option to go back to the parent menu.
+	 * @param title The title that will appear in the menu.
+	 * @param shortcut The shortcut that will appear in the menu.
+	 */
+	
+	public void addBack(String title, String shortcut)
+	{
+		add(new Option(title, shortcut, Action.BACK));
 	}
 	
 	/**
