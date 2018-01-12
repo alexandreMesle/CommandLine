@@ -124,7 +124,7 @@ public class Menu extends Option
 	
 	/**
 	 * Adds an option to close all menus.
-	 * @param titlte The title that will appear in the menu.
+	 * @param title The title that will appear in the menu.
 	 * @param shortcut The shortcut that will appear in the menu.
 	 */
 	
