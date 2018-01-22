@@ -142,6 +142,13 @@ public class List<T> extends Menu
 		this.optionQuit = new Option(title, shortcut, Action.QUIT);
 	}
 
+	/**
+	 * Adds an option to go back to the parent menu, if the list is empty, 
+	 * a go back option is automatically added with the 'q' shortcut.
+	 * @param shortcut The shortcut that will appear in the menu.
+	 */
+	
+	
 	@Override
 	public void addBack(String shortcut)
 	{
@@ -181,6 +188,8 @@ public class List<T> extends Menu
 			super.add(optionQuit);
 		if (optionBack!= null)
 			super.add(optionBack);
+		if (liste.size() == 0 && optionBack == null)
+			super.addBack("q");
 		setLocked(wasLocked);
 		return liste.size();
 	}
