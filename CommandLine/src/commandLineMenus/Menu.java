@@ -67,12 +67,7 @@ public class Menu extends Option
 			throw new ConcurrentModificationException(message);		
 	}
 	
-	/**
-	 * Adds an option in the current menu.
-	 * @param option The option to add.
-	 */
-	
-	public void add(Option option)
+	private void privateAdd(Option option)
 	{
 		checkConcurrentModification("Impossible to add option \""
 					+ option.getTitle() + "\" while running.");
@@ -86,6 +81,16 @@ public class Menu extends Option
 		optionsList.add(option);
 	}
 	
+	/**
+	 * Adds an option in the current menu.
+	 * @param option The option to add.
+	 */
+	
+	public void add(Option option)
+	{
+		privateAdd(option);
+	}
+
 	/**
 	 * Returns the options of this menu.
 	 * @return The options of this menu.
@@ -140,7 +145,7 @@ public class Menu extends Option
 	
 	public void addBack(String shortcut)
 	{
-		add(new Option("Back", shortcut, Action.BACK));
+		privateAdd(new Option("Back", shortcut, Action.BACK));
 	}
 	
 	/**
@@ -151,7 +156,7 @@ public class Menu extends Option
 	
 	public void addBack(String title, String shortcut)
 	{
-		add(new Option(title, shortcut, Action.BACK));
+		privateAdd(new Option(title, shortcut, Action.BACK));
 	}
 	
 	/**

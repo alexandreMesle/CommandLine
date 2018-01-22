@@ -200,12 +200,9 @@ public class List<T> extends Menu
 		int nbOptions = actualize();
 		if (nbOptions == 0)
 			menuRenderer.outputString(itemRenderer.empty());
-		else
-		{
-			unlock();
-			new DepthFirstSearch(this);
-			lock();
-		}
+		unlock();
+		new DepthFirstSearch(this);
+		lock();
 		Option option = null;
 		printBetweenMenus();
 		String get = inputOption();
