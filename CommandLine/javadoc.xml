@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <project default="javadoc">
     <target name="javadoc">
-        <javadoc access="public" additionalparam=" -encoding utf8 -docencoding utf8 -charset utf8" 
+        <javadoc access="public" additionalparam="-v -encoding utf8 -docencoding utf8 -charset utf8" 
         	author="false" 
         	classpath="" 
         	destdir="doc" 
@@ -11,7 +11,7 @@
         	noindex="false" 
         	nonavbar="false" 
         	notree="false" 
-        	packagenames="commandLineMenus,commandLineMenus.interfaces" 
+        	packagenames="commandLineMenus" 
         	source="1.8" 
         	sourcepath="src" 
         	splitindex="true" 

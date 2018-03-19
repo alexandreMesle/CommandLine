@@ -1,7 +1,7 @@
 package commandLineMenus;
 
 /**
- * Option displayed in a menu. The user will be prompted to type the shorcut to 
+ * Option displayed in a menu. The user will be prompted to type the shortcut to 
  * select it.
  */
 
@@ -16,7 +16,7 @@ public class Option
 	/**
 	 * Creates an option.
 	 * @param title The title of the option.
-	 * @param shortcut The shorcut that selects it.
+	 * @param shortcut The shortcut that selects it.
 	 */
 	
 	public Option(String title, String shortcut)
@@ -28,7 +28,7 @@ public class Option
 	/**
 	 * Creates an option.
 	 * @param title The title of the option.
-	 * @param shortcut The shorcut that selects it.
+	 * @param shortcut The shortcut that selects it.
 	 * @param action The action that will be triggered if the option is selected.
 	 */
 	
@@ -39,8 +39,8 @@ public class Option
 	}
 	
 	/**
-	 * Returns the shorcut to select the option.
-	 * @return The shorcut to select the option
+	 * Returns the shortcut to select the option.
+	 * @return The shortcut to select the option
 	 */
 	
 	public String getShorcut()
@@ -125,7 +125,7 @@ public class Option
 	}
 
 	/**
-	 * Overrides the default renderer with a custom one, the menuRendere will be applied 
+	 * Overrides the default renderer with a custom one, the menuRenderer will be applied 
 	 * to this and all the sub-menus.
 	 * @param menuRenderer The Renderer that will be applied.
 	 */

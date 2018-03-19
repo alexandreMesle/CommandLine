@@ -296,7 +296,7 @@ public class Menu extends Option
 	}
 
 	/**
-	 * Thrown if two options have the same shorcut.
+	 * Thrown if two options have the same shortcut.
 	 */
 	
 	public class CollisionException extends RuntimeException
@@ -326,7 +326,7 @@ public class Menu extends Option
 	}
 
 	/**
-	 * Thrown if an option has no shorcut.
+	 * Thrown if an option has no shortcut.
 	 */
 	
 	public class ShortcutMissingException extends RuntimeException
@@ -374,7 +374,7 @@ public class Menu extends Option
 	{
 		private static final long serialVersionUID = 770804726891062420L;
 
-		public ConcurrentExecutionException() 
+		ConcurrentExecutionException() 
 		{
 			super("Impossible to launch \"" + getTitle() 
 				+ "\", a menu application is already running.");
@@ -397,6 +397,11 @@ public class Menu extends Option
 					+ stringOfCycle(cycleDetected));
 			this.cycleDetected = cycleDetected;
 		}
+		
+		/**
+		 * Returns the Menus of the cycle. 
+		 * @return
+		 */
 		
 		public List<Menu> getCycleDetected()
 		{
@@ -436,7 +441,7 @@ public class Menu extends Option
 	}
 
 	/**
-	 * One soBack() is called, the current menu will close as soon as possible.
+	 * Once soBack() is called, the current menu will close as soon as possible.
 	 */
 	
 	public static void goBack()

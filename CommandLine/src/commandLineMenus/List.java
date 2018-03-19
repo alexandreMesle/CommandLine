@@ -28,7 +28,7 @@ public class List<T> extends Menu
 	/**
 	 * Creates a List.
 	 * @param title The title of the list.
-	 * @param data the implementation of ListData that refreshes the list
+	 * @param data The implementation of ListData that refreshes the list
 	 * @param action The implementation of ListAction that will be triggered if 
 	 * an item is selected.
 	 */
@@ -229,7 +229,7 @@ public class List<T> extends Menu
 	}
 
 	/**
-	 * Thrown if one tries to manully edit the options displayed.
+	 * Thrown if one tries to manually edit the options displayed.
 	 */
 	
 	public static class ManualOptionAddForbiddenException extends RuntimeException
@@ -253,7 +253,7 @@ public class List<T> extends Menu
 	}
 
 	/**
-	 * Thrown if the current list has no ListData
+	 * Thrown if the current list has no ListData.
 	 */
 	
 	public static class NoListDataDefinedException extends RuntimeException
