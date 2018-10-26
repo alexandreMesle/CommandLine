@@ -30,4 +30,4 @@ Include the jarfile in the runnable jar file to deploy.
 
 ## How to use it
 
-You will found a quick start in the [wiki](https://github.com/alexandreMesle/CommandLine/wiki). For further information, please take a look at the javadoc. 
+You will found a quick start in the [wiki](https://github.com/alexandreMesle/CommandLine/wiki). For further information, please take a look at the [javadoc](https://alexandremesle.github.io/CommandLine/). 
