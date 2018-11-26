@@ -71,13 +71,13 @@ public class Menu extends Option
 	{
 		checkConcurrentModification("Impossible to add option \""
 					+ option.getTitle() + "\" while running.");
-		String raccourci = option.getShorcut();
+		String raccourci = option.getShortcut();
 		if (raccourci == null)
 			throw new ShortcutMissingException(option);
 		Option autre = optionsMap.get(raccourci);
 		if (autre != null)
 			throw new CollisionException(autre, option);
-		optionsMap.put(option.getShorcut(), option);
+		optionsMap.put(option.getShortcut(), option);
 		optionsList.add(option);
 	}
 	
@@ -145,7 +145,7 @@ public class Menu extends Option
 	
 	public void addBack(String shortcut)
 	{
-		privateAdd(new Option("Back", shortcut, Action.BACK));
+		addBack("Back", shortcut);
 	}
 	
 	/**
@@ -318,7 +318,7 @@ public class Menu extends Option
 		{
 			super("Collision between " + oldOption.getTitle()
 				+ " and " + newOption.getTitle() + " for the shorcut "
-				+ newOption.getShorcut() + " in the menu " + 
+				+ newOption.getShortcut() + " in the menu " + 
 			getTitle() + ".");
 			this.oldOption = oldOption;
 			this.newOption = newOption;

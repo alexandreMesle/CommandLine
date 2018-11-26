@@ -43,7 +43,7 @@ public class Option
 	 * @return The shortcut to select the option
 	 */
 	
-	public String getShorcut()
+	public String getShortcut()
 	{
 		return shortcut;
 	}
@@ -115,7 +115,7 @@ public class Option
 	
 	protected String stringOfOption()
 	{
-		return menuRenderer.option(getShorcut(), getTitle());
+		return menuRenderer.option(getShortcut(), getTitle());
 	}
 
 	@Override

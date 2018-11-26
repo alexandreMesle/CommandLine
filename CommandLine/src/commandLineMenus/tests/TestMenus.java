@@ -32,7 +32,7 @@ public class TestMenus
 	{
 		Option option = new Option("Coucou", "sh");
 		assertEquals(option.getTitle(), "Coucou");
-		assertEquals(option.getShorcut(), "sh");
+		assertEquals(option.getShortcut(), "sh");
 	}
 	
 	@Test
