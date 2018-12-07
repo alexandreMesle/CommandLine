@@ -61,7 +61,89 @@ public class TestMenus
 		outputs.push(output);
 		compareOutputs(outputs, mock);
 	}
+
+	@Test
+	public void checkGoBackFalse()
+	{
+		Menu menu = new Menu("Root");
+		menu.addQuit("q");
+
+		Menu subMenu = new Menu("Sub", "s");
+		subMenu.addBack("q");
+		subMenu.setAutoBack(false);
+		menu.add(subMenu);
+		
+		Option option = new Option("Option", "o", () -> {});
+		subMenu.add(option);
+		
+		MenuMockRenderer mock = new MenuMockRenderer(); 
+		menu.setRenderer(mock);
+		mock.input("s");
+		mock.input("o");
+		mock.input("q");
+		mock.input("q");
+		menu.start();
+
+		Stack<PrintedMenu> outputs = new Stack<>();
+		
+		PrintedMenu rootPrinted = new PrintedMenu();
+		rootPrinted.setTitle("Root");
+		rootPrinted.option("s", "Sub");
+		rootPrinted.option("q", "Exit");
+		outputs.push(rootPrinted);
+		
+		PrintedMenu subPrinted = new PrintedMenu();
+		subPrinted.setTitle("Sub");
+		subPrinted.option("o", "Option");
+		subPrinted.option("q", "Back");
+		outputs.push(subPrinted);		
+		outputs.push(subPrinted);		
+
+		outputs.push(rootPrinted);
+		
+		compareOutputs(outputs, mock);
+	}
 	
+	@Test
+	public void checkGoBackTrue()
+	{
+		Menu menu = new Menu("Root");
+		menu.addQuit("q");
+
+		Menu subMenu = new Menu("Sub", "s");
+		subMenu.addBack("q");
+		subMenu.setAutoBack(true);
+		menu.add(subMenu);
+		
+		Option option = new Option("Option", "o", () -> {});
+		subMenu.add(option);
+		
+		MenuMockRenderer mock = new MenuMockRenderer(); 
+		menu.setRenderer(mock);
+		mock.input("s");
+		mock.input("o");
+		mock.input("q");
+		menu.start();
+
+		Stack<PrintedMenu> outputs = new Stack<>();
+		
+		PrintedMenu rootPrinted = new PrintedMenu();
+		rootPrinted.setTitle("Root");
+		rootPrinted.option("s", "Sub");
+		rootPrinted.option("q", "Exit");
+		outputs.push(rootPrinted);
+		
+		PrintedMenu subPrinted = new PrintedMenu();
+		subPrinted.setTitle("Sub");
+		subPrinted.option("o", "Option");
+		subPrinted.option("q", "Back");
+		outputs.push(subPrinted);		
+
+		outputs.push(rootPrinted);
+		
+		compareOutputs(outputs, mock);
+	}
+
 	@Test
 	public void nestingOptions()
 	{
