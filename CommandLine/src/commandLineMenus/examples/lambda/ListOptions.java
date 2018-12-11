@@ -39,7 +39,6 @@ public class ListOptions
 		return someoneMenu;
 	}
 	
-
 	public static void main(String[] args)
 	{
 		java.util.List<String> people = new ArrayList<>();
