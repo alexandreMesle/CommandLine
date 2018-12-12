@@ -1,55 +1,12 @@
 package commandLineMenus.tests;
 
-import java.util.HashMap;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.Map;
 import java.util.Queue;
 import java.util.Stack;
 
 import commandLineMenus.MenuRenderer;
-
-class PrintedMenu
-{
-	private String title;
-	private Map<String, String> options = new HashMap<>();
-	
-	public void setTitle(String title)
-	{
-		this.title = title;
-	}
-	
-	public String getTitle()
-	{
-		return title;
-	}
-	
-	public String option(String shortcut, String label)
-	{
-		options.put(shortcut, label);
-		return null;
-	}
-
-	public Map<String, String> getOptions()
-	{
-		return options;
-	}
-	
-	@Override
-	public boolean equals(Object obj)
-	{
-		PrintedMenu other = (PrintedMenu) obj;
-		return other.getTitle() == getTitle()
-				&& other.getOptions().equals(getOptions());
-	}
-	
-	@Override
-	public String toString()
-	{
-		return  "\n" +title + " " + options.toString();
-	}
-}
 
 class MenuMockRenderer implements MenuRenderer, Iterable<PrintedMenu>
 {
