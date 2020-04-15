@@ -20,7 +20,6 @@ public class ManageEmployees implements Serializable
 	
 	public static ManageEmployees getManageEmployees()
 	{
-		
 		if (manageEmployees == null)
 		{
 			manageEmployees = readObject();

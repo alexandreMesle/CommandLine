@@ -61,7 +61,7 @@ public class Functions
 	{
 		Menu sayHelloMenu = new Menu("Say Hello Menu", "Hello", "h");
 		sayHelloMenu.add(getSayHelloOption());
-		sayHelloMenu.addBack("r");;
+		sayHelloMenu.addBack("r");
 		sayHelloMenu.setAutoBack(true);
 		return sayHelloMenu;
 	}

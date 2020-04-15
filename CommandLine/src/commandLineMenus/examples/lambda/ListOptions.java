@@ -33,7 +33,10 @@ public class ListOptions
 				() -> {System.out.println("You must give the man a name : " + someone + ".");})
 				);
 		someoneMenu.add(new Option("delete", "d", 
-					() -> {people.remove(someone); System.out.println(someone + " has been deleted.");})
+					() -> {
+					    people.remove(someone); 
+					    System.out.println(someone + " has been deleted.");
+				    })
 				);
 		someoneMenu.setAutoBack(true);
 		return someoneMenu;

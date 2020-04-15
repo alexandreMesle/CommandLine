@@ -40,6 +40,6 @@ class PrintedMenu
 	@Override
 	public String toString()
 	{
-		return  "\n" +title + " " + options.toString();
+		return  "\n" + title + " " + options.toString();
 	}
 }

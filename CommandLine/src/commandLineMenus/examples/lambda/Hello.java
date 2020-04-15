@@ -11,7 +11,7 @@ class Hello
 		Option sayHelloOption = new Option("Say Hello", "h");
 		menu.add(sayHelloOption);
 		menu.addQuit("q");
-		sayHelloOption.setAction( () -> System.out.println("Hello!") );
+		sayHelloOption.setAction(() -> System.out.println("Hello!"));
 		menu.start();
 	}
 }

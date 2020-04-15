@@ -225,10 +225,8 @@ public class PersonnelConsole
 	
 	public static void main(String[] args)
 	{
-		PersonnelConsole personnelConsole = 
-				new PersonnelConsole(ManageEmployees.getManageEmployees());
+		PersonnelConsole personnelConsole = new PersonnelConsole(ManageEmployees.getManageEmployees());
 		if (personnelConsole.verifiePassword())
-			personnelConsole.start();
-		
+			personnelConsole.start();		
 	}
 }
