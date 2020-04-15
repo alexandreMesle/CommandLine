@@ -178,7 +178,7 @@ public class Menu extends Option
 		return menuRenderer.inputString();
 	}
 	
-	private void reset()
+	private static void reset()
 	{
 		betweenMenus = false;
 		exit = false;
