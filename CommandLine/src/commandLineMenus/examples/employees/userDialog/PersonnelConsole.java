@@ -167,7 +167,7 @@ public class PersonnelConsole
 	
 	private Option supprimer(Department ligue)
 	{
-		return new Option("Supprimer", "d", () -> {ligue.remove();});
+		return new Option("Supprimer", "d", ligue::remove);
 	}
 	
 	private Option changerNom(final Employee employe)

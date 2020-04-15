@@ -10,7 +10,7 @@ public interface Action
 	 * Predefined action that leaves all menus.
 	 */
 	
-	public static final Action QUIT = () -> Menu.quit();
+	public static final Action QUIT = Menu::quit;
 			
 	/**
 	 * Predefined action that goes back to the parent menu.
