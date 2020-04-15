@@ -15,14 +15,13 @@ public class Functions
 
 	static Option getOptionCalculator()
 	{
-		Option calculator = new Option("Calculator", "c", 
-			() -> 
-			{
-			});
-		return calculator;
+		return new Option("Calculator", "c", 
+            () -> 
+            {
                 int a = InOut.getInt("Input first operand: ");
                 int b = InOut.getInt("Input second operand: ");
                 System.out.println(a + " + " + b + " = " + (a+b));
+            });
 	}
 
 	static Option getOptionSayHello()

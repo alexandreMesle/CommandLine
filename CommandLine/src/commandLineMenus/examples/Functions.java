@@ -21,9 +21,7 @@ public class Functions
 	// Returns the calculator option
 	static Option getCalculatorOption()
 	{
-		Option calculator = new Option("Calculator", "c", 
-				getCalculatorAction());
-		return calculator;
+		return new Option("Calculator", "c", getCalculatorAction());
 	}
 	
 	// It is advised to write each action in a separate method
