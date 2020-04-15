@@ -143,7 +143,7 @@ public class PersonnelConsole
 	
 	private List<Employee> changerAdministrateur(final Department ligue)
 	{
-		return new List<Employee>("Changer d'administrateur", "c", 
+		return new List<>("Changer d'administrateur", "c", 
 				() -> new ArrayList<>(ligue.getEmployes()), 
 				(index, element) -> ligue.setAdministrator(element)
 				);
@@ -156,7 +156,7 @@ public class PersonnelConsole
 
 	private List<Department> selectionnerLigue()
 	{
-		return new List<Department>("Sélectionner une ligue", "e", 
+		return new List<>("Sélectionner une ligue", "e", 
 				() -> new ArrayList<>(gestionPersonnel.getDepartments()),
 				(element) -> editerLigue(element)
 				);

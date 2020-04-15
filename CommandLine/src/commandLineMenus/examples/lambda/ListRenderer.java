@@ -25,7 +25,7 @@ public class ListRenderer
 		people.add("Ginette");
 		people.add("Marcel");
 		people.add("Gisèle");
-		List<String> menu = new List<String>(
+		List<String> menu = new List<>(
 				"People list",
 				"p",
 				() -> people,
