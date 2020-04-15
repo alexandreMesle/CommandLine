@@ -51,12 +51,12 @@ public class PersonnelConsole
 
 	private Option afficherLigues()
 	{
-		return new Option("Afficher les ligues", "l", () -> {System.out.println(gestionPersonnel.getDepartments());});
+		return new Option("Afficher les ligues", "l", () -> System.out.println(gestionPersonnel.getDepartments()));
 	}
 	
 	private Option afficherEmployes(final Department ligue)
 	{
-		return new Option("Afficher les employes", "l", () -> {System.out.println(ligue.getEmployes());});
+		return new Option("Afficher les employes", "l", () -> System.out.println(ligue.getEmployes()));
 	}
 	
 	private Option afficher(final Department ligue)
@@ -72,23 +72,21 @@ public class PersonnelConsole
 
 	private Option afficher(final Employee employe)
 	{
-		return new Option("Afficher l'employé", "l", () -> {System.out.println(employe);});
+		return new Option("Afficher l'employé", "l", () -> System.out.println(employe));
 	}
 
 	private Option ajouterLigue()
 	{
-		return new Option("Ajouter une ligue", "a", () -> {new Department (getString("nom : "));});
+		return new Option("Ajouter une ligue", "a", () -> new Department (getString("nom : ")));
 	}
 	
 	private Option ajouterEmploye(final Department ligue)
 	{
 		return new Option("ajouter un employé", "a",
-				() -> 
-				{
-					ligue.addEmploye(getString("nom : "), 
-						getString("prenom : "), getString("mail : "), 
-						getString("password : "));
-				}
+				() -> ligue.addEmploye(getString("nom : "), 
+			            getString("prenom : "), 
+			            getString("mail : "), 
+			            getString("password : "))
 		);
 	}
 	
@@ -131,7 +129,7 @@ public class PersonnelConsole
 	{
 		return new List<>("Modifier un employé", "e", 
 				() -> new ArrayList<>(ligue.getEmployes()),
-				(index, element) -> {editerEmploye(element);}
+				(index, element) -> editerEmploye(element)
 				);
 	}
 	
@@ -139,7 +137,7 @@ public class PersonnelConsole
 	{
 		return new List<>("Supprimer un employé", "s", 
 				() -> new ArrayList<>(ligue.getEmployes()),
-				(index, element) -> {element.remove();}
+				(index, element) -> element.remove()
 				);
 	}
 	
@@ -147,14 +145,13 @@ public class PersonnelConsole
 	{
 		return new List<Employee>("Changer d'administrateur", "c", 
 				() -> new ArrayList<>(ligue.getEmployes()), 
-				(index, element) -> {ligue.setAdministrator(element);}
+				(index, element) -> ligue.setAdministrator(element)
 				);
 	}		
 	
 	private Option changerNom(final Department ligue)
 	{
-		return new Option("Renommer", "r", 
-				() -> {ligue.setName(getString("Nouveau nom : "));});
+		return new Option("Renommer", "r", () -> ligue.setName(getString("Nouveau nom : ")));
 	}
 
 	private List<Department> selectionnerLigue()
@@ -172,24 +169,22 @@ public class PersonnelConsole
 	
 	private Option changerNom(final Employee employe)
 	{
-		return new Option("Changer le nom", "n", 
-				() -> {employe.setLastName(getString("Nouveau nom : "));}
-			);
+		return new Option("Changer le nom", "n", () -> employe.setLastName(getString("Nouveau nom : ")));
 	}
 	
 	private Option changerPrenom(final Employee employe)
 	{
-		return new Option("Changer le prénom", "p", () -> {employe.setFirstName(getString("Nouveau prénom : "));});
+		return new Option("Changer le prénom", "p", () -> employe.setFirstName(getString("Nouveau prénom : ")));
 	}
 	
 	private Option changerMail(final Employee employe)
 	{
-		return new Option("Changer le mail", "e", () -> {employe.setMail(getString("Nouveau mail : "));});
+		return new Option("Changer le mail", "e", () -> employe.setMail(getString("Nouveau mail : ")));
 	}
 	
 	private Option changerPassword(final Employee employe)
 	{
-		return new Option("Changer le password", "x", () -> {employe.setPassword(getString("Nouveau password : "));});
+		return new Option("Changer le password", "x", () -> employe.setPassword(getString("Nouveau password : ")));
 	}
 	
 	private Option quitterEtEnregistrer()

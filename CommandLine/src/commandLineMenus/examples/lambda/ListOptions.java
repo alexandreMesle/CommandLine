@@ -30,7 +30,7 @@ public class ListOptions
 	{
 		Menu someoneMenu = new Menu("Edit " + someone, someone, null);
 		someoneMenu.add(new Option("show", "s", 
-				() -> {System.out.println("You must give the man a name : " + someone + ".");})
+				() -> System.out.println("You must give the man a name : " + someone + "."))
 				);
 		someoneMenu.add(new Option("delete", "d", 
 					() -> {
