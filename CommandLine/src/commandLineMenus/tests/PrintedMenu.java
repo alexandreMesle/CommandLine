@@ -33,6 +33,8 @@ class PrintedMenu
 	public boolean equals(Object obj)
 	{
 		PrintedMenu other = (PrintedMenu) obj;
+		if (other == null)
+		    return false;
 		return other.getTitle() == getTitle()
 				&& other.getOptions().equals(getOptions());
 	}
