@@ -281,7 +281,7 @@ public class Menu extends Option
 	@Override
 	public String toString()
 	{
-		String res = menuRenderer.header(getTitle());
+		StringBuilder res = new StringBuilder(menuRenderer.header(getTitle()));
 		boolean between = false;
 		for (Option option : optionsList)
 		{
@@ -289,11 +289,11 @@ public class Menu extends Option
 				res += menuRenderer.optionsSeparator();
 			else
 				between = true;
-			res += option.stringOfOption();
+			res.append(option.stringOfOption());
 		}
-		res += emptyIfNull(menuRenderer.footer());
-		res += emptyIfNull(menuRenderer.prompt());
-		return res;
+		res.append(emptyIfNull(menuRenderer.footer()))
+		    .append(emptyIfNull(menuRenderer.prompt()));
+		return res.toString();
 	}
 
 	/**
@@ -412,17 +412,17 @@ public class Menu extends Option
 
 		private static String stringOfCycle(List<Menu> list)
 		{
-			String res = "[";
+			StringBuilder res = new StringBuilder("[");
 			boolean first = true;
 			for (Option menu : list)
 			{
 				if (!first)
-					res += " -> ";
+					res.append(" -> ");
 				else
 					first = false;
-				res += menu.getTitle();
+				res.append(menu.getTitle());
 			}
-			return res + "]";
+			return res.append("]").toString();
 		}
 
 
