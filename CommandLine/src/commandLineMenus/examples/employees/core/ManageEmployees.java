@@ -31,49 +31,25 @@ public class ManageEmployees implements Serializable
 	
 	private static ManageEmployees readObject()
 	{
-		ObjectInputStream ois = null;
-		try
+		try (ObjectInputStream ois = new ObjectInputStream(new FileInputStream(FILE_NAME)))
 		{
-			FileInputStream fis = new FileInputStream(FILE_NAME);
-			ois = new ObjectInputStream(fis);
-			return (ManageEmployees)(ois.readObject());
+			return (ManageEmployees) ois.readObject();
 		}
 		catch (IOException | ClassNotFoundException e)
 		{
 			return null;
 		}
-		finally
-		{
-				try
-				{
-					if (ois != null)
-						ois.close();
-				} 
-				catch (IOException e){}
-		}	
 	}
 		
 	public void sauvegarder() throws ImpossibleToSaveException
 	{
-		ObjectOutputStream oos = null;
-		try
+		try (ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream(FILE_NAME)))
 		{
-			FileOutputStream fis = new FileOutputStream(FILE_NAME);
-			oos = new ObjectOutputStream(fis);
 			oos.writeObject(this);
 		}
 		catch (IOException e)
 		{
 			throw new ImpossibleToSaveException();
-		}
-		finally
-		{
-			try
-			{
-				if (oos != null)
-					oos.close();
-			} 
-			catch (IOException e){}
 		}
 	}
 	
