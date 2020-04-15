@@ -303,8 +303,8 @@ public class Menu extends Option
 	public class CollisionException extends RuntimeException
 	{
 		private static final long serialVersionUID = 1142845287292812411L;
-		private final Option oldOption;
-		private final Option newOption;
+		private final transient Option oldOption;
+		private final transient Option newOption;
 		
 		public Option getOldOption()
 		{
@@ -334,7 +334,7 @@ public class Menu extends Option
 	public class ShortcutMissingException extends RuntimeException
 	{
 		private static final long serialVersionUID = -194430644006701341L;
-		private final Option option;
+		private final transient Option option;
 		
 		public Option getOption()
 		{
@@ -391,7 +391,7 @@ public class Menu extends Option
 	{
 		private static final long serialVersionUID = -2884917321791851520L;
 
-		private final List<Menu> cycleDetected;
+		private final transient List<Menu> cycleDetected;
 		
 		public CycleDetectedException(List<Menu> cycleDetected)
 		{

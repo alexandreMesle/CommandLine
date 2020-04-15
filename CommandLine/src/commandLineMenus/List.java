@@ -236,8 +236,8 @@ public class List<T> extends Menu
 	public static class ManualOptionAddForbiddenException extends RuntimeException
 	{
 		private static final long serialVersionUID = -5126287607702961669L;
-		private final Option option;
-		private List<?> list;
+		private final transient Option option;
+		private final transient List<?> list;
 
 		ManualOptionAddForbiddenException(List<?> list, Option option)
 		{
@@ -260,7 +260,7 @@ public class List<T> extends Menu
 	public static class NoListDataDefinedException extends RuntimeException
 	{
 		private static final long serialVersionUID = 3072039179151217765L;
-		private final List<?> list;
+		private final transient List<?> list;
 		
 		public NoListDataDefinedException(List<?> list)
 		{
@@ -283,7 +283,7 @@ public class List<T> extends Menu
 	public static class ListActionOrOptionException extends RuntimeException
 	{
 		private static final long serialVersionUID = -4035301642069764296L;
-		private final List<?> list;
+		private final transient List<?> list;
 		
 		public ListActionOrOptionException(List<?> list)
 		{
