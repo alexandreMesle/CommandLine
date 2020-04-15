@@ -189,7 +189,7 @@ public class List<T> extends Menu
 			super.add(optionQuit);
 		if (optionBack!= null)
 			super.add(optionBack);
-		if (liste.size() == 0 && optionBack == null)
+		if (liste.isEmpty() && optionBack == null)
 			super.addBack("q");
 		setLocked(wasLocked);
 		return liste.size();
