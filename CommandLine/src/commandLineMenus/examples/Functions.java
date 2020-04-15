@@ -33,9 +33,9 @@ public class Functions
 		{
 			public void optionSelected()
 			{
-				int a = InOut.getInt("Input the first operand : "),
-						b = InOut.getInt("Input the second operand : ");
-				System.out.println("" + a + " + " + b + " = " + (a+b));
+				int a = InOut.getInt("Input the first operand : ");
+				int b = InOut.getInt("Input the second operand : ");
+				System.out.println(a + " + " + b + " = " + (a+b));
 			}
 		};
 	}

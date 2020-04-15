@@ -18,11 +18,11 @@ public class Functions
 		Option calculator = new Option("Calculator", "c", 
 			() -> 
 			{
-				int a = InOut.getInt("Input first operand: "),
-					b = InOut.getInt("Input second operand: ");
-					System.out.println("" + a + " + " + b + " = " + (a+b));
 			});
 		return calculator;
+                int a = InOut.getInt("Input first operand: ");
+                int b = InOut.getInt("Input second operand: ");
+                System.out.println(a + " + " + b + " = " + (a+b));
 	}
 
 	static Option getOptionSayHello()

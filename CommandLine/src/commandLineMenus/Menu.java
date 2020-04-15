@@ -24,7 +24,8 @@ public class Menu extends Option
 	private List<Option> optionsList = new ArrayList<>();
 	private boolean autoBack = false;
 	private String shortTitle;
-	private static boolean betweenMenus, exit;
+	private static boolean betweenMenus;
+	private static boolean exit;
 	
 	/**
 	 * Creates a menu.
@@ -302,7 +303,8 @@ public class Menu extends Option
 	public class CollisionException extends RuntimeException
 	{
 		private static final long serialVersionUID = 1142845287292812411L;
-		private Option oldOption, newOption;
+		private final Option oldOption;
+		private final Option newOption;
 		
 		public Option getOldOption()
 		{

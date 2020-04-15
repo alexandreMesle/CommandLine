@@ -14,7 +14,8 @@ public class List<T> extends Menu
 	private ListAction<T> listAction = null;
 	private ListOption<T> listOption = null;
 	private ListData<T> model = null;
-	private Option optionQuit = null, optionBack = null;
+	private Option optionQuit = null;
+	private Option optionBack = null;
 	private ListItemRenderer<T> itemRenderer;
 	
 	private List(String title, ListData<T> data)
