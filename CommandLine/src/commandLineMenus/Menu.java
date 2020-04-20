@@ -286,7 +286,7 @@ public class Menu extends Option
 		for (Option option : optionsList)
 		{
 			if (between)
-				res += menuRenderer.optionsSeparator();
+				res.append(menuRenderer.optionsSeparator());
 			else
 				between = true;
 			res.append(option.stringOfOption());
