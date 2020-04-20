@@ -284,7 +284,7 @@ public class Menu extends Option
 		boolean between = false;
 		for (Option option : optionsList)
 		{
-			if (!between) 
+			if (between)
 				res += menuRenderer.optionsSeparator();
 			else
 				between = true;
