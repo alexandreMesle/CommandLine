@@ -1,0 +1,49 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+       <groupId>CommandLineMenus</groupId>
+       <artifactId>CommandLineMenus</artifactId>
+       <version>2.0</version>
+	
+	<properties>
+        <server.user>klaus</server.user>
+        <server.host>maven.alexandre-mesle.com</server.host>
+        <server.path>/home/klaus/www/maven/www/maven</server.path>
+        <server.port>2222</server.port>
+    </properties>
+	
+	<build>
+	  <resources>
+	    <resource>
+	      <directory>src</directory>
+	      <includes>
+	        <include>**/*.java</include>
+	      </includes>
+	    </resource>
+	  </resources>
+	  
+	  <plugins>
+	    <plugin>
+	      <artifactId>maven-compiler-plugin</artifactId>
+	      <version>3.8.0</version>
+	      <configuration>
+	        <source>1.8</source>
+	        <target>1.8</target>
+	        <outputDirectory>CommandLine/target/classes</outputDirectory>
+	      </configuration>
+	    </plugin>
+	  </plugins>
+      <extensions>
+          <extension>
+              <groupId>org.apache.maven.wagon</groupId>
+              <artifactId>wagon-ssh</artifactId>
+              <version>2.7</version>
+          </extension>
+      </extensions>
+	</build>
+	<distributionManagement>
+        <repository>
+            <id>mereen</id>
+            <url>sftp://${server.user}@${server.host}:${server.port}/${server.path}</url>
+        </repository>
+    </distributionManagement>
+</project>
