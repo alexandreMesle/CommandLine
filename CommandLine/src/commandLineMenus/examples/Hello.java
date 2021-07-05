@@ -23,7 +23,6 @@ class Hello
 		// Creates an action that will be binded to the sayHello option. 
 		Action sayHelloAction = new Action()
 		{
-			
 			// optionSelected() is triggered each time the "sayHello" option is selected.
 			@Override
 			public void optionSelected()

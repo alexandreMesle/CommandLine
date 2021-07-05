@@ -5,7 +5,10 @@ import java.io.Serializable;
 public class Employee implements Serializable, Comparable<Employee>
 {
 	private static final long serialVersionUID = 4795721718037994734L;
-	private String lastName, firstName, password, mail;
+	private String lastName;
+	private String firstName;
+	private String password;
+	private String mail;
 	private Department department;
 	
 	Employee(Department department, String lastName, String firstName, String mail, String password)

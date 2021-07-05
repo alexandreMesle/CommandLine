@@ -21,9 +21,7 @@ public class ListOptionRenderer
 
 	private static Option getOptionAfficher(String element)
 	{
-		return new Option("Afficher", "a", 
-				() -> {System.out.println(element);}
-				);
+		return new Option("Afficher", "a", () -> System.out.println(element));
 	}
 	
 	private static Menu getSomeoneMenu(String element)
@@ -40,7 +38,7 @@ public class ListOptionRenderer
 		people.add("Ginette");
 		people.add("Marcel");
 		people.add("Gisèle");
-		List<String> menu = new List<String>(
+		List<String> menu = new List<>(
 				"People list",
 				"p",
 				() -> people,

@@ -33,6 +33,8 @@ class PrintedMenu
 	public boolean equals(Object obj)
 	{
 		PrintedMenu other = (PrintedMenu) obj;
+		if (other == null)
+		    return false;
 		return other.getTitle() == getTitle()
 				&& other.getOptions().equals(getOptions());
 	}
@@ -40,6 +42,6 @@ class PrintedMenu
 	@Override
 	public String toString()
 	{
-		return  "\n" +title + " " + options.toString();
+		return  "\n" + title + " " + options.toString();
 	}
 }

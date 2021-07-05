@@ -197,8 +197,8 @@ public class TestMenus
 	@Test
 	public void checkCycle()
 	{
-		Menu racine = new Menu("racine", "r"),
-			feuille = new Menu("feuille", "r");
+		Menu racine = new Menu("racine", "r");
+		Menu feuille = new Menu("feuille", "r");
 		racine.add(feuille);
 		feuille.add(racine);
 		try

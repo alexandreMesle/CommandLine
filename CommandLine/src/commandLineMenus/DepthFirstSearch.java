@@ -66,8 +66,8 @@ class DepthFirstSearch
 			if (node instanceof Menu && !(node instanceof List<?>))
 			{
 				Menu menu = (Menu) node;
-					if (menu.size() == 0)
-				throw menu.new EmptyMenuException();	
+				if (menu.size() == 0)
+				    throw menu.new EmptyMenuException();	
 			}
 		};
 	}

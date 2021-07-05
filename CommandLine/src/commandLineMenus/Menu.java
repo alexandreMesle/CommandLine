@@ -24,7 +24,8 @@ public class Menu extends Option
 	private List<Option> optionsList = new ArrayList<>();
 	private boolean autoBack = false;
 	private String shortTitle;
-	private static boolean betweenMenus, exit;
+	private static boolean betweenMenus;
+	private static boolean exit;
 	
 	/**
 	 * Creates a menu.
@@ -177,7 +178,7 @@ public class Menu extends Option
 		return menuRenderer.inputString();
 	}
 	
-	private void reset()
+	private static void reset()
 	{
 		betweenMenus = false;
 		exit = false;
@@ -280,19 +281,19 @@ public class Menu extends Option
 	@Override
 	public String toString()
 	{
-		String res = menuRenderer.header(getTitle());
+		StringBuilder res = new StringBuilder(menuRenderer.header(getTitle()));
 		boolean between = false;
 		for (Option option : optionsList)
 		{
 			if (between)
-				res += menuRenderer.optionsSeparator();
+				res.append(menuRenderer.optionsSeparator());
 			else
 				between = true;
-			res += option.stringOfOption();
+			res.append(option.stringOfOption());
 		}
-		res += emptyIfNull(menuRenderer.footer());
-		res += emptyIfNull(menuRenderer.prompt());
-		return res;
+		res.append(emptyIfNull(menuRenderer.footer()))
+		    .append(emptyIfNull(menuRenderer.prompt()));
+		return res.toString();
 	}
 
 	/**
@@ -302,7 +303,8 @@ public class Menu extends Option
 	public class CollisionException extends RuntimeException
 	{
 		private static final long serialVersionUID = 1142845287292812411L;
-		private Option oldOption, newOption;
+		private final transient Option oldOption;
+		private final transient Option newOption;
 		
 		public Option getOldOption()
 		{
@@ -332,7 +334,7 @@ public class Menu extends Option
 	public class ShortcutMissingException extends RuntimeException
 	{
 		private static final long serialVersionUID = -194430644006701341L;
-		private Option option;
+		private final transient Option option;
 		
 		public Option getOption()
 		{
@@ -389,7 +391,7 @@ public class Menu extends Option
 	{
 		private static final long serialVersionUID = -2884917321791851520L;
 
-		private List<Menu> cycleDetected;
+		private final transient List<Menu> cycleDetected;
 		
 		public CycleDetectedException(List<Menu> cycleDetected)
 		{
@@ -410,17 +412,17 @@ public class Menu extends Option
 
 		private static String stringOfCycle(List<Menu> list)
 		{
-			String res = "[";
+			StringBuilder res = new StringBuilder("[");
 			boolean first = true;
 			for (Option menu : list)
 			{
 				if (!first)
-					res += " -> ";
+					res.append(" -> ");
 				else
 					first = false;
-				res += menu.getTitle();
+				res.append(menu.getTitle());
 			}
-			return res + "]";
+			return res.append("]").toString();
 		}
 
 

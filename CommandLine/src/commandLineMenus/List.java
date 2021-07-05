@@ -14,7 +14,8 @@ public class List<T> extends Menu
 	private ListAction<T> listAction = null;
 	private ListOption<T> listOption = null;
 	private ListData<T> model = null;
-	private Option optionQuit = null, optionBack = null;
+	private Option optionQuit = null;
+	private Option optionBack = null;
 	private ListItemRenderer<T> itemRenderer;
 	
 	private List(String title, ListData<T> data)
@@ -188,7 +189,7 @@ public class List<T> extends Menu
 			super.add(optionQuit);
 		if (optionBack!= null)
 			super.add(optionBack);
-		if (liste.size() == 0 && optionBack == null)
+		if (liste.isEmpty() && optionBack == null)
 			super.addBack("q");
 		setLocked(wasLocked);
 		return liste.size();
@@ -235,8 +236,8 @@ public class List<T> extends Menu
 	public static class ManualOptionAddForbiddenException extends RuntimeException
 	{
 		private static final long serialVersionUID = -5126287607702961669L;
-		private Option option;
-		private List<?> list;
+		private final transient Option option;
+		private final transient List<?> list;
 
 		ManualOptionAddForbiddenException(List<?> list, Option option)
 		{
@@ -259,7 +260,7 @@ public class List<T> extends Menu
 	public static class NoListDataDefinedException extends RuntimeException
 	{
 		private static final long serialVersionUID = 3072039179151217765L;
-		private List<?> list;
+		private final transient List<?> list;
 		
 		public NoListDataDefinedException(List<?> list)
 		{
@@ -282,7 +283,7 @@ public class List<T> extends Menu
 	public static class ListActionOrOptionException extends RuntimeException
 	{
 		private static final long serialVersionUID = -4035301642069764296L;
-		private List<?> list;
+		private final transient List<?> list;
 		
 		public ListActionOrOptionException(List<?> list)
 		{

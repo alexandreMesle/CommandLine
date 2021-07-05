@@ -18,11 +18,9 @@ public class InOut
 	 * @return la chaîne saisie.
 	 * @throws IOException En cas d'erreur de saisie.
 	 */
-	
 	public static String getString() throws IOException
 	{
-		BufferedReader br = new BufferedReader(
-					new InputStreamReader(System.in));
+		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
 		return br.readLine();
 	}
 	
@@ -31,7 +29,6 @@ public class InOut
 	 * @return l'entier saisi.
 	 * @throws IOException En cas d'erreur de saisie.
 	 */
-	
 	public static int getInt() throws IOException
 	{
 		return Integer.parseInt(getString());
@@ -44,7 +41,6 @@ public class InOut
 	 * @param message le message affiché avant la saisie.
 	 * @return l'entier saisi.
 	 */
-	
 	public static int getInt(String message)
 	{
 		do
@@ -69,7 +65,6 @@ public class InOut
 	 * @param message le message affiché avant la saisie.
 	 * @return la chaîne saisie.
 	 */
-	
 	public static String getString(String message)
 	{
 		do
@@ -91,7 +86,6 @@ public class InOut
 	 * Affiche une exception, utile pour afficher une exception rattrapée.
 	 * @param e l'exception à afficher.
 	 */
-
 	public static void afficheException(Exception e)
 	{
 		StringWriter sw = new StringWriter();
@@ -99,5 +93,4 @@ public class InOut
 		e.printStackTrace(s);
 		System.out.println(sw);
 	}
-
 }

@@ -21,9 +21,7 @@ public class Functions
 	// Returns the calculator option
 	static Option getCalculatorOption()
 	{
-		Option calculator = new Option("Calculator", "c", 
-				getCalculatorAction());
-		return calculator;
+		return new Option("Calculator", "c", getCalculatorAction());
 	}
 	
 	// It is advised to write each action in a separate method
@@ -33,9 +31,9 @@ public class Functions
 		{
 			public void optionSelected()
 			{
-				int a = InOut.getInt("Input the first operand : "),
-						b = InOut.getInt("Input the second operand : ");
-				System.out.println("" + a + " + " + b + " = " + (a+b));
+				int a = InOut.getInt("Input the first operand : ");
+				int b = InOut.getInt("Input the second operand : ");
+				System.out.println(a + " + " + b + " = " + (a+b));
 			}
 		};
 	}
@@ -61,7 +59,7 @@ public class Functions
 	{
 		Menu sayHelloMenu = new Menu("Say Hello Menu", "Hello", "h");
 		sayHelloMenu.add(getSayHelloOption());
-		sayHelloMenu.addBack("r");;
+		sayHelloMenu.addBack("r");
 		sayHelloMenu.setAutoBack(true);
 		return sayHelloMenu;
 	}
